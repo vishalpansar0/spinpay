@@ -1,0 +1,2 @@
+# spinpay
+Spin Pay
