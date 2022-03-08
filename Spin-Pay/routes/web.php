@@ -17,6 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('sdfds', function () {
-    return view('sdf');
-});
+
