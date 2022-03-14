@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Users;
-use App\Models\role;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function store_users_data(Request $request){
+    public function store_users(Request $request){
         $validate=$request->validate([
             'name'=>'required',
             'email'=>'required',
