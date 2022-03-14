@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+    
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,11 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return view('register');
 })->name('registerBtn');
+Route::get('/signin', function () {
+    return view('signin');
+});
+
+
+
+
+
