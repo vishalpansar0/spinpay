@@ -26,7 +26,7 @@
            <div class="row mt-4">
             <div class="col-md-6">
                 <div class="inputDiv">
-                    <input type="text" id="username" placeholder="enter full name" required>
+                    <input type="text" id="username" name="hello" placeholder="enter full name" required>
                     <small class="form-text text-muted">name should be as per in aadhar card.</small>
                 </div>
             </div>

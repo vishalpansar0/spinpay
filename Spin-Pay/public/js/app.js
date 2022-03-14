@@ -26,3 +26,18 @@ function movetoNext(current, nextFieldID, vs) {
         }
     }
 }
+
+$('#lenderRole').on('click', function() {
+    $('#borrowerRole').css('background-color', 'white');
+    $('#lenderRole').css('background-color', '#3498DB');
+})
+$('#borrowerRole').on('click', function() {
+    $('#lenderRole').css('background-color', 'white');
+    $('#borrowerRole').css('background-color', '#3498DB');
+})
+$('#verifyEmailBtn').on('click', function() {
+    $('#verifyEmailBtn').css('display', 'none');
+    $('#emailVerLoader').css('display', 'block');
+    // $('#otpDiv').css('display','block');
+
+})
