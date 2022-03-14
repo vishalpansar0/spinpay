@@ -70,8 +70,8 @@ body{
     line-height: 30px;
     appearance: none;
     border: none;
-    outline: none;
-    background: transparent; 
+        outline: none;
+        background: transparent; 
 }
 
 .registration-form button{
