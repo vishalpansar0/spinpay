@@ -18,6 +18,8 @@ Route::get('/', function () {
     return view('home');
 });
 
+// registration routes start
+
 Route::get('/register/userinfo', function () {
     return view('register.userinfo');
 })->name('registerBtn');
@@ -26,7 +28,11 @@ Route::get('/register/userdata',function(){
     return view('register.userdata');
 })->name('userdata');
 
+Route::get('/register/userdocuments',function(){
+    return view('register.userdoc');
+})->name('userdoc');
 
+// registration routes end
 
 //  Login Routes
 Route::get('/signin', function () {
