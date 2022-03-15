@@ -7,6 +7,7 @@ use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserData;
 use Illuminate\Support\Facades\Validator;
+use App\Models\UserDocument;
 
 class UserController extends Controller
 {
@@ -31,8 +32,6 @@ class UserController extends Controller
     }
 
     public function userdata(Request $request,$id){
-
-
             $validator = Validator::make($request->all(), [
                 'address_line' => 'required',
                 'city' => 'required',
@@ -58,6 +57,27 @@ class UserController extends Controller
                             $user->image= $request['image'];
                             $user->save();
                             return "Success";
-                           }
+                        }
+       }
+
+       public function aadhar(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'master_document_id' =>'required',
+            'document_number' => 'required',
+            'document_image' => 'required'
+            ]);
+            if($validator->fails()) {
+                $flag = false;
+                return $data['message']['statusText'] = "Validation Failed ".$validator->errors();
+                } else {
+                        $user = new UserDocument();
+                        $user->user_id = $request['user_id'];
+                        $user->master_document_id = $request ['master_document_id'];
+                        $user->document_number= $request['document_number'];
+                        $user->document_image= $request['document_image'];
+                        $user->save();
+                        return "Success";
+                    }  
        }
 }

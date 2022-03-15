@@ -23,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post("store_users",[UserController::class,"store_users"]);
 Route::post('/userdata/{id}', [UserController::class, 'userdata']);
+Route::post('/aadhar', [UserController::class, 'aadhar']);
