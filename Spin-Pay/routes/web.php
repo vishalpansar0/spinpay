@@ -18,9 +18,19 @@ Route::get('/', function () {
     return view('home');
 });
 
+
+// Registration Routes 
 Route::get('/register', function () {
     return view('register');
 })->name('registerBtn');
+
+Route::get('/userdata',function(){
+    return view('userdata');
+})->name('userdata');
+
+
+
+//  Login Routes
 Route::get('/signin', function () {
     return view('signin');
 });
