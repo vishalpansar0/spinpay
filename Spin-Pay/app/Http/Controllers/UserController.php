@@ -27,7 +27,9 @@ class UserController extends Controller
         $users->password=Hash::make($request['password']);
         $users->role_id=$request['role_id'];
         $users->save();
-        print_r("inserted successfuly");
+        return response()->json([
+            'msg' => 'success',
+        ]);
     }
 
     public function userdata(Request $request,$id){
