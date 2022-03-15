@@ -56,9 +56,13 @@ class UserController extends Controller
                             $user->age= $request['age'];
                             $user->gender= $request['gender'];
                             $user->dob= $request['dob'];
+                            $request->file('files')->store('public/images/UserImages/ProfileImages');
                             $user->image= $request['image'];
                             $user->save();
-                            return "Success";
+                            return response()->json([
+                                'message' => 'success',
+                                'status' => 200
+                            ]);
                         }
        }
 
@@ -77,9 +81,13 @@ class UserController extends Controller
                         $user->user_id = $request['user_id'];
                         $user->master_document_id = $request ['master_document_id'];
                         $user->document_number= $request['document_number'];
+                        $request->file('files')->store('public/images/UserImages/DocumentImages');
                         $user->document_image= $request['document_image'];
                         $user->save();
-                        return "Success";
+                        return response()->json([
+                                'message' => 'success',
+                                'status' => 200
+                            ]);
                     }  
        }
 }
