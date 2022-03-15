@@ -220,6 +220,27 @@ body {
 .inputDiv input:focus {
     border: 1px solid #3498DB;
 }
+.inputDiv select {
+    width: 100%;
+    padding: 12px;
+    padding-left: 28px;
+    padding-right: 28px;
+    color: grey;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+}
+
+.inputDiv input:select {
+    border: 1px solid #3498DB;
+}
+
+.inputDiv select:focus {
+    border: 1px solid #3498DB;
+}
+
 
 .capbtn {
     color: #FFFFFF;

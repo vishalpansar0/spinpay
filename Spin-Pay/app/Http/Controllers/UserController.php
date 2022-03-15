@@ -22,15 +22,25 @@ class UserController extends Controller
         ]);
 
         $users=new Users();
-        $users->name=$request['name'];
-        $users->email=$request['email'];
-        $users->phone=$request['phone'];
-        $users->password=Hash::make($request['password']);
-        $users->role_id=$request['role_id'];
-        $users->save();
-        return response()->json([
-            'msg' => 'success',
-        ]);
+        if($users->where('email',$request['email'])->get()->first()){
+            return response()->json([
+                'msg' => 'this email is already registered with us, please login.',
+                'code'=> 400,
+            ]);
+        }
+        else{
+            $users->name=$request['name'];
+            $users->email=$request['email'];
+            $users->phone=$request['phone'];
+            $users->password=Hash::make($request['password']);
+            $users->role_id=$request['role_id'];
+            $users->save();
+            return response()->json([
+                'msg' => 'success',
+                'code'=> 200,
+            ]);
+        }
+        
     }
 
     public function userdata(Request $request,$id){
