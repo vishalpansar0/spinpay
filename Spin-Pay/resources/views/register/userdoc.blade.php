@@ -20,32 +20,26 @@
     <div class="container reg-div-1">
         <div>
            <div class="row">
-               <h3 class="mt-5" style="font-family:myFirstFont;color:white">join as a&nbsp;&nbsp;&nbsp;&nbsp;
-               <button class="register-role-btn-left reg-role-btn" id="lenderRole">lender</button><button class="register-role-btn-right reg-role-btn" id="borrowerRole">borrower</button></h3>
-           </div>
+               <h3 class="mt-5" style="font-family:myFirstFont;color:white">upload your documents&nbsp;&nbsp;&nbsp;&nbsp;
+             </div>
            <div class="row mt-4">
             <div class="col-md-6">
                 <div class="inputDiv">
-                    <input type="text" id="username" name="name" placeholder="enter full name" required>
-                    <small class="form-text text-muted">name should be as per in aadhar card.</small>
+                    <input type="tel" id="aadharnum" placeholder="enter aadhar card number here" required>
+                    <small class="form-text text-muted">number should be matched with aadhar card image.</small>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="inputDiv">
-                    <input type="email" id="usermail" placeholder="enter email" required>
-                </div>
-            </div>
+            
             </div>
             <div class="row mt-4">
                 <div class="col-md-6">
-                    <div class="inputDiv">
-                        <input type="password" id="userpassword" placeholder="create a new password" required>
-                        <small class="form-text text-muted">password should contain at least 8 characters.</small>
+                    <div class="inputFileDiv">
+                        <input type="file" id="aadharfile" placeholder="create a new password" required>
                     </div>
+                    <small class="form-text text-muted">password should contain at least 8 characters.</small>
                 </div>
                 <div class="col-md-6">
                     <div class="inputDiv">
-                       
                         <input type="tel" id="userphone" placeholder="enter mobile number" required>
                     </div>
                 </div>
@@ -62,41 +56,8 @@
                            <div class="loader mt-2" id="joinBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
                         </div>
                     </div>
-                    
                     </div>
-                    <div class="row mt-4" style="display:none">
-                        <div class="col-md-6">
-                            <div class="inputDiv">
-                                <div class="row mt-4">                      
-                                    <div class="col-md-3">
-                                        <input class="text-center" id="first" style="color:white"
-                                            onkeyup="movetoNext(this, 'second',1)" type="text" maxlength="1">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input class="text-center" id="second" style="color:white" type="text"
-                                            onkeyup="movetoNext(this, 'third',2)" maxlength="1">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input class="text-center" id="third" style="color:white" type="text"
-                                            onkeyup="movetoNext(this, 'fourth',3)" maxlength="1">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input class="text-center" id="fourth" style="color:white" type="text"
-                                            onkeyup="movetoNext(this, 'fourth',4)" maxlength="1">
-                                    </div>
-                                                               
-                                </div>
-                                <small class="form-text text-muted">an OTP has been sent to your email, enter here.</small>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="inputDiv mt-4">
-                                <button class="btn capbtn" id="submitOtpBtn" style="float:right">submit otp</button>
-                                <div class="loader mt-2" id="submitOtpLoader" style="display:none;float:right;margin-right:10%;"></div>
-                            </div>
-                        </div>
-                        </div>
-          
+         
 </div>
 
 
@@ -167,7 +128,6 @@
                     beforeSend: function(){
                         $('#joinSpinpayBtn').css('display','none');
                         $('#joinBtnLoader').css('display','block');
-                        
                     },
                     success: function(result) {
                         if(result['code']==400){
