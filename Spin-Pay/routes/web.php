@@ -18,8 +18,8 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/register', function () {
-    return view('register');
+Route::get('/register/userinfo', function () {
+    return view('register.userinfo');
 })->name('registerBtn');
 Route::get('/signin', function () {
     return view('signin');
