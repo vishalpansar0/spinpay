@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendOtp;
-use App\Mail\SendOtp2;
 use Illuminate\Http\Request;
 
 use App\Models\Otp_verification;

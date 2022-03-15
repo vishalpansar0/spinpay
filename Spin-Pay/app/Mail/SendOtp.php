@@ -29,7 +29,8 @@ class SendOtp extends Mailable
      * @return $this
      */
     public function build()
-    {   echo $this->otp;
+    {   
+        // echo $this->otp;
         return $this->from('cppsecretstools@gmail.com', 'SpinPay')
         ->view('emailtest')->with(['otp'=> $this->otp]);
     }
