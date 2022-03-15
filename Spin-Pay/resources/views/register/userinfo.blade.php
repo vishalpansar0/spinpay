@@ -59,7 +59,7 @@
                     <div class="col-md-6">
                         <div class="inputDiv">
                            <button class="btn capbtn" id="joinSpinpayBtn" style="float:right">join</button>
-                           <div class="loader mt-2" id="emailVerLoader" style="display:none;float:right;margin-right:10%;"></div>
+                           <div class="loader mt-2" id="joinBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
                         </div>
                     </div>
                     
@@ -164,8 +164,21 @@
                     type:"post",
                     dataType: "json",
                     data: getData,
+                    beforeSend: function(){
+                        $('#joinSpinpayBtn').css('display','none');
+                        $('#joinBtnLoader').css('display','block');
+                        
+                    },
                     success: function(result) {
-                        console.log(result);
+                        if(result['code']==400){
+                            errormsg(result['msg']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
+                        else if(result['code']==200){
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
                     }
                 });     
           }
