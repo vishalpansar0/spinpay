@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+//for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"]);
 Route::post('/userdata/{id}', [UserController::class, 'userdata']);
+//for to store pancard details
+Route::post('pancard',[UserController::class, 'pancard']);

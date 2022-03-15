@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserData;
+use App\Models\UserDocument;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -61,5 +62,30 @@ class UserController extends Controller
                             $user->save();
                             return "Success";
                            }
-       }
+    }
+    public function pancard(Request $request){
+        $validate=Validator::make($request->all(),[
+            'user_id'=> 'required',
+            'master_document_id' => 'required',
+            'document_number' => 'required',
+            'document_image' => 'required'
+        ]);
+
+        if($validate->fails()){
+            $flag=false;
+            return $data['message']['statusText']="Validation Failed".$validate->errors();
+        }
+        else{
+            $user_doc=new UserDocument();
+            $user_doc->user_id= $request['user_id'];
+            $user_doc->master_document_id= $request['master_document_id'];
+            $user_doc->document_number= $request['document_number'];
+            $user_doc->document_image= $request['document_image'];
+            $user_doc->is_verified= $request['is_verified'];
+            $user_doc->save();
+            return response()->json([
+                'message' => 'success',
+            ]);
+        }
+    }
 }
