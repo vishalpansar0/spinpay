@@ -4,7 +4,7 @@
   <title>SpinPay | P2P Lending Platform</title>
 @endpush
 <div class="register-container-body">
-<div class="navbar" id="nav" style="height:12%">
+<div class="navbar" style="height:12%">
     <div class="container">
       <div class="logo-container">
          SpinPay
@@ -18,9 +18,9 @@
 <div class="register-main-body">
     <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;display:none"></div>
     <div class="container reg-div-1">
-        <div>
+        <div id="aadharUploadMainDiv">
            <div class="row">
-               <h3 class="mt-5" style="font-family:myFirstFont;color:white">upload your documents&nbsp;&nbsp;&nbsp;&nbsp;
+               <h3 class="mt-5" style="font-family:myFirstFont;color:white">upload your aadhar card&nbsp;&nbsp;&nbsp;&nbsp;
              </div>
            <div class="row mt-4">
             <div class="col-md-6">
@@ -34,30 +34,94 @@
             <div class="row mt-4">
                 <div class="col-md-6">
                     <div class="inputFileDiv">
-                        <input type="file" id="aadharfile" placeholder="create a new password" required>
-                    </div>
-                    <small class="form-text text-muted">password should contain at least 8 characters.</small>
+                        <div class="fileIntwrapper" style="width:100%;height:100%">
+                            <center>
+                              <input type="file" id="aadharfile" class="filesInput" accept=".pdf,.png,.jpg" placeholder="create a new password" required>
+                              <img src="{{asset('images/upload-files.svg')}}" alt="" width="100">click here to upload aadhar image 
+                              </center> 
+                        </div>
+                        </div>
+                
+                    <small class="form-text text-muted">only .pdf, .jpg, .png files are accepted with max size 300kb.</small><br>
+                    <small class="form-text text-muted">uploaded file - </small><small class="form-text" id="hh" style="color:green">no file uploaded yet</small>
                 </div>
                 <div class="col-md-6">
-                    <div class="inputDiv">
-                        <input type="tel" id="userphone" placeholder="enter mobile number" required>
-                    </div>
+                    <button class="btn capbtn" id="aadharUploadBtn" style="float:right">upload aadhar</button>
+                    <div class="loader mt-2" id="aUpBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
                 </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="inputDiv">
-                            <input type="password" id="userpasswordcnf" placeholder="confirm your password" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="inputDiv">
-                           <button class="btn capbtn" id="joinSpinpayBtn" style="float:right">join</button>
-                           <div class="loader mt-2" id="joinBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
-                        </div>
-                    </div>
-                    </div>
+ 
          
+</div>
+<div id="panUploadMainDiv" style="display:none">
+    <div class="row">
+        <h3 class="mt-5" style="font-family:myFirstFont;color:white">upload your pan card&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    <div class="row mt-4">
+     <div class="col-md-6">
+         <div class="inputDiv">
+             <input type="tel" id="pannum" placeholder="enter aadhar card number here" required>
+             <small class="form-text text-muted">number should be matched with aadhar card image.</small>
+         </div>
+     </div>
+     
+     </div>
+     <div class="row mt-4">
+         <div class="col-md-6">
+             <div class="inputFileDiv">
+                 <div class="fileIntwrapper" style="width:100%;height:100%">
+                     <center>
+                       <input type="file" id="panfile" class="filesInput" accept=".pdf,.png,.jpg" required>
+                       <img src="{{asset('images/upload-files.svg')}}" alt="" width="100">click here to upload pan card image 
+                       </center> 
+                 </div>
+                 </div>
+         
+             <small class="form-text text-muted">only .pdf, .jpg, .png files are accepted with max size 300kb.</small><br>
+             <small class="form-text text-muted">uploaded file - </small><small class="form-text" id="hh" style="color:green">no file uploaded yet</small>
+         </div>
+         <div class="col-md-6">
+             <button class="btn capbtn" id="aadharUploadBtn" style="float:right">upload pan</button>
+             <div class="loader mt-2" id="panUpBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
+         </div>
+         </div>
+
+  
+</div>
+<div id="payslipUploadMainDiv" style="display:none">
+    <div class="row">
+        <h3 class="mt-5" style="font-family:myFirstFont;color:white">upload your last payslip&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    <div class="row mt-4">
+     <div class="col-md-6">
+         <div class="inputDiv">
+             <input type="tel" id="pannum" placeholder="enter aadhar card number here" required>
+             <small class="form-text text-muted">number should be matched with pan card image.</small>
+         </div>
+     </div>
+     
+     </div>
+     <div class="row mt-4">
+         <div class="col-md-6">
+             <div class="inputFileDiv">
+                 <div class="fileIntwrapper" style="width:100%;height:100%">
+                     <center>
+                       <input type="file" id="payslipfile1" class="filesInput" accept=".pdf,.png,.jpg" required>
+                       <img src="{{asset('images/upload-files.svg')}}" alt="" width="100">click here to upload payslip image 
+                       </center> 
+                 </div>
+                 </div>
+         
+             <small class="form-text text-muted">only .pdf, .jpg, .png files are accepted with max size 300kb.</small><br>
+             <small class="form-text text-muted">uploaded file - </small><small class="form-text" id="hh" style="color:green">no file uploaded yet</small>
+         </div>
+         <div class="col-md-6">
+             <button class="btn capbtn" id="aadharUploadBtn" style="float:right">upload payslip</button>
+             <div class="loader mt-2" id="paysBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
+         </div>
+         </div>
+
+  
 </div>
 
 
@@ -145,5 +209,11 @@
       });
     });
   </script>
-
+<script>
+    const aadharFileInput = document.getElementById('aadharfile');
+    aadharFileInput.onchange = () => {
+        const selectedFile = aadharFileInput.files[0];
+        $('#hh').html(selectedFile['name']);
+    }
+</script>
 @include('layouts.footer')
