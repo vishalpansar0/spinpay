@@ -4,7 +4,7 @@
   <title>SpinPay | P2P Lending Platform</title>
 @endpush
 <div class="register-container-body">
-<div class="navbar" style="height:12%">
+<div class="navbar" id="nav" style="height:12%">
     <div class="container">
       <div class="logo-container">
          SpinPay
@@ -27,12 +27,12 @@
             <div class="col-md-6">
                 <div class="inputDiv">
                     <input type="text" id="username" name="name" placeholder="enter full name" required>
-                    <small class="form-text text-muted">name should be as per in aadhar card.</small>
+                    <small class="form-text text-muted">name should be as per in your aadhar card.</small>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="inputDiv">
-                    <input type="email" id="usermail" placeholder="enter email" required>
+                    <input type="text" id="usermail" placeholder="enter email" required>
                 </div>
             </div>
             </div>
@@ -45,21 +45,22 @@
                 </div>
                 <div class="col-md-6">
                     <div class="inputDiv">
-                       
-                        <input type="tel" id="userphone" placeholder="enter mobile number" required>
+                        <input type="password" id="userpasswordcnf" placeholder="confirm your password" required>
                     </div>
                 </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="inputDiv">
-                            <input type="password" id="userpasswordcnf" placeholder="confirm your password" required>
+                       
+                            <input type="tel" id="userphone" placeholder="enter mobile number" required>
                         </div>
+                       
                     </div>
                     <div class="col-md-6">
                         <div class="inputDiv">
                            <button class="btn capbtn" id="joinSpinpayBtn" style="float:right">join</button>
-                           <div class="loader mt-2" id="emailVerLoader" style="display:none;float:right;margin-right:10%;"></div>
+                           <div class="loader mt-2" id="joinBtnLoader" style="display:none;float:right;margin-right:10%;"></div>
                         </div>
                     </div>
                     
@@ -143,6 +144,7 @@
           if(role==0){
             errormsg('please select a role - lender or borrower');
           }
+          else{
           $("#userphone").val()=="" ? errormsg('mobile number can not be empty') : phoneInput = $("#userphone").val();
           $("#userpasswordcnf").val()=="" ? errormsg('confirm password can not be empty') : password_confirmationInput = $("#userpasswordcnf").val();
           $("#userpassword").val()=="" ? errormsg('password can not be empty') : passwordInput = $("#userpassword").val();
@@ -159,16 +161,67 @@
                     password_confirmation: password_confirmationInput,
                     role_id: role
                 };
+                var emailData={
+                    emailforotp : mailInput,
+                };
                 $.ajax({
-                    url:"/api/store_users",
+                    url:"/api/sendotp",
                     type:"post",
                     dataType: "json",
-                    data: getData,
+                    data: emailData,
+                    beforeSend: function(){
+                        $('#joinSpinpayBtn').css('display','none');
+                        $('#joinBtnLoader').css('display','block');
+                        
+                    },
                     success: function(result) {
                         console.log(result);
+                        
+                        if(result['status']==200){
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
+                        else if(result['status']==400){
+                            errormsg(result['message']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
+                        else if(result['status']==500){
+                            errormsg(result['message']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
+                        else if(result['status']==406){
+                            errormsg(result['message']['emailforotp']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
                     }
-                });     
-          }
+                });  
+      }
+                // $.ajax({
+                //     url:"/api/store_users",
+                //     type:"post",
+                //     dataType: "json",
+                //     data: getData,
+                //     beforeSend: function(){
+                //         $('#joinSpinpayBtn').css('display','none');
+                //         $('#joinBtnLoader').css('display','block');
+                        
+                //     },
+                //     success: function(result) {
+                //         if(result['code']==400){
+                //             errormsg(result['msg']);
+                //             $('#joinBtnLoader').css('display','none');
+                //             $('#joinSpinpayBtn').css('display','block');
+                //         }
+                //         else if(result['code']==200){
+                //             $('#joinBtnLoader').css('display','none');
+                //             $('#joinSpinpayBtn').css('display','block');
+                //         }
+                //     }
+                // });     
+      }
       });
     });
   </script>

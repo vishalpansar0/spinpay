@@ -108,7 +108,7 @@ class UserController extends Controller
                 ]);
                 } else {
                         $size = $request->file('document_image')->getSize();
-                        if($size > 100000){
+                        if($size > 300000){
                             return response()->json([
                                 'Upload Failed' => 'Photos must be less then 100kB',
                                 'status' => 400

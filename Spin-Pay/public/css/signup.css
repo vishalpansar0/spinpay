@@ -70,10 +70,24 @@ body{
     line-height: 30px;
     appearance: none;
     border: none;
-    outline: none;
-    background: transparent; 
+        outline: none;
+        background: transparent; 
 }
+.submit{
+    border-radius: 50px 50px 50px 50px;
+    border:2px solid white;
+    background-color: #202325;
+    color: #796C60;
+   font-weight: 600;
+   padding: 20px;
+   /* box-shadow: -0.1px -0.1px 19px #796C60  ; */
 
+}
+.submit:hover{
+    background-color: #202325;
+    box-shadow: -1px -1px 19px #796C60  ;
+    border: none;
+}
 .registration-form button{
     border-radius: 50px 50px 50px 50px;
     border:2px solid white;
@@ -95,4 +109,9 @@ body{
 }
 .col{
     margin: 10px;
+}
+
+.error-message{
+    color: red;
+    background-color: aliceblue;
 }
