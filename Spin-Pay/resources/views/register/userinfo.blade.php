@@ -4,7 +4,7 @@
   <title>SpinPay | P2P Lending Platform</title>
 @endpush
 <div class="register-container-body">
-<div class="navbar" style="height:12%">
+<div class="navbar" id="nav" style="height:12%">
     <div class="container">
       <div class="logo-container">
          SpinPay
