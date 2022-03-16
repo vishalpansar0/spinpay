@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Mailes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,9 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// for send otp to users mail
+Route::post('sendotp',[Mailes::class,"sendotp"]);
 
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"]);
