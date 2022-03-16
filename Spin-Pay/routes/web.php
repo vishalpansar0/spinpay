@@ -22,7 +22,7 @@ Route::get('/register/userinfo', function () {
     return view('register.userinfo');
 })->name('registerBtn');
 
-Route::get('/register/userdata',function(){
+Route::get('/register/userdata/',function(){
     return view('register.userdata');
 })->name('userdata');
 
