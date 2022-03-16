@@ -50,6 +50,7 @@ class UserController extends Controller
                 'address_line' => 'required',
                 'city' => 'required',
                 'state' => 'required',
+                'pincode'=>'required',
                 'age' => 'required',
                 'gender' => 'required',
                 'dob' => 'required',
@@ -65,6 +66,7 @@ class UserController extends Controller
                             $user->address_line= $request['address_line'];
                             $user->city= $request['city'];
                             $user->state= $request['state'];
+                            $user->pincode=$request['pincode'];
                             $user->age= $request['age'];
                             $user->gender= $request['gender'];
                             $user->dob= $request['dob'];
