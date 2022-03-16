@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Models\Users;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +39,7 @@ class UserController extends Controller
                 'address_line' => 'required',
                 'city' => 'required',
                 'state' => 'required',
+                'pincode' => 'required',
                 'age' => 'required',
                 'gender' => 'required',
                 'dob' => 'required',
@@ -46,24 +48,49 @@ class UserController extends Controller
 
                 if($validator->fails()) {
                     $flag = false;
-                    return $data['message']['statusText'] = "Validation Failed ".$validator->errors();
+                    return response()->json([
+                        'Validation Failed' => $validator->errors(),
+                        'status' => 400
+                    ]);
                     } else {
-                            $user= new UserData();
-                            $user->user_id= $request['id'];
-                            $user->address_line= $request['address_line'];
-                            $user->city= $request['city'];
-                            $user->state= $request['state'];
-                            $user->age= $request['age'];
-                            $user->gender= $request['gender'];
-                            $user->dob= $request['dob'];
-                            $request->file('files')->store('public/images/UserImages/ProfileImages');
-                            $user->image= $request['image'];
-                            $user->save();
-                            return response()->json([
-                                'message' => 'success',
-                                'status' => 200
-                            ]);
-                        }
+                            $size = $request->file('image')->getSize();
+                            if($size > 100000){
+                                return response()->json([
+                                    'Upload Failed' => 'Photos must be less then 100kB',
+                                    'status' => 400
+                                ]);
+                            }
+                            try{ 
+                                    $user= new UserData();
+                                    $user->user_id= $request['id'];
+                                    $user->address_line= $request['address_line'];
+                                    $user->city= $request['city'];
+                                    $user->state= $request['state'];
+                                    $user->pincode= $request['pincode'];
+                                    $user->age= $request['age'];
+                                    $user->gender= $request['gender'];
+                                    $user->dob= $request['dob'];
+                                    $path = $request->file('image')->store('public/images/profileImage');
+                                    $user->image= $path;
+                                    $isSaved = $user->save();
+                                    if($isSaved == 1){
+                                        return response()->json([
+                                            'message' => 'success',
+                                            'status' => 200
+                                        ]);
+                                    }
+                                    else{
+                                        return response()->json([
+                                            'message' => 'Data not Saved',
+                                            'status' => 400
+                                        ]);
+                                    }
+                                } catch(QueryException $e){
+                                return response()->json([
+                                    'Upload Failed' => 'Server Error Please try later',
+                                    'status' => 400
+                                ]);
+                        }         }
        }
 
        public function aadhar(Request $request){
@@ -71,23 +98,49 @@ class UserController extends Controller
             'user_id' => 'required',
             'master_document_id' =>'required',
             'document_number' => 'required',
-            'document_image' => 'required'
+            'document_image' => 'required'  
             ]);
             if($validator->fails()) {
                 $flag = false;
-                return $data['message']['statusText'] = "Validation Failed ".$validator->errors();
+                return response()->json([
+                    'Validation Failed' => $validator->errors(),
+                    'status' => 400
+                ]);
                 } else {
-                        $user = new UserDocument();
-                        $user->user_id = $request['user_id'];
-                        $user->master_document_id = $request ['master_document_id'];
-                        $user->document_number= $request['document_number'];
-                        $request->file('files')->store('public/images/UserImages/DocumentImages');
-                        $user->document_image= $request['document_image'];
-                        $user->save();
-                        return response()->json([
-                                'message' => 'success',
-                                'status' => 200
+                        $size = $request->file('document_image')->getSize();
+                        if($size > 100000){
+                            return response()->json([
+                                'Upload Failed' => 'Photos must be less then 100kB',
+                                'status' => 400
                             ]);
+                        }
+                        try{ 
+                                $user = new UserDocument();
+                                $user->user_id = $request['user_id'];
+                                $user->master_document_id = $request ['master_document_id'];
+                                $user->document_number= $request['document_number'];
+                                $path= $request->file('document_image')->store('public/images/documentImage');
+                                $user->document_image= $path;
+                                $isSaved = $user->save();
+                                if($isSaved == 1){
+                                    return response()->json([
+                                        'message' => 'success',
+                                        'status' => 200
+                                    ]);
+                                }
+                                else{
+                                    return response()->json([
+                                        'message' => 'Data not Saved',
+                                        'status' => 400
+                                    ]);
+                                }
+                                
+                        }  catch(QueryException $e){
+                                return response()->json([
+                                    'Upload Failed' => 'Server Error Please try later',
+                                    'status' => 400
+                                ]);
+                        }
                     }  
        }
 }
