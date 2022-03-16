@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserDocument extends Model
 {
     use HasFactory;
-    protected $table="user_documents";
+    protected $table="user_document";
     protected $primaryKey="id";
 }
