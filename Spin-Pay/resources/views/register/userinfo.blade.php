@@ -180,6 +180,7 @@
                         if(result['status']==200){
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
+                            
                         }
                         else if(result['status']==400){
                             errormsg(result['message']);
