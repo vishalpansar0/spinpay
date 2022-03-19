@@ -4,7 +4,7 @@
   <title>SpinPay | P2P Lending Platform</title>
 @endpush
 <div class="register-container-body">
-<div class="navbar" id="nav" style="height:12%">
+<div class="navbar" style="height:12%">
     <div class="container">
       <div class="logo-container">
          SpinPay
@@ -65,29 +65,30 @@
                     </div>
                     
                     </div>
-                    <div class="row mt-4" style="display:none">
+                    <div class="row mt-4" style="display:none" id="otpSubmitDiv">
                         <div class="col-md-6">
                             <div class="inputDiv">
                                 <div class="row mt-4">                      
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="first" style="color:white"
                                             onkeyup="movetoNext(this, 'second',1)" type="text" maxlength="1">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="second" style="color:white" type="text"
                                             onkeyup="movetoNext(this, 'third',2)" maxlength="1">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="third" style="color:white" type="text"
                                             onkeyup="movetoNext(this, 'fourth',3)" maxlength="1">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="fourth" style="color:white" type="text"
                                             onkeyup="movetoNext(this, 'fourth',4)" maxlength="1">
                                     </div>
                                                                
                                 </div>
-                                <small class="form-text text-muted">an OTP has been sent to your email, enter here.</small>
+                                <small class="form-text text-muted">an OTP has been sent to your email, enter here.</small><br>
+                                <small class="form-text text-muted">if you have entered wrong email, please refresh and write again.</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -153,7 +154,7 @@
           if(passwordInput!=password_confirmationInput){
             errormsg('password and confirm password should be matched.');
           }else{
-                var getData = {
+                const getData = {
                     name: nameInput,
                     email: mailInput,
                     phone: phoneInput,
@@ -161,7 +162,7 @@
                     password_confirmation: password_confirmationInput,
                     role_id: role
                 };
-                var emailData={
+                const emailData={
                     emailforotp : mailInput,
                 };
                 $.ajax({
@@ -172,14 +173,21 @@
                     beforeSend: function(){
                         $('#joinSpinpayBtn').css('display','none');
                         $('#joinBtnLoader').css('display','block');
-                        
+                        $( "#userphone" ).prop( "disabled", true );
+                        $( "#userpasswordcnf" ).prop( "disabled", true );
+                        $( "#userpassword" ).prop( "disabled", true );
+                        $( "#usermail" ).prop( "disabled", true );
+                        $( "#username" ).prop( "disabled", true );
+                        $( "#lenderRole" ).prop( "disabled", true );
+                        $( "#borrowerRole" ).prop( "disabled", true );  
                     },
                     success: function(result) {
                         console.log(result);
                         
                         if(result['status']==200){
                             $('#joinBtnLoader').css('display','none');
-                            $('#joinSpinpayBtn').css('display','block');
+                            $('#otpSubmitDiv').css('display','block');
+
                         }
                         else if(result['status']==400){
                             errormsg(result['message']);
@@ -222,6 +230,9 @@
                 //     }
                 // });     
       }
+      });
+      $('#submitOtpBtn').click(function() {
+          
       });
     });
   </script>

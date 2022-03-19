@@ -48,12 +48,19 @@ class Mailes extends Controller
                         $otptable->otp = $otp;
                         $otptable->save();
                     }
-                    
-                    Mail::to($usermail)->send(new SendOtp($otp));
-                    return response()->json([
-                        'message' => 'otp sent.',
-                        'status'=> 200,
-                    ]);
+                    try{
+                        Mail::to($usermail)->send(new SendOtp($otp));
+                        return response()->json([
+                            'message' => 'otp sent.',
+                            'status'=> 200,
+                        ]);
+                    }
+                    catch(\Exception $e){
+                        return response()->json([
+                            'message' => 'Oops, we faced some technical issue, please try again after sometime',
+                            'status'=> 500,
+                        ]);
+                    }
                 }
                 catch(QueryException $e){
                     return response()->json([
