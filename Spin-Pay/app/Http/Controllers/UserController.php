@@ -232,13 +232,13 @@ class UserController extends Controller
                 'status' => 400
             ]);
         } else {
-            $size = $request->file('document_image')->getSize();
-            if ($size > 100000) {
-                return response()->json([
-                    'Upload Failed' => 'Photos must be less then 100kB',
-                    'status' => 400
-                ]);
-            }
+            // $size = $request->file('document_image')->getSize();
+            // if ($size > 100000) {
+            //     return response()->json([
+            //         'Upload Failed' => 'Photos must be less then 100kB',
+            //         'status' => 400
+            //     ]);
+            // }
             try {
                 $user = new UserDocument();
                 $user->user_id = $request['user_id'];
