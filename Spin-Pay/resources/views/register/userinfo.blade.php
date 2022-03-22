@@ -118,7 +118,7 @@
         role = 3;
         $('#borrowerRole').css('background-color','white');
         $('#lenderRole').css('background-color','#3498DB');
-    })
+    });
     $('#borrowerRole').on('click',function(){
         if(role==0){
             $('#errorDiv').css('display','none');
@@ -127,7 +127,7 @@
         $('#errorDiv').css('display','none');
         $('#lenderRole').css('background-color','white');
         $('#borrowerRole').css('background-color','#3498DB');
-    })
+    });
 
     // $('#verifyEmailBtn').on('click',function(){
     //   $('#verifyEmailBtn').css('display','none');
@@ -233,8 +233,109 @@
       });
       $('#submitOtpBtn').click(function() {
           
+          firstOtp = $("#first").val();
+        secondOtp = $("#second").val();
+        thirdOtp = $("#third").val();
+        fourthOtp = $("#fourth").val();
+        console.log(firstOtp+secondOtp);
+        if(firstOtp === "" || secondOtp === "" || thirdOtp === "" || fourthOtp === ""){
+            errormsg('enter valid otp');
+        }
+        else{
+            const finalOtp = firstOtp + secondOtp + thirdOtp + fourthOtp;
+            if(finalOtp==='0'){
+                errormsg('enter valid otp');
+            }
+            else{
+                var getOtp = {
+                    usermail: mailInput,
+                    userOtp: finalOtp
+                };
+                $.ajax({
+                    url:"/api/verifyotp",
+                    type:"post",
+                    dataType: "json",
+                    data: getOtp,
+                    beforeSend: function(){
+                        $('#submitOtpBtn').css('display','none');
+                        $('#submitOtpLoader').css('display','block');
+                    },
+                    success: function(result) {
+                        console.log(result);
+                        if(result['status']==200){
+                            $('#joinBtnLoader').css('display','none');
+                            $('#otpSubmitDiv').css('display','block');
+                        }
+                        else if(result['status']==400){
+                            errormsg(result['message']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');    
+                        }
+                        else if(result['status']==500){
+                            errormsg(result['message']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
+                        else if(result['status']==406){
+                            errormsg(result['message']['emailforotp']);
+                            $('#joinBtnLoader').css('display','none');
+                            $('#joinSpinpayBtn').css('display','block');
+                        }
+                    }
+                });
+            }
+        }
       });
+    //   $('#submitOtpBtn').click(function() {
+          
+    //     firstOtp = $("#first").val();
+    //     secondOtp = $("#second").val();
+    //     thirdOtp = $("#third").val();
+    //     fourthOtp = $("#fourth").val();
+    //     if(firstOtp === "" || secondOtp === "" || thirdOtp === "" || fourthOtp === ""){
+    //         errormsg('enter valid otp');
+    //     }
+    //     else{
+    //         const finalOtp = firstOtp + secondOtp + thirdOtp + fourthOtp;
+    //         if(finalOtp==='0'){
+    //             errormsg('enter valid otp');
+    //         }
+    //         else{
+    //             var getOtp = {
+                    // usermail: mailInput,
+    //                 userOtp: finalOtp
+    //             };
+    //             console.log(userInput1);
+    //             $.ajax({
+    //                 url: "/api/verifyotp",
+    //                 type: "POST",
+    //                 dataType: 'json',
+    //                 data: getOtp,
+    //                 beforeSend: function() {
+    //                     $('#submitOtpBtn').html('Verifying <div class="loader">/div>');
+    //                     $('#submitOtpBtn').attr("disabled", true);
+    //                 },
+    //                 success: function(result) {
+    //                     if (result == 1) {
+    //                         $('#userLoginDiv').css('display','none');
+    //                         $('#chngPassDiv').css('display','block');
+    //                         $('#closeBtn2').click();
+
+    //                     }
+    //                     if (result == 2) {
+    //                         $('#submitOtpBtn').html('Verify');
+    //                         $('#submitOtpBtn').attr("disabled", false);
+    //                         $('#errorText1').css('color', 'red');
+    //                         $('#errorText1').html('Incorrect OTP');
+    //                     }
+                        
+    //         }
+    //     }
+         
+    //   });
     });
+   
+  
   </script>
 
 @include('layouts.footer')
