@@ -90,5 +90,5 @@
       </div>
 </section>
 
-
+@include('layouts.jsfiles')
 @include('layouts.footer')
