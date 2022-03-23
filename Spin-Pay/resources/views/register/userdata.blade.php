@@ -115,6 +115,21 @@
         function setDiv(divs) {
             $(divs).css('display', 'none');
         }
+
+        function image(){
+            let formdata = new FormData("#profileImage");
+            $(ajax{
+                url:"http://localhost:8000/api/userdata/1",
+                method:"post",
+                data:formdata,
+                dataType:"json",
+                success:function(result){
+                    
+                }
+            });
+
+        }
+
         $('#submitUserData').click(function() {
             $("#address").val() == "" ? errormsg("#errorAddress", 'address can not be empty') : setDiv(
                 "#errorAddress");
@@ -129,8 +144,6 @@
                 setDiv("#errorGender");
             $("#dob").val() == "" ? errormsg("#errorDob", 'Date of birth can not be empty') : setDiv(
                 "#errorDob")
-            $("#image").val() == "" ? errormsg("#errorImage", 'Image can not be empty') : setDiv(
-                "#errorImage");
             var getData = {
                 address_line: $('#address').val(),
                 city: $('#city').val(),
@@ -138,8 +151,7 @@
                 gender: $("#gender").val(),
                 age: $('#age').val(),
                 pincode: $('#pincode').val(),
-                dob: $('#dob').val(),
-                image: $('#image').val()
+                dob: $('#dob').val()
             };
             // console.log(getData);
             $.ajax({
@@ -157,5 +169,9 @@
                 }
             });
         });
+
     });
+
+
+
 </script>
