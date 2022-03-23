@@ -16,7 +16,12 @@ class Mailes extends Controller
     public function sendotp(Request $request)
     {   
         $validate=Validator::make($request->all(),[
-        'emailforotp'=> 'required|email',
+        'name'=>'required',
+        'email'=>'required|email',
+        'phone'=>'required',
+        'password'=>'required',
+        "password_confirmation"=>"required|same:password",
+        'role_id'=>'required'
     ]);
 
     if($validate->fails()){
@@ -34,7 +39,7 @@ class Mailes extends Controller
                 ]);
             }
             else{
-                $usermail = $request['emailforotp'];
+                $usermail = $request['email'];
                 $otp = random_int(1111,9999);
                 try{
                     $otptable = new OtpVerification();
@@ -103,7 +108,7 @@ class Mailes extends Controller
                     $otpSentTime = $isPresent->otp_sent_time;
                     $timeNow = \Carbon\Carbon::now();
                     $diffInTime = $timeNow->diffInMinutes($otpSentTime);
-                    if($diffInTime > 10){
+                    if($diffInTime > 1){
                         return response()->json([
                             'message' => 'otp expired, please try again',
                             "status" => 400

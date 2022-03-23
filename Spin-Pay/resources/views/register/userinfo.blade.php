@@ -162,14 +162,11 @@
                     password_confirmation: password_confirmationInput,
                     role_id: role
                 };
-                const emailData={
-                    emailforotp : mailInput,
-                };
                 $.ajax({
                     url:"/api/sendotp",
                     type:"post",
                     dataType: "json",
-                    data: emailData,
+                    data: getData,
                     beforeSend: function(){
                         $('#joinSpinpayBtn').css('display','none');
                         $('#joinBtnLoader').css('display','block');
