@@ -110,8 +110,3 @@ body{
 .col{
     margin: 10px;
 }
-
-.error-message{
-    color: red;
-    background-color: aliceblue;
-}
