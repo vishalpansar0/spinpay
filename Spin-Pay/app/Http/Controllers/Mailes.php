@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\OtpVerification;
 use Exception;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\UserController;
 
 class Mailes extends Controller
 {
@@ -18,7 +19,7 @@ class Mailes extends Controller
         $validate=Validator::make($request->all(),[
         'name'=>'required',
         'email'=>'required|email',
-        'phone'=>'required',
+        'phone'=>'required|numeric',
         'password'=>'required',
         "password_confirmation"=>"required|same:password",
         'role_id'=>'required'
@@ -100,7 +101,7 @@ class Mailes extends Controller
         else{
             try{
                 
-                $usermail = $request['usermail'];
+                $usermail = $request['email'];
                 $userOtp = $request['userOtp'];
                 $otpVerTbl = new OtpVerification();
                 if($isPresent = $otpVerTbl->where('email',$usermail)->get()->first()){
@@ -116,10 +117,9 @@ class Mailes extends Controller
                     }
                     else{
                         if($otpFrmTbl==$userOtp){
-                            return response()->json([
-                                'message' => 'success',
-                                "status" => 200
-                            ]);
+                            $userControllerObj = new UserController();
+                            $responseFromStoreUserData = $userControllerObj->store_users($request);
+                            return $responseFromStoreUserData;
                         }
                         else{
                             return response()->json([
