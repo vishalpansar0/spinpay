@@ -8,16 +8,23 @@ use App\Models\Users;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Mail;
 use App\Models\OtpVerification;
+use Exception;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\UserController;
 
 class Mailes extends Controller
 {
     public function sendotp(Request $request)
     {   
         $validate=Validator::make($request->all(),[
-        'emailforotp'=> 'required|email',
+        'name'=>'required',
+        'email'=>'required|email',
+        'phone'=>'required|numeric',
+        'password'=>'required',
+        "password_confirmation"=>"required|same:password",
+        'role_id'=>'required'
     ]);
-    
+
     if($validate->fails()){
         return response()->json([
             'message' => $validate->errors(),
@@ -33,7 +40,7 @@ class Mailes extends Controller
                 ]);
             }
             else{
-                $usermail = $request['emailforotp'];
+                $usermail = $request['email'];
                 $otp = random_int(1111,9999);
                 try{
                     $otptable = new OtpVerification();
@@ -48,12 +55,19 @@ class Mailes extends Controller
                         $otptable->otp = $otp;
                         $otptable->save();
                     }
-                    
-                    Mail::to($usermail)->send(new SendOtp($otp));
-                    return response()->json([
-                        'message' => 'otp sent.',
-                        'status'=> 200,
-                    ]);
+                    try{
+                        Mail::to($usermail)->send(new SendOtp($otp));
+                        return response()->json([
+                            'message' => 'otp sent.',
+                            'status'=> 200,
+                        ]);
+                    }
+                    catch(\Exception $e){
+                        return response()->json([
+                            'message' => 'Oops, we faced some technical issue, please try again after sometime',
+                            'status'=> 500,
+                        ]);
+                    }
                 }
                 catch(QueryException $e){
                     return response()->json([
@@ -72,5 +86,66 @@ class Mailes extends Controller
         }
            
     }
+    }
+
+    public function verifyotp(Request $request){
+        $validate=Validator::make($request->all(),[
+            'userOtp'=> 'required|numeric',
+        ]);
+        
+        if($validate->fails()){
+            return response()->json([
+                'message' => $validate->errors(),
+                'status' => 406,
+            ]); }
+        else{
+            try{
+                
+                $usermail = $request['email'];
+                $userOtp = $request['userOtp'];
+                $otpVerTbl = new OtpVerification();
+                if($isPresent = $otpVerTbl->where('email',$usermail)->get()->first()){
+                    $otpFrmTbl = $isPresent->otp;
+                    $otpSentTime = $isPresent->otp_sent_time;
+                    $timeNow = \Carbon\Carbon::now();
+                    $diffInTime = $timeNow->diffInMinutes($otpSentTime);
+                    if($diffInTime > 1){
+                        return response()->json([
+                            'message' => 'otp expired, please try again',
+                            "status" => 400
+                        ]);
+                    }
+                    else{
+                        if($otpFrmTbl==$userOtp){
+                            $userControllerObj = new UserController();
+                            $responseFromStoreUserData = $userControllerObj->store_users($request);
+                            return $responseFromStoreUserData;
+                        }
+                        else{
+                            return response()->json([
+                                'message' => 'wrong otp, please enter correct otp',
+                                "status" => 400
+                            ]);
+                        }
+                    }
+                    
+                    
+                }
+                else{
+                    return response()->json([
+                        'message' => 'Oops , something went wrong, try after sometime.',
+                        "status" => 400
+                    ]);
+                }
+            }
+            catch(Exception $e){
+                return response()->json([
+                    'message' => 'Oops , something went wrong, try after sometime.',
+                    "status" => 500
+                ]);
+            }
+
+
+        }
     }
 }

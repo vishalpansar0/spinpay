@@ -4,7 +4,7 @@
   <title>SpinPay | P2P Lending Platform</title>
 @endpush
 <div class="register-container-body">
-<div class="navbar" id="nav" style="height:12%">
+<div class="navbar" style="height:12%">
     <div class="container">
       <div class="logo-container">
          SpinPay
@@ -65,29 +65,30 @@
                     </div>
                     
                     </div>
-                    <div class="row mt-4" style="display:none">
+                    <div class="row mt-4" style="display:none" id="otpSubmitDiv">
                         <div class="col-md-6">
                             <div class="inputDiv">
                                 <div class="row mt-4">                      
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="first" style="color:white"
                                             onkeyup="movetoNext(this, 'second',1)" type="text" maxlength="1">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="second" style="color:white" type="text"
                                             onkeyup="movetoNext(this, 'third',2)" maxlength="1">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="third" style="color:white" type="text"
                                             onkeyup="movetoNext(this, 'fourth',3)" maxlength="1">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-3">
                                         <input class="text-center" id="fourth" style="color:white" type="text"
                                             onkeyup="movetoNext(this, 'fourth',4)" maxlength="1">
                                     </div>
                                                                
                                 </div>
-                                <small class="form-text text-muted">an OTP has been sent to your email, enter here.</small>
+                                <small class="form-text text-muted">an OTP has been sent to your email, enter here.</small><br>
+                                <small class="form-text text-muted">if you have entered wrong email, please refresh and write again.</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -117,7 +118,7 @@
         role = 3;
         $('#borrowerRole').css('background-color','white');
         $('#lenderRole').css('background-color','#3498DB');
-    })
+    });
     $('#borrowerRole').on('click',function(){
         if(role==0){
             $('#errorDiv').css('display','none');
@@ -126,7 +127,7 @@
         $('#errorDiv').css('display','none');
         $('#lenderRole').css('background-color','white');
         $('#borrowerRole').css('background-color','#3498DB');
-    })
+    });
 
     // $('#verifyEmailBtn').on('click',function(){
     //   $('#verifyEmailBtn').css('display','none');
@@ -153,7 +154,7 @@
           if(passwordInput!=password_confirmationInput){
             errormsg('password and confirm password should be matched.');
           }else{
-                var getData = {
+                const getData = {
                     name: nameInput,
                     email: mailInput,
                     phone: phoneInput,
@@ -161,18 +162,21 @@
                     password_confirmation: password_confirmationInput,
                     role_id: role
                 };
-                var emailData={
-                    emailforotp : mailInput,
-                };
                 $.ajax({
                     url:"/api/sendotp",
                     type:"post",
                     dataType: "json",
-                    data: emailData,
+                    data: getData,
                     beforeSend: function(){
                         $('#joinSpinpayBtn').css('display','none');
                         $('#joinBtnLoader').css('display','block');
-                        
+                        $( "#userphone" ).prop( "disabled", true );
+                        $( "#userpasswordcnf" ).prop( "disabled", true );
+                        $( "#userpassword" ).prop( "disabled", true );
+                        $( "#usermail" ).prop( "disabled", true );
+                        $( "#username" ).prop( "disabled", true );
+                        $( "#lenderRole" ).prop( "disabled", true );
+                        $( "#borrowerRole" ).prop( "disabled", true );  
                     },
                     success: function(result) {
                         console.log(result);
@@ -180,21 +184,44 @@
                         if(result['status']==200){
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
+                            $('#otpSubmitDiv').css('display','block');
+
                         }
                         else if(result['status']==400){
                             errormsg(result['message']);
+                            $( "#userphone" ).prop( "disabled", false );
+                            $( "#userpasswordcnf" ).prop( "disabled", false );
+                            $( "#userpassword" ).prop( "disabled", false );
+                            $( "#usermail" ).prop( "disabled", false );
+                            $( "#username" ).prop( "disabled", false );
+                            $( "#lenderRole" ).prop( "disabled", false );
+                            $( "#borrowerRole" ).prop( "disabled", false );
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
                         }
                         else if(result['status']==500){
                             errormsg(result['message']);
+                            $( "#userphone" ).prop( "disabled", false );
+                            $( "#userpasswordcnf" ).prop( "disabled", false );
+                            $( "#userpassword" ).prop( "disabled", false );
+                            $( "#usermail" ).prop( "disabled", false );
+                            $( "#username" ).prop( "disabled", false );
+                            $( "#lenderRole" ).prop( "disabled", false );
+                            $( "#borrowerRole" ).prop( "disabled", false );
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
                         }
                         else if(result['status']==406){
-                            errormsg(result['message']['emailforotp']);
+                            $( "#userphone" ).prop( "disabled", false );
+                            $( "#userpasswordcnf" ).prop( "disabled", false );
+                            $( "#userpassword" ).prop( "disabled", false );
+                            $( "#usermail" ).prop( "disabled", false );
+                            $( "#username" ).prop( "disabled", false );
+                            $( "#lenderRole" ).prop( "disabled", false );
+                            $( "#borrowerRole" ).prop( "disabled", false );
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
+                            errormsg(result['message']['phone']);
                         }
                     }
                 });  
@@ -223,7 +250,110 @@
                 // });     
       }
       });
+      $('#submitOtpBtn').click(function() {
+          
+        firstOtp = $("#first").val();
+        secondOtp = $("#second").val();
+        thirdOtp = $("#third").val();
+        fourthOtp = $("#fourth").val();
+        console.log(firstOtp+secondOtp);
+        if(firstOtp === "" || secondOtp === "" || thirdOtp === "" || fourthOtp === ""){
+            errormsg('enter valid otp');
+        }
+        else{
+            const finalOtp = firstOtp + secondOtp + thirdOtp + fourthOtp;
+            if(finalOtp==='0'){
+                errormsg('enter valid otp');
+            }
+            else{
+                var getOtp = {
+                    userOtp: finalOtp,
+                    name: nameInput,
+                    email: mailInput,
+                    phone: phoneInput,
+                    password: passwordInput,
+                    password_confirmation: password_confirmationInput,
+                    role_id: role
+                };
+                $.ajax({
+                    url:"/api/verifyotp",
+                    type:"post",
+                    dataType: "json",
+                    data: getOtp,
+                    beforeSend: function(){
+                        $('#submitOtpBtn').css('display','none');
+                        $('#submitOtpLoader').css('display','block');
+                    },
+                    success: function(result) {
+                        console.log(result);
+                        if(result['status']==200){
+                            
+                        }
+                        else if(result['status']==400){
+                            errormsg(result['message']);
+                            $('#submitOtpLoader').css('display','none');  
+                            $('#submitOtpBtn').css('display','block');
+                        }
+                        else if(result['status']==500){
+                            errormsg(result['message']);
+                            $('#submitOtpLoader').css('display','none');  
+                            $('#submitOtpBtn').css('display','block');
+                        }
+                    }
+                });
+            }
+        }
+      });
+    //   $('#submitOtpBtn').click(function() {
+          
+    //     firstOtp = $("#first").val();
+    //     secondOtp = $("#second").val();
+    //     thirdOtp = $("#third").val();
+    //     fourthOtp = $("#fourth").val();
+    //     if(firstOtp === "" || secondOtp === "" || thirdOtp === "" || fourthOtp === ""){
+    //         errormsg('enter valid otp');
+    //     }
+    //     else{
+    //         const finalOtp = firstOtp + secondOtp + thirdOtp + fourthOtp;
+    //         if(finalOtp==='0'){
+    //             errormsg('enter valid otp');
+    //         }
+    //         else{
+    //             var getOtp = {
+                    // usermail: mailInput,
+    //                 userOtp: finalOtp
+    //             };
+    //             console.log(userInput1);
+    //             $.ajax({
+    //                 url: "/api/verifyotp",
+    //                 type: "POST",
+    //                 dataType: 'json',
+    //                 data: getOtp,
+    //                 beforeSend: function() {
+    //                     $('#submitOtpBtn').html('Verifying <div class="loader">/div>');
+    //                     $('#submitOtpBtn').attr("disabled", true);
+    //                 },
+    //                 success: function(result) {
+    //                     if (result == 1) {
+    //                         $('#userLoginDiv').css('display','none');
+    //                         $('#chngPassDiv').css('display','block');
+    //                         $('#closeBtn2').click();
+
+    //                     }
+    //                     if (result == 2) {
+    //                         $('#submitOtpBtn').html('Verify');
+    //                         $('#submitOtpBtn').attr("disabled", false);
+    //                         $('#errorText1').css('color', 'red');
+    //                         $('#errorText1').html('Incorrect OTP');
+    //                     }
+                        
+    //         }
+    //     }
+         
+    //   });
     });
+   
+  
   </script>
 
 @include('layouts.footer')

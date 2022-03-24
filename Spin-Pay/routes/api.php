@@ -24,6 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // for send otp to users mail
 Route::post('sendotp',[Mailes::class,"sendotp"]);
 
+//for verify otp entered by user
+Route::post('/verifyotp',[Mailes::class,"verifyotp"]);
+
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"]);
 Route::post('/userdata', [UserController::class, 'userdata']);

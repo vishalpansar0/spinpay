@@ -13,3 +13,7 @@
    
    wow.init();
    </script>
+
+
+{{-- UserDoc Script File --}}
+<script src="{{url('js/userdoc.js')}}"></script>
