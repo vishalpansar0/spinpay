@@ -27,7 +27,7 @@ Route::get('/register/userinfo', function () {
 Route::get('/register/userdata/{id}',function($id){
     $i = compact('id');
     return view('register.userdata')->with($i);
-})->name('userdata');
+})->name('userdata'); 
 
 Route::get('/register/userdocuments',function(){
     return view('register.userdoc');
