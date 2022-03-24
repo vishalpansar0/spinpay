@@ -1,34 +1,34 @@
 
-// const aadharFileInput = document.getElementById('aadharfile');
-// aadharFileInput.onchange = () => {
-//     const selectedFile = aadharFileInput.files[0];
-//     $('#hh').html(selectedFile['name']);
-// }
-// const panFileInput = document.getElementById('panfile');
-// panFileInput.onchange = () => {
-//     const selectedFile = panFileInput.files[0];
-//     $('#hh').html(selectedFile['name']);
-// }
-// const payslipFileInput1 = document.getElementById('payslipfile1');
-// payslipFileInput1.onchange = () => {
-//     const selectedFile = payslipFileInput1.files[0];
-//     $('#hh').html(selectedFile['name']);
-// }
-// const payslipFileInput2 = document.getElementById('payslipfile2');
-// payslipFileInput2.onchange = () => {
-//     const selectedFile = payslipFileInput2.files[0];
-//     $('#hh').html(selectedFile['name']);
-// }
-// const payslipFileInput3 = document.getElementById('payslipfile3');
-// payslipFileInput3.onchange = () => {
-//     const selectedFile = payslipFileInput3.files[0];
-//     $('#hh').html(selectedFile['name']);
-// }
-// const bankstatementFileInput = document.getElementById('bankstatementfile');
-// bankstatementFileInput.onchange = () => {
-//     const selectedFile = bankstatementFileInput.files[0];
-//     $('#hh').html(selectedFile['name']);
-// }
+const aadharFileInput = document.getElementById('aadharfile');
+aadharFileInput.onchange = () => {
+    const selectedFile = aadharFileInput.files[0];
+    $('#hh').html(selectedFile['name']);
+}
+const panFileInput = document.getElementById('panfile');
+panFileInput.onchange = () => {
+    const selectedFile = panFileInput.files[0];
+    $('#hh').html(selectedFile['name']);
+}
+const payslipFileInput1 = document.getElementById('payslipfile1');
+payslipFileInput1.onchange = () => {
+    const selectedFile = payslipFileInput1.files[0];
+    $('#hh').html(selectedFile['name']);
+}
+const payslipFileInput2 = document.getElementById('payslipfile2');
+payslipFileInput2.onchange = () => {
+    const selectedFile = payslipFileInput2.files[0];
+    $('#hh').html(selectedFile['name']);
+}
+const payslipFileInput3 = document.getElementById('payslipfile3');
+payslipFileInput3.onchange = () => {
+    const selectedFile = payslipFileInput3.files[0];
+    $('#hh').html(selectedFile['name']);
+}
+const bankstatementFileInput = document.getElementById('bankstatementfile');
+bankstatementFileInput.onchange = () => {
+    const selectedFile = bankstatementFileInput.files[0];
+    $('#hh').html(selectedFile['name']);
+}
 
 
 $(document).ready(function () {
@@ -62,7 +62,7 @@ $(document).ready(function () {
         $('#aadharfile').get(0).files.length == 0 ? errormsg('#erroraadharimage', 'Please Upload a file') : hideerror('#erroraadharimage');
 
         let aadhardata = new FormData(document.getElementById('aadharForm'));
-        aadhardata.append('user_id', 1);
+        aadhardata.append('user_id', 3);
         aadhardata.append('master_document_id', 1);
         $.ajax({
             url: "http://localhost:8000/api/aadhar",
@@ -72,7 +72,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (result) {
-                // console.log(result);
+                console.log(result);
                 console.log(result['status']);
                 if (result['status'] == 200) {
                     hideDiv('#aadharUploadMainDiv', '#panUploadMainDiv');

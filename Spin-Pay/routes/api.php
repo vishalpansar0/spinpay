@@ -29,7 +29,7 @@ Route::post('/verifyotp',[Mailes::class,"verifyotp"]);
 
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"]);
-Route::post('/userdata/{id}', [UserController::class, 'userdata']);
+Route::post('/userdata', [UserController::class, 'userdata']);
 
 
 Route::post('/aadhar', [UserController::class, 'aadhar']);

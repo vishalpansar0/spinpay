@@ -27,7 +27,7 @@ class UserController extends Controller
         if($validate->fails()){
             $flag=false;
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 "status" => 400
             ]);
         }
@@ -72,9 +72,10 @@ class UserController extends Controller
     }
 
 
-    public function userdata(Request $request, $id)
+    public function userdata(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id'=>'required',
             'address_line' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -94,13 +95,13 @@ class UserController extends Controller
             $size = $request->file('image')->getSize();
             if ($size > 100000) {
                 return response()->json([
-                    'Upload Failed' => 'Photos must be less then 100kB',
+                    'message' => 'Photos must be less then 100kB',
                     'status' => 400
                 ]);
             }
             try {
                 $user = new UserData();
-                $user->user_id = $request['id'];
+                $user->user_id = $request['user_id'];
                 $user->address_line = $request['address_line'];
                 $user->city = $request['city'];
                 $user->state = $request['state'];
@@ -124,7 +125,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'Upload Failed' => 'Server Error Please try later',
+                    'message ' => 'Server Error Please try later',
                     'status' => 400
                 ]);
             }
@@ -143,7 +144,7 @@ class UserController extends Controller
         if($validate->fails()){
             $flag=false;
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 "status" => 400
             ]);
         }
@@ -208,7 +209,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 'status' => 400,
             ]);
         } else {
@@ -251,7 +252,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 'status' => 400,
             ]);
         } else {
@@ -300,13 +301,13 @@ class UserController extends Controller
                 'status' => 400
             ]);
         } else {
-            // $size = $request->file('document_image')->getSize();
-            // if ($size > 100000) {
-            //     return response()->json([
-            //         'Upload Failed' => 'Photos must be less then 100kB',
-            //         'status' => 400
-            //     ]);
-            // }
+            $size = $request->file('document_image')->getSize();
+            if ($size > 100000) {
+                return response()->json([
+                    'message' => 'Photos must be less then 100kB',
+                    'status' => 400
+                ]);
+            }
             try {
                 $user = new UserDocument();
                 $user->user_id = $request['user_id'];
@@ -328,7 +329,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'Upload Failed' => 'Server Error Please try later',
+                    'message' => 'Server Error Please try later',
                     'status' => 400
                 ]);
             }
