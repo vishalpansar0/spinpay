@@ -24,8 +24,9 @@ Route::get('/register/userinfo', function () {
     return view('register.userinfo');
 })->name('registerBtn');
 
-Route::get('/register/userdata/',function(){
-    return view('register.userdata');
+Route::get('/register/userdata/{id}',function($id){
+    $i = compact('id');
+    return view('register.userdata')->with($i);
 })->name('userdata');
 
 Route::get('/register/userdocuments',function(){

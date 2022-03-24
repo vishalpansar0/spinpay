@@ -10,7 +10,7 @@
     <div class="navbar" style="height:12%">
         <div class="container">
             <div class="logo-container">
-                SpinPay
+                SpinPay{{ $id }}
             </div>
             <div class="menu-container">
                 <h4><a href="/signin">login</a></h4>
@@ -114,20 +114,6 @@
 
         function setDiv(divs) {
             $(divs).css('display', 'none');
-        }
-
-        function image(){
-            let formdata = new FormData("#profileImage");
-            $(ajax{
-                url:"http://localhost:8000/api/userdata/1",
-                method:"post",
-                data:formdata,
-                dataType:"json",
-                success:function(result){
-                    
-                }
-            });
-
         }
 
         $('#submitUserData').click(function() {
