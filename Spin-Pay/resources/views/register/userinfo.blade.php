@@ -10,7 +10,7 @@
          SpinPay
       </div>
       <div class="menu-container">
-        <h4><a href="/signin">login</a></h4>
+        <h4><a href="#">login</a></h4>
      </div>
     </div>
 </div>
@@ -188,18 +188,39 @@
                         }
                         else if(result['status']==400){
                             errormsg(result['message']);
+                            $( "#userphone" ).prop( "disabled", false );
+                            $( "#userpasswordcnf" ).prop( "disabled", false );
+                            $( "#userpassword" ).prop( "disabled", false );
+                            $( "#usermail" ).prop( "disabled", false );
+                            $( "#username" ).prop( "disabled", false );
+                            $( "#lenderRole" ).prop( "disabled", false );
+                            $( "#borrowerRole" ).prop( "disabled", false );
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
                         }
                         else if(result['status']==500){
                             errormsg(result['message']);
+                            $( "#userphone" ).prop( "disabled", false );
+                            $( "#userpasswordcnf" ).prop( "disabled", false );
+                            $( "#userpassword" ).prop( "disabled", false );
+                            $( "#usermail" ).prop( "disabled", false );
+                            $( "#username" ).prop( "disabled", false );
+                            $( "#lenderRole" ).prop( "disabled", false );
+                            $( "#borrowerRole" ).prop( "disabled", false );
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
                         }
                         else if(result['status']==406){
-                            errormsg(result['message']['emailforotp']);
+                            $( "#userphone" ).prop( "disabled", false );
+                            $( "#userpasswordcnf" ).prop( "disabled", false );
+                            $( "#userpassword" ).prop( "disabled", false );
+                            $( "#usermail" ).prop( "disabled", false );
+                            $( "#username" ).prop( "disabled", false );
+                            $( "#lenderRole" ).prop( "disabled", false );
+                            $( "#borrowerRole" ).prop( "disabled", false );
                             $('#joinBtnLoader').css('display','none');
                             $('#joinSpinpayBtn').css('display','block');
+                            errormsg(result['message']['phone']);
                         }
                     }
                 });  
@@ -230,7 +251,7 @@
       });
       $('#submitOtpBtn').click(function() {
           
-          firstOtp = $("#first").val();
+        firstOtp = $("#first").val();
         secondOtp = $("#second").val();
         thirdOtp = $("#third").val();
         fourthOtp = $("#fourth").val();
@@ -245,8 +266,13 @@
             }
             else{
                 var getOtp = {
-                    usermail: mailInput,
-                    userOtp: finalOtp
+                    userOtp: finalOtp,
+                    name: nameInput,
+                    email: mailInput,
+                    phone: phoneInput,
+                    password: passwordInput,
+                    password_confirmation: password_confirmationInput,
+                    role_id: role
                 };
                 $.ajax({
                     url:"/api/verifyotp",
@@ -260,23 +286,17 @@
                     success: function(result) {
                         console.log(result);
                         if(result['status']==200){
-                            $('#joinBtnLoader').css('display','none');
-                            $('#otpSubmitDiv').css('display','block');
+                            
                         }
                         else if(result['status']==400){
                             errormsg(result['message']);
-                            $('#joinBtnLoader').css('display','none');
-                            $('#joinSpinpayBtn').css('display','block');    
+                            $('#submitOtpLoader').css('display','none');  
+                            $('#submitOtpBtn').css('display','block');
                         }
                         else if(result['status']==500){
                             errormsg(result['message']);
-                            $('#joinBtnLoader').css('display','none');
-                            $('#joinSpinpayBtn').css('display','block');
-                        }
-                        else if(result['status']==406){
-                            errormsg(result['message']['emailforotp']);
-                            $('#joinBtnLoader').css('display','none');
-                            $('#joinSpinpayBtn').css('display','block');
+                            $('#submitOtpLoader').css('display','none');  
+                            $('#submitOtpBtn').css('display','block');
                         }
                     }
                 });

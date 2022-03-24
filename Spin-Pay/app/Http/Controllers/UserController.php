@@ -13,31 +13,13 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function store_users(Request $request){
-        $validate=Validator::make($request->all(),[
-            'name'=>'required',
-            'email'=>'required',
-            'phone'=>'required',
-            'password'=>'required',
-            "password_confirmation"=>"required|same:password",
-            'role_id'=>'required'
-        ]);
-
+    public function store_users($request){
         $users=new Users();
-        if($validate->fails()){
-            $flag=false;
-            return response()->json([
-                'message' => $validate->errors(),
-                "status" => 400
-            ]);
-        }
-
-        
         try{
             if($users->where('email',$request['email'])->get()->first()){
                 return response()->json([
-                    'msg' => 'this email is already registered with us, please login.',
-                    'code'=> 400,
+                    'message' => 'this email is already registered with us, please login.',
+                    'status'=> 400,
                 ]);
             }
             else{
@@ -50,7 +32,8 @@ class UserController extends Controller
                 if($ifsaved == 1){
                     return response()->json([
                         'message' => 'success',
-                        "status" => 200
+                        "status" => 200,
+                        "id" => $users->id,
                     ]);
                 }
                 else{
