@@ -98,7 +98,8 @@ class UserController extends Controller
                 if ($isSaved == 1) {
                     return response()->json([
                         'message' => 'success',
-                        'status' => 200
+                        'status' => 200,
+                        'id' => $user->id,
                     ]);
                 } else {
                     return response()->json([

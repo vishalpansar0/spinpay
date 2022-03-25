@@ -32,6 +32,8 @@ bankstatementFileInput.onchange = () => {
 
 $(document).ready(function() {
 
+    // getting user id form hidden input
+    const user_id = $('#userid_input').val();
 
 
     // error function
@@ -61,7 +63,7 @@ $(document).ready(function() {
         $('#aadharfile').get(0).files.length == 0 ? errormsg('#erroraadharimage', 'Please Upload a file') : hideerror('#erroraadharimage');
 
         let aadhardata = new FormData(document.getElementById('aadharForm'));
-        aadhardata.append('user_id', 1);
+        aadhardata.append('user_id', user_id);
         aadhardata.append('master_document_id', 1);
         $.ajax({
             url: "http://localhost:8000/api/aadhar",
@@ -90,7 +92,7 @@ $(document).ready(function() {
         $("#pannum").val() == "" ? errormsg('#errorpannum', 'this field cannot be blank') : hideerror('#errorpannum');
         $('#panfile').get(0).files.length == 0 ? errormsg('#errorpanimage', 'Please Upload a file') : hideerror('#errorpanimage');
         let pandata = new FormData(document.getElementById('panForm'));
-        pandata.append('user_id', 1);
+        pandata.append('user_id', user_id);
         pandata.append('master_document_id', 2);
         $.ajax({
             url: "http://localhost:8000/api/pancard",
@@ -117,7 +119,7 @@ $(document).ready(function() {
         event.preventDefault();
         $('#payslipfile1').get(0).files.length == 0 ? errormsg('#errorpayslip1', 'Please Upload a file') : hideerror('#errorpayslip1');
         let payslipdata = new FormData(document.getElementById('payslipForm1'));
-        payslipdata.append('user_id', 1);
+        payslipdata.append('user_id', user_id);
         payslipdata.append('master_document_id', 3);
         payslipdata.append('document_number', 31);
         $.ajax({
@@ -141,7 +143,7 @@ $(document).ready(function() {
         event.preventDefault();
         $('#payslipfile2').get(0).files.length == 0 ? errormsg('#errorpayslip2', 'Please Upload a file') : hideerror('#errorpayslip2');
         let payslipdata = new FormData(document.getElementById('payslipForm2'));
-        payslipdata.append('user_id', 1);
+        payslipdata.append('user_id', user_id);
         payslipdata.append('master_document_id', 3);
         payslipdata.append('document_number', 32);
         $.ajax({
@@ -165,7 +167,7 @@ $(document).ready(function() {
         event.preventDefault();
         $('#payslipfile3').get(0).files.length == 0 ? errormsg('#errorpayslip3', 'Please Upload a file') : hideerror('#errorpayslip3');
         let payslipdata = new FormData(document.getElementById('payslipForm3'));
-        payslipdata.append('user_id', 1);
+        payslipdata.append('user_id', user_id);
         payslipdata.append('master_document_id', 3);
         payslipdata.append('document_number', 33);
 
@@ -189,17 +191,12 @@ $(document).ready(function() {
 
 
 
-
-
-
-
-
     // Bank Statement Document Upload
     $('#bankstatementUploadBtn').click(function(event) {
         event.preventDefault();
         $('#bankstatementfile').get(0).files.length == 0 ? errormsg('#errorbankstatement', 'Please Upload a file') : hideerror('#errorbankstatement');
         let bankstatementdata = new FormData(document.getElementById('bankstatementForm'));
-        bankstatementdata.append('user_id', 1);
+        bankstatementdata.append('user_id', user_id);
         bankstatementdata.append('master_document_id', 4);
         bankstatementdata.append('document_number', 41);
         $.ajax({
