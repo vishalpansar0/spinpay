@@ -109,7 +109,7 @@ class Mailes extends Controller
                     $otpSentTime = $isPresent->otp_sent_time;
                     $timeNow = \Carbon\Carbon::now();
                     $diffInTime = $timeNow->diffInMinutes($otpSentTime);
-                    if($diffInTime > 1){
+                    if($diffInTime > 10){
                         return response()->json([
                             'message' => 'otp expired, please try again',
                             "status" => 400
