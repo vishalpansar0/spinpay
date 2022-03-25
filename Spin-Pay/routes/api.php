@@ -34,7 +34,7 @@ Route::post('/userdata', [UserController::class, 'userdata']);
 
 Route::post('/aadhar', [UserController::class, 'aadhar']);
 
-//for to store pancard details
+//for to store pancard push
 Route::post('pancard',[UserController::class, 'pancard']);
 
 // to store payslip details
