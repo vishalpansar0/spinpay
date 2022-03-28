@@ -1,4 +1,3 @@
-
 const aadharFileInput = document.getElementById('aadharfile');
 aadharFileInput.onchange = () => {
     const selectedFile = aadharFileInput.files[0];
@@ -31,8 +30,10 @@ bankstatementFileInput.onchange = () => {
 }
 
 
-$(document).ready(function () {
+$(document).ready(function() {
 
+    // getting user id form hidden input
+    const user_id = $('#userid_input').val();
 
 
     // error function
@@ -56,13 +57,13 @@ $(document).ready(function () {
 
 
     // Aadhar Document Upload
-    $('#aadharUploadBtn').click(function (event) {
+    $('#aadharUploadBtn').click(function(event) {
         event.preventDefault();
         $("#aadharnum").val() == "" ? errormsg('#erroraadharnum', 'this field cannot be blank') : hideerror('#erroraadharnum');
         $('#aadharfile').get(0).files.length == 0 ? errormsg('#erroraadharimage', 'Please Upload a file') : hideerror('#erroraadharimage');
 
         let aadhardata = new FormData(document.getElementById('aadharForm'));
-        aadhardata.append('user_id', 3);
+        aadhardata.append('user_id', user_id);
         aadhardata.append('master_document_id', 1);
         $.ajax({
             url: "http://localhost:8000/api/aadhar",
@@ -71,13 +72,12 @@ $(document).ready(function () {
             data: aadhardata,
             processData: false,
             contentType: false,
-            success: function (result) {
-                console.log(result);
+            success: function(result) {
+                // console.log(result);
                 console.log(result['status']);
                 if (result['status'] == 200) {
                     hideDiv('#aadharUploadMainDiv', '#panUploadMainDiv');
-                }
-                else {
+                } else {
                     errormsg('#error', result['message'])
                 }
             }
@@ -87,12 +87,12 @@ $(document).ready(function () {
 
 
     // Pan Document Upload
-    $('#panUploadBtn').click(function (event) {
+    $('#panUploadBtn').click(function(event) {
         event.preventDefault();
         $("#pannum").val() == "" ? errormsg('#errorpannum', 'this field cannot be blank') : hideerror('#errorpannum');
         $('#panfile').get(0).files.length == 0 ? errormsg('#errorpanimage', 'Please Upload a file') : hideerror('#errorpanimage');
         let pandata = new FormData(document.getElementById('panForm'));
-        pandata.append('user_id', 1);
+        pandata.append('user_id', user_id);
         pandata.append('master_document_id', 2);
         $.ajax({
             url: "http://localhost:8000/api/pancard",
@@ -101,12 +101,11 @@ $(document).ready(function () {
             data: pandata,
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function(result) {
                 console.log(result);
                 if (result['status'] == 200) {
                     hideDiv('#panUploadMainDiv', '#payslipUploadMainDiv');
-                }
-                else {
+                } else {
                     errormsg('#error', result['message'])
                 }
             }
@@ -116,11 +115,11 @@ $(document).ready(function () {
 
 
     // PaySlip Document Upload
-    $('#payslipUploadBtn1').click(function (event) {
+    $('#payslipUploadBtn1').click(function(event) {
         event.preventDefault();
         $('#payslipfile1').get(0).files.length == 0 ? errormsg('#errorpayslip1', 'Please Upload a file') : hideerror('#errorpayslip1');
         let payslipdata = new FormData(document.getElementById('payslipForm1'));
-        payslipdata.append('user_id', 1);
+        payslipdata.append('user_id', user_id);
         payslipdata.append('master_document_id', 3);
         payslipdata.append('document_number', 31);
         $.ajax({
@@ -130,22 +129,21 @@ $(document).ready(function () {
             data: payslipdata,
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function(result) {
                 // console.log(result);
                 if (result['status'] == 200) {
                     hideDiv('#payslip1', '#payslip2');
-                }
-                else {
+                } else {
                     errormsg('#error', result['message'])
                 }
             }
         });
     });
-    $('#payslipUploadBtn2').click(function (event) {
+    $('#payslipUploadBtn2').click(function(event) {
         event.preventDefault();
         $('#payslipfile2').get(0).files.length == 0 ? errormsg('#errorpayslip2', 'Please Upload a file') : hideerror('#errorpayslip2');
         let payslipdata = new FormData(document.getElementById('payslipForm2'));
-        payslipdata.append('user_id', 1);
+        payslipdata.append('user_id', user_id);
         payslipdata.append('master_document_id', 3);
         payslipdata.append('document_number', 32);
         $.ajax({
@@ -155,25 +153,24 @@ $(document).ready(function () {
             data: payslipdata,
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function(result) {
                 console.log(result);
                 if (result['status'] == 200) {
                     hideDiv('#payslip2', '#payslip3');
-                }
-                else {
+                } else {
                     errormsg('#error', result['message'])
                 }
             }
         });
     });
-    $('#payslipUploadBtn3').click(function (event) {
+    $('#payslipUploadBtn3').click(function(event) {
         event.preventDefault();
         $('#payslipfile3').get(0).files.length == 0 ? errormsg('#errorpayslip3', 'Please Upload a file') : hideerror('#errorpayslip3');
         let payslipdata = new FormData(document.getElementById('payslipForm3'));
-        payslipdata.append('user_id', 1);
+        payslipdata.append('user_id', user_id);
         payslipdata.append('master_document_id', 3);
         payslipdata.append('document_number', 33);
-        
+
         $.ajax({
             url: "http://localhost:8000/api/payslip",
             type: 'post',
@@ -181,12 +178,11 @@ $(document).ready(function () {
             data: payslipdata,
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function(result) {
                 console.log(result);
                 if (result['status'] == 200) {
                     hideDiv('#payslip3', '#bankstatementUploadMainDiv');
-                }
-                else {
+                } else {
                     errormsg('#error', result['message'])
                 }
             }
@@ -195,17 +191,12 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
     // Bank Statement Document Upload
-    $('#bankstatementUploadBtn').click(function (event) {
+    $('#bankstatementUploadBtn').click(function(event) {
         event.preventDefault();
         $('#bankstatementfile').get(0).files.length == 0 ? errormsg('#errorbankstatement', 'Please Upload a file') : hideerror('#errorbankstatement');
         let bankstatementdata = new FormData(document.getElementById('bankstatementForm'));
-        bankstatementdata.append('user_id', 1);
+        bankstatementdata.append('user_id', user_id);
         bankstatementdata.append('master_document_id', 4);
         bankstatementdata.append('document_number', 41);
         $.ajax({
@@ -215,25 +206,14 @@ $(document).ready(function () {
             data: bankstatementdata,
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function(result) {
                 console.log(result);
                 if (result['status'] == 200) {
                     location.href = "http://localhost:8000/signin";
-                }
-                else {
+                } else {
                     errormsg('#error', result['message'])
                 }
             }
         });
     });
 });
-
-
-
-
-
-
-
-
-
-

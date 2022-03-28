@@ -58,7 +58,7 @@ class UserController extends Controller
     public function userdata(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'=>'required',
+            'user_id'=> 'required',
             'address_line' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -98,7 +98,8 @@ class UserController extends Controller
                 if ($isSaved == 1) {
                     return response()->json([
                         'message' => 'success',
-                        'status' => 200
+                        'status' => 200,
+                        'id' => $user->id,
                     ]);
                 } else {
                     return response()->json([
@@ -108,7 +109,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'message ' => 'Server Error Please try later',
+                    'message' => 'Server Error Please try later',
                     'status' => 400
                 ]);
             }

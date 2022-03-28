@@ -148,9 +148,8 @@
                 processData: false,
                 contentType: false,
                 success: function(result) {
-                    console.log(result);
                     if (result['status'] == 200) {
-                        // location.href = "http://localhost:8000/register/userdocuments"
+                        location.href = "http://localhost:8000/register/userdocuments"+result['id'];
                     } else {
                         errormsg('errorDiv', result['message']);
                     }
