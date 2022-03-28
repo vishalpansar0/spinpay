@@ -27,10 +27,11 @@ Route::get('/register/userinfo', function () {
 Route::get('/register/userdata/{id}',function($id){
     $i = compact('id');
     return view('register.userdata')->with($i);
-})->name('userdata');
+})->name('userdata'); 
 
-Route::get('/register/userdocuments',function(){
-    return view('register.userdoc');
+Route::get('/register/userdocuments/{id}',function($id){
+    $i = compact('id');
+    return view('register.userdoc')->with($i);
 })->name('userdoc');
 
 // registration routes end

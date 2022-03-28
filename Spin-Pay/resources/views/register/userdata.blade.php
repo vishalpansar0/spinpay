@@ -10,7 +10,7 @@
     <div class="navbar" style="height:12%">
         <div class="container">
             <div class="logo-container">
-                SpinPay{{ $id }}
+                SpinPay
             </div>
             <div class="menu-container">
                 <h4><a href="/signin">login</a></h4>
@@ -21,6 +21,9 @@
         <div class="error-message" id="errorDiv" style="padding:0%;display:none"></div>
         <div class="container reg-div-1">
             <div>
+                {{-- below line will be removed when we have userid in session, we will take that form there, for this we have to make chenges in get userdata route and in userinfo page --}}
+                <input type="text" value="{{$id}}" id="userid_input" disabled hidden>
+                {{-- only upper line --}}
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="inputDiv">
@@ -131,6 +134,7 @@
             $("#dob").val() == "" ? errormsg("#errorDob", 'Date of birth can not be empty') : setDiv(
                 "#errorDob")
             var getData = {
+                user_id : $('#userid_input').val(),
                 address_line: $('#address').val(),
                 city: $('#city').val(),
                 state: $('#state').val(),
@@ -141,14 +145,13 @@
             };
             // console.log(getData);
             $.ajax({
-                url: "http://localhost:8000/api/userdata/1",
+                url: "http://localhost:8000/api/userdata/",
                 type: "post",
                 dataType: "json",
                 data: getData,
                 success: function(result) {
-                    // console.log(result);
                     if (result['status'] == 200) {
-                        location.href = "http://localhost:8000/register/userdocuments"
+                        location.href = "http://localhost:8000/register/userdocuments"+result['id'];
                     } else {
                         errormsg('errorDiv', result['message']);
                     }

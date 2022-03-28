@@ -26,6 +26,10 @@
         <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;display:none">
         </div>
         <div class="container reg-div-1">
+            {{-- below line will be removed when we have userid in session, we will take that form there, for this we have to make chenges in get userdata route and in userinfo page --}}
+            <input type="text" value="{{$id}}" id="userid_input" disabled hidden>
+            {{-- only upper line --}}
+
 
             {{-- Aadhaar Card Div --}}
             <div id="aadharUploadMainDiv" style="display: block">

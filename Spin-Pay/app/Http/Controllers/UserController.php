@@ -78,7 +78,7 @@ class UserController extends Controller
             $size = $request->file('image')->getSize();
             if ($size > 100000) {
                 return response()->json([
-                    'Upload Failed' => 'Photos must be less then 100kB',
+                    'message' => 'Photos must be less then 100kB',
                     'status' => 400
                 ]);
             }
@@ -98,7 +98,8 @@ class UserController extends Controller
                 if ($isSaved == 1) {
                     return response()->json([
                         'message' => 'success',
-                        'status' => 200
+                        'status' => 200,
+                        'id' => $user->id,
                     ]);
                 } else {
                     return response()->json([
@@ -108,7 +109,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'Upload Failed' => 'Server Error Please try later',
+                    'message' => 'Server Error Please try later',
                     'status' => 400
                 ]);
             }
@@ -312,7 +313,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'Upload Failed' => 'Server Error Please try later',
+                    'message' => 'Server Error Please try later',
                     'status' => 400
                 ]);
             }

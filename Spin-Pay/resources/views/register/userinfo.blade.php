@@ -183,7 +183,6 @@
                         
                         if(result['status']==200){
                             $('#joinBtnLoader').css('display','none');
-                            $('#joinSpinpayBtn').css('display','block');
                             $('#otpSubmitDiv').css('display','block');
 
                         }
@@ -287,7 +286,7 @@
                     success: function(result) {
                         console.log(result);
                         if(result['status']==200){
-                            
+                            location.href = "/register/userdata/"+result['id'];
                         }
                         else if(result['status']==400){
                             errormsg(result['message']);
