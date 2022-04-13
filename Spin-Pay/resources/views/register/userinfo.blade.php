@@ -183,7 +183,6 @@
                         
                         if(result['status']==200){
                             $('#joinBtnLoader').css('display','none');
-                            $('#joinSpinpayBtn').css('display','block');
                             $('#otpSubmitDiv').css('display','block');
 
                         }

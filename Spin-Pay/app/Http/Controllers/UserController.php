@@ -58,7 +58,7 @@ class UserController extends Controller
     public function userdata(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
+            'user_id'=> 'required',
             'address_line' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -98,7 +98,8 @@ class UserController extends Controller
                 if ($isSaved == 1) {
                     return response()->json([
                         'message' => 'success',
-                        'status' => 200
+                        'status' => 200,
+                        'id' => $user->id,
                     ]);
                 } else {
                     return response()->json([
@@ -127,7 +128,7 @@ class UserController extends Controller
         if($validate->fails()){
             $flag=false;
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 "status" => 400
             ]);
         }
@@ -192,7 +193,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 'status' => 400,
             ]);
         } else {
@@ -235,7 +236,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 'status' => 400,
             ]);
         } else {
