@@ -10,7 +10,7 @@
     <div class="navbar" style="height:12%">
         <div class="container">
             <div class="logo-container">
-                SpinPay {{ $id }}
+                SpinPay
             </div>
             <div class="menu-container">
                 <h4><a href="/signin">login</a></h4>
