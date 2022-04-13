@@ -313,7 +313,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'message' => 'Server Error Please try later',
+                    'message' => $e->getMessage(),
                     'status' => 400
                 ]);
             }
