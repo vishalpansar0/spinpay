@@ -4,6 +4,7 @@ use App\Http\Controllers\Mailes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Borrower;
 
 
 /*
@@ -42,3 +43,15 @@ Route::post('payslip',[UserController::class,'payslip']);
 
 // to store bankstate details
 Route::post('bankstatement',[UserController::class,'bankstatement']);
+
+//Loan Request
+Route::post('request/loan',[Borrower::class,'loan_request']);
+
+//All Loan Request
+Route::post('request/allrequest',[Borrower::class,'all_requests']);
+
+//Get loan details
+Route::post('request/loandetails',[Borrower::class,'loan_details']);
+
+//Get Transactions details
+Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
