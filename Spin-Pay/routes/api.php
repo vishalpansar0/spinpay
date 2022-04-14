@@ -4,6 +4,7 @@ use App\Http\Controllers\Mailes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Borrower;
 
 
@@ -22,6 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//auth routes
+Route::post('login',[AuthController::class,'login']);
+
 // for send otp to users mail
 Route::post('sendotp',[Mailes::class,"sendotp"]);
 
@@ -29,7 +33,7 @@ Route::post('sendotp',[Mailes::class,"sendotp"]);
 Route::post('/verifyotp',[Mailes::class,"verifyotp"]);
 
 //for to store basic user details
-Route::post("store_users",[UserController::class,"store_users"]);
+Route::post("store_users",[UserController::class,"store_users"])->middleware('auth:api');
 Route::post('/userdata', [UserController::class, 'userdata']);
 
 
