@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main
 const aadharFileInput = document.getElementById('aadharfile');
 aadharFileInput.onchange = () => {
     const selectedFile = aadharFileInput.files[0];
