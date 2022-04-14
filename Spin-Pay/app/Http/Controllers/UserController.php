@@ -13,7 +13,7 @@ use League\CommonMark\Node\Block\Document;
 
 class UserController extends Controller
 {
-    public function store_users($request){
+    public function store_users(Request $request){
         $users=new Users();
         try{
             if($users->where('email',$request['email'])->get()->first()){
@@ -58,7 +58,7 @@ class UserController extends Controller
     public function userdata(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
+            'user_id'=> 'required',
             'address_line' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -128,7 +128,7 @@ class UserController extends Controller
         if($validate->fails()){
             $flag=false;
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 "status" => 400
             ]);
         }
@@ -193,7 +193,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 'status' => 400,
             ]);
         } else {
@@ -236,7 +236,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'Validation Failed' => $validate->errors(),
                 'status' => 400,
             ]);
         } else {
@@ -313,7 +313,7 @@ class UserController extends Controller
                 }
             } catch (QueryException $e) {
                 return response()->json([
-                    'message' => 'Server Error Please try later',
+                    'message' => $e->getMessage(),
                     'status' => 400
                 ]);
             }

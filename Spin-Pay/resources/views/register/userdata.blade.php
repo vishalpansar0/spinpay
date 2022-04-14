@@ -18,91 +18,89 @@
         </div>
     </div>
     <div class="register-main-body">
-        <div class="error-message" id="errorDiv" style="padding:0%;display:none"></div>
-        <div class="container reg-div-1">
-            <div>
-                {{-- below line will be removed when we have userid in session, we will take that form there, for this we have to make chenges in get userdata route and in userinfo page --}}
-                <input type="text" value="{{$id}}" id="userid_input" disabled hidden>
-                {{-- only upper line --}}
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="inputDiv">
-                            <input type="text" name="address" id="address" placeholder="enter full address" required>
-                            <small class="form-text text-muted">address should be as per in aadhar card.</small>
-                            <span class="error-message" id="errorAddress" style="padding:0%;display:none"></span>
+        <form action="" id="userdata">
+            <div class="error-message" id="errorDiv" style="padding:0%;display:none"></div>
+            <div class="container reg-div-1">
+                <div>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="inputDiv">
+                                <input type="text" name="address_line" id="address" placeholder="enter full address"
+                                    required>
+                                <small class="form-text text-muted">address should be as per in aadhar card.</small>
+                                <span class="error-message" id="errorAddress" style="padding:0%;display:none"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="inputDiv">
-                            <input type="text" name="city" id="city" placeholder="city" required>
-                            <span class="error-message" id="errorCity" style="padding:0%;display:none">
-                            </span>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="inputDiv">
+                                <input type="text" name="city" id="city" placeholder="city" required>
+                                <span class="error-message" id="errorCity" style="padding:0%;display:none">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="inputDiv">
+                                <input type="text" name="state" id="state" placeholder="state" required>
+                                <span class="error-message" id="errorState" style="padding:0%;display:none">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="inputDiv">
+                                <input type="number" name="pincode" id="pincode" placeholder="pincode" required>
+                                <span class="error-message" id="errorPincode" style="padding:0%;display:none"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="inputDiv">
-                            <input type="text" name="state" id="state" placeholder="state" required>
-                            <span class="error-message" id="errorState" style="padding:0%;display:none">
-                            </span>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="inputDiv">
+                                <input type="number" name="age" id="age" placeholder="age" required>
+                                <span class="error-message" id="errorAge" style="padding:0%;display:none">
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="inputDiv">
-                            <input type="number" name="pincode" id="pincode" placeholder="pincode" required>
-                            <span class="error-message" id="errorPincode" style="padding:0%;display:none"></span>
+                        <div class="col-md-4">
+                            <div class="inputDiv">
+                                <select name="gender" id="gender" placeholder="Gender" required>
+                                    <option value="Gender">Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span class="error-message" id="errorGender" style="padding:0%;display:none"></span>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="inputDiv">
-                            <input type="number" name="age" id="age" placeholder="age" required>
-                            <span class="error-message" id="errorAge" style="padding:0%;display:none">
-                            </span>
+                        <div class="col-md-4">
+                            <div class="inputDiv">
+                                <input type="date" name="dob" id="dob" placeholder="DOB" required>
+                                <span class="error-message" id="errorDob" style="padding:0%;display:none">
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="inputDiv">
-                            <select name="gender" id="gender" placeholder="Gender" required>
-                                <option value="Gender">Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <span class="error-message" id="errorGender" style="padding:0%;display:none"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="inputDiv">
-                            <input type="date" name="dob" id="dob" placeholder="DOB" required>
-                            <span class="error-message" id="errorDob" style="padding:0%;display:none">
-                            </span>
-                        </div>
-                    </div>
 
 
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="inputDiv">
-                            <form action="" id="profileImage">
-                                <input type="file" id="image" placeholder="image" required>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="inputDiv">
+                                <input type="file" id="image" name="image" placeholder="image" required>
                                 <small class="form-text text-muted">upload image</small>
                                 <span class="error-message" id="errorImage" style="padding:0%;display:none">
                                 </span>
-                            </form>
+                            </div>
                         </div>
                     </div>
+                    <div class="">
+                        <button class="submit" id="submitUserData">Proceed</button>
+                    </div>
                 </div>
-                <div class="">
-                    <button class="submit" id="submitUserData">Proceed</button>
-                </div>
+
+
             </div>
-
-
-        </div>
+        </form>
     </div>
 </div>
 
@@ -119,7 +117,8 @@
             $(divs).css('display', 'none');
         }
 
-        $('#submitUserData').click(function() {
+        $('#submitUserData').click(function(event) {
+            event.preventDefault();
             $("#address").val() == "" ? errormsg("#errorAddress", 'address can not be empty') : setDiv(
                 "#errorAddress");
             $("#city").val() == "" ? errormsg("#errorCity", 'city can not be empty') : setDiv(
@@ -133,25 +132,24 @@
                 setDiv("#errorGender");
             $("#dob").val() == "" ? errormsg("#errorDob", 'Date of birth can not be empty') : setDiv(
                 "#errorDob")
-            var getData = {
-                user_id : $('#userid_input').val(),
-                address_line: $('#address').val(),
-                city: $('#city').val(),
-                state: $('#state').val(),
-                gender: $("#gender").val(),
-                age: $('#age').val(),
-                pincode: $('#pincode').val(),
-                dob: $('#dob').val()
-            };
+            $('#image').get(0).files.length == 0 ? errormsg('#errorImage',
+                'Please Upload a file') : setDiv('#errorImage');
+
+            let userdata = new FormData(document.getElementById('userdata'));
+            console.log();
+            userdata.append('user_id', {{$id }});
+
             // console.log(getData);
             $.ajax({
                 url: "http://localhost:8000/api/userdata/",
                 type: "post",
                 dataType: "json",
-                data: getData,
+                data: userdata,
+                processData: false,
+                contentType: false,
                 success: function(result) {
                     if (result['status'] == 200) {
-                        location.href = "http://localhost:8000/register/userdocuments"+result['id'];
+                        location.href = "/register/userdocuments/"+result['id'];
                     } else {
                         errormsg('errorDiv', result['message']);
                     }
@@ -160,7 +158,4 @@
         });
 
     });
-
-
-
 </script>
