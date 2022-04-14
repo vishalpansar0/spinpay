@@ -32,9 +32,7 @@ bankstatementFileInput.onchange = () => {
 
 $(document).ready(function() {
 
-    // getting user id form hidden input
-    const user_id = $('#userid_input').val();
-
+    const user_id = $('#user_id').val();
 
     // error function
     function errormsg(div, str) {
@@ -61,11 +59,11 @@ $(document).ready(function() {
         event.preventDefault();
         $("#aadharnum").val() == "" ? errormsg('#erroraadharnum', 'this field cannot be blank') : hideerror('#erroraadharnum');
         $('#aadharfile').get(0).files.length == 0 ? errormsg('#erroraadharimage', 'Please Upload a file') : hideerror('#erroraadharimage');
-        let user_id = $('#user_id').val();
+        // let user_id = $('#user_id').val();
         let aadhardata = new FormData(document.getElementById('aadharForm'));
         aadhardata.append('user_id', user_id);
         aadhardata.append('master_document_id', 1);
-        // console.log(user_id);
+        // console.log(aadhardata.user_id);
         $.ajax({
             url: "http://localhost:8000/api/aadhar",
             type: 'post',
