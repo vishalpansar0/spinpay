@@ -61,3 +61,12 @@ Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
 
 //Get All Borrowers and Lenders with date and status filter
 Route::get('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
+
+//Get users details from agentdashboard
+Route::get('ShowUsersDetails',[AgentDashboardController::class,'ShowUsersDetails']);
+
+//Document approve form agentdashboard
+Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
+
+//get loan request of a users
+Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest']);
