@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Borrower;
+use App\Http\Controllers\AgentDashboardController;
 
 
 /*
@@ -57,3 +58,6 @@ Route::post('request/loandetails',[Borrower::class,'loan_details']);
 
 //Get Transactions details
 Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
+
+//Get All Borrowers and Lenders with date and status filter
+Route::get('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
