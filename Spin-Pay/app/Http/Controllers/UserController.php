@@ -13,7 +13,7 @@ use League\CommonMark\Node\Block\Document;
 
 class UserController extends Controller
 {
-    public function store_users(Request $request){
+    public function store_users($request){
         $users=new Users();
         try{
             if($users->where('email',$request['email'])->get()->first()){

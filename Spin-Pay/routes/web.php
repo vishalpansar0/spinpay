@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-    
+use App\Http\Controllers\Mailes;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Route::get('/',[Mailes::class,'test1']);
 
 Route::get('/', function () {
     return view('home');
@@ -39,7 +41,7 @@ Route::get('/register/userdocuments/{id}',function($id){
 //  Login Routes
 Route::get('/signin', function () {
     return view('signin');
-});
+})->name('signin');
 
 
 
