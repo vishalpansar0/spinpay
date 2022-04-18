@@ -249,7 +249,7 @@
             <form id="bankstatementForm">
                 <div class="row mt-4">
                     <div class="col-md-6">
-                        <h3>Pay Slip 1</h3>
+                        <h3>Bank Statement</h3>
                         <div class="inputFileDiv">
                             <div class="fileIntwrapper" style="width:100%;height:100%">
                                 <center>

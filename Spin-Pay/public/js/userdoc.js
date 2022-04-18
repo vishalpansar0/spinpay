@@ -180,7 +180,7 @@ $(document).ready(function() {
             success: function(result) {
                 console.log(result);
                 if (result['status'] == 200) {
-                    hideDiv('#payslip3', '#bankstatementUploadMainDiv');
+                    hideDiv('#payslipUploadMainDiv', '#bankstatementUploadMainDiv');
                 } else {
                     errormsg('#error', result['message'])
                 }
