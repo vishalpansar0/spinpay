@@ -99,7 +99,7 @@ class UserController extends Controller
                     return response()->json([
                         'message' => 'success',
                         'status' => 200,
-                        'id' => $user->id,
+                        'id' => $user->user_id,
                     ]);
                 } else {
                     return response()->json([

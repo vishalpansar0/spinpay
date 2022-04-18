@@ -90,7 +90,7 @@ class Borrower extends Controller
                 $details = $loanRequest->where('user_id', $request['user_id'])->get();
                 return response()->json([
                     'message' => $details,
-                    "status" => 400,
+                    "status" => 200,
                 ]);
 
             }

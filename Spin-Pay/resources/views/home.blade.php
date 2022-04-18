@@ -13,8 +13,9 @@
                  india's no1 most trusted p2p lending platform
              </div>
                <div class="join-btn-container">
-                 <button class="join-btn" data-bs-toggle="modal"
-                  data-bs-target="#join-modal">join now</button>
+                 <a href="{{url('/register/userinfo')}}">
+                  <button class="join-btn">join now</button>
+                 </a>
                </div>
            </div>
      </section>
