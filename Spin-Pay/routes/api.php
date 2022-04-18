@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Borrower;
+use App\Http\Controllers\AgentDashboardController;
 
 
 /*
@@ -35,8 +36,6 @@ Route::post('/verifyotp',[Mailes::class,"verifyotp"]);
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"])->middleware('auth:api');
 Route::post('/userdata', [UserController::class, 'userdata']);
-
-
 Route::post('/aadhar', [UserController::class, 'aadhar']);
 
 //for to store pancard push
@@ -59,3 +58,15 @@ Route::post('request/loandetails',[Borrower::class,'loan_details']);
 
 //Get Transactions details
 Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
+
+//Get All Borrowers and Lenders with date and status filter
+Route::get('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
+
+//Get users details from agentdashboard
+Route::get('ShowUsersDetails',[AgentDashboardController::class,'ShowUsersDetails']);
+
+//Document approve form agentdashboard
+Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
+
+//get loan request of a users
+Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest']);
