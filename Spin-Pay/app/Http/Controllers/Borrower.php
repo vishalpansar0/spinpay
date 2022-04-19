@@ -30,9 +30,9 @@ class Borrower extends Controller
                     'status' => 400,
                 ]);
             } else {
-                if ($request->tenure > 3) {
+                if ($request->tenure > 5) {
                     return response()->json([
-                        'message' => 'tenure greater than three Months',
+                        'message' => 'tenure should not be greater than Five Months',
                         'status' => 400,
                     ]);
                 }
@@ -164,4 +164,5 @@ class Borrower extends Controller
             ]);
         }
     }
+    
 }
