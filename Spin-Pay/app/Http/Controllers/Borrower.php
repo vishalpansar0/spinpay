@@ -164,5 +164,20 @@ class Borrower extends Controller
             ]);
         }
     }
+
+    
+    // Loan Repayment
+    public function loan_repayment(Request $request){
+        $validator = Validator::make($request->all(), [
+            'loan_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+    }
     
 }
