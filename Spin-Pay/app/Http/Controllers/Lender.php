@@ -75,7 +75,7 @@ class Lender extends Controller
     // Approve Loan
     public function Approve_loan(Request $request)
     {
-
+        
         $validator = Validator::make($request->all(), [
             'borrower_id' => 'required',
             'lender_id' => 'required',
@@ -121,16 +121,16 @@ class Lender extends Controller
                 // updating request status from pending to approve
                 $userrequests = new Requests();
                 $userrequests->where('id', $request['request_id'])->update(['status' => 'approved']);
-                $processingFee= ($request['amount']/500)*10;
+                $processingFee= ($request['amount_request']/500)*10;
                 // Creating entry into loan table
                 $loan = new Loan();
                 $loan->request_id = $request['request_id'];
                 $loan->borrower_id = $request['borrower_id'];
                 $loan->lender_id = $request['lender_id'];
-                $loan->interest = 0.05*$request['amount'];
+                $loan->interest = 0.05*$request['amount_request'];
                 $loan->processing_fee = $processingFee;
                 $loan->late_fee = 20;
-                $loan->amount = $request['amount']-$processingFee;
+                $loan->amount = $request['amount_request']-$processingFee;
                 $loan->sent_transaction_id = $transaction->id;
                 $loan->repayment_transaction_id = null;
                 $loan->status = 'ongoing';
