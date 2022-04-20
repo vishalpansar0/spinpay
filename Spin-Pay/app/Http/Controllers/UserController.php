@@ -12,11 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function store_users(Request $request)
-    {
-        $users = new Users();
-        try {
-            if ($users->where('email', $request['email'])->get()->first()) {
+    public function store_users($request){
+        $users=new Users();
+        try{
+            if($users->where('email',$request['email'])->get()->first()){
                 return response()->json([
                     'message' => 'this email is already registered with us, please login.',
                     'status' => 400,
