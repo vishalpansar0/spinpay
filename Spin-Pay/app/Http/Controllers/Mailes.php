@@ -149,10 +149,10 @@ class Mailes extends Controller
         }
     }
     
-    // public function test1(Request $request){
-    //     echo '<pre>';
-    //     $val = $request->cookie('access');
-    //     var_dump($val);
-    // }
+    public function test1(Request $request){
+        echo '<pre>';
+        $val = $request->cookie('access_token');
+        var_dump($val);
+    }
     
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mailes;
-
+use App\Http\Controllers\AgentDashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +26,8 @@ Route::get('/register/userinfo', function () {
     return view('register.userinfo');
 })->name('registerBtn');
 
+// Route::get('/register/userinfo',[Mailes::class,'test1'])->name('registerBtn');
+
 Route::get('/register/userdata/{id}',function($id){
     $i = compact('id');
     return view('register.userdata')->with($i);
@@ -43,6 +45,9 @@ Route::get('/signin', function () {
     return view('signin');
 })->name('signin');
 
+
+//Agent Routes
+Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
 
 
