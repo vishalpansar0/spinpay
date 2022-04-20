@@ -14,12 +14,12 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
-
+        $minutes = 120;
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token); 
+        return $this->respondWithToken($token)->withCookie(cookie('access_token', $token, $minutes, null, null, false, false));
     }
 
     public function logout()

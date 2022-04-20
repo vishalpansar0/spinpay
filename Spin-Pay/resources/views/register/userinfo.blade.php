@@ -225,28 +225,7 @@
                     }
                 });  
       }
-                // $.ajax({
-                //     url:"/api/store_users",
-                //     type:"post",
-                //     dataType: "json",
-                //     data: getData,
-                //     beforeSend: function(){
-                //         $('#joinSpinpayBtn').css('display','none');
-                //         $('#joinBtnLoader').css('display','block');
-                        
-                //     },
-                //     success: function(result) {
-                //         if(result['code']==400){
-                //             errormsg(result['msg']);
-                //             $('#joinBtnLoader').css('display','none');
-                //             $('#joinSpinpayBtn').css('display','block');
-                //         }
-                //         else if(result['code']==200){
-                //             $('#joinBtnLoader').css('display','none');
-                //             $('#joinSpinpayBtn').css('display','block');
-                //         }
-                //     }
-                // });     
+            
       }
       });
       $('#submitOtpBtn').click(function() {
