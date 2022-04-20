@@ -41,6 +41,18 @@ Route::get('/signin', function () {
     return view('signin');
 });
 
+// Borrower
+Route::get('/dashboard', function(){
+    return view('user.lender.dashboard');
+    // return view('user.lender.sidenavbar');
+});
+Route::get('/navbar', function(){
+    return view('user.layout.navbar');
+});
+Route::get('/a', function(){
+    return view('user.layout.header');
+});
+
 
 
 

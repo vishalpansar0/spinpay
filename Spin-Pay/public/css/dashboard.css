@@ -1,0 +1,55 @@
+.staticpage{
+    /* background-color: red; */
+    margin-left: 25vh;
+    height:100%;
+}
+
+.applyforloan{
+    background-color: blue;
+    height:60px; 
+    width:400px; 
+    margin: 10px 10px;
+    border-radius: 30px;
+    transform: translate(100%, 0px);
+}
+
+.loan{
+    background-color: #db4c88;
+    height:60px; 
+    width:600px; 
+    margin: 50px;
+    padding:10px;
+    border-radius: 30px;
+}
+.request{
+    background-color: #db4c88;
+    height:60px; 
+    width:600px; 
+    margin: 50px;
+    padding:10px;
+    border-radius: 30px;
+}
+.transaction{
+    background-color: #5B0A91;
+    height:60px; 
+    width:600px; 
+    margin: 50px;
+    padding:10px;
+    border-radius: 30px;
+}
+.profile{
+    background-color: #5B0A91;
+    height:60px; 
+    width:600px; 
+    margin: 50px;
+    padding:10px;
+    border-radius: 30px;
+}
+.documents{
+    background-color: #5B0A91;
+    height:60px; 
+    width:600px; 
+    margin: 50px;
+    padding:10px;
+    border-radius: 30px;
+}

@@ -1,0 +1,44 @@
+body{
+    background-color: #101010;
+}
+.left-menu{
+    background-color: #101010;
+    /* background-color: grey; */
+    position: fixed;
+    left: 0;
+    width: 25vh;
+    height: 100%;
+}
+
+@font-face {
+    font-family: myFirstFont;
+    src: url('/public/fonts/Gilroy\ Font/Gilroy-Bold.woff');
+    font-weight: bold;
+}
+
+.left-menu ul a{
+    display: block;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: myFirstFont;
+    /* font-weight: 200; */
+    color: white;
+    height: 100%;
+    width: 100%;
+    line-height: 65px;
+    padding-left: 30px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    transition: all .4s ease;
+}
+
+.left-menu ul a:hover{
+    padding-left: 40px;
+    /* background-color: white; */
+    background-color: #00b140;
+    /* color: black; */
+    color: white;
+    border-radius: 30px;
+};
+
