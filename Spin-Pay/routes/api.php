@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Borrower;
+use App\Http\Controllers\Lender;
 use App\Http\Controllers\AgentDashboardController;
 
 
@@ -70,3 +71,20 @@ Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
 
 //get loan request of a users
 Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest']);
+
+// Change Password
+Route::post('changepassword',[UserController::class,'Change_password']);
+
+
+// Forgot Password
+Route::post('forgotpassword',[UserController::class,'Forgot_Password']);
+
+
+
+
+
+// Add Money To Lender Wallet
+Route::post('addmoney',[Lender::class,'Add_money']);
+
+// Approve loan
+Route::post('approveloan',[Lender::class,'Approve_loan']);
