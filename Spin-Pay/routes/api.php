@@ -85,7 +85,7 @@ Route::post('loanrepayment',[Borrower::class,'loan_repayment']);
 // Agent Dashboard
 
 //Get All Borrowers and Lenders with date and status filter
-Route::get('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
+Route::post('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
 
 //Get users details from agentdashboard
 Route::get('ShowUsersDetails',[AgentDashboardController::class,'ShowUsersDetails']);
