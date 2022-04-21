@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('/css/dashboard.css') }}">
 @endpush
 
-<nav class="navbar navbar-expand-lg navbar-dark" style = "background-color:#101010">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style = "background-color:#101010" >
   <div class="container-fluid">
     <img src="{{ url('/images/borrower-lender.png') }}" alt="UploadingError" width="70" height="70">
     <a class="navbar-brand" href="#">SpinPay</a>
@@ -29,7 +29,7 @@
           </ul> 
         </li>
       </ul>
-      <h4 style="margin-right: 10px; color:white;">Arvind Kumar</h4>
+      <h4 style="margin-right: 10px; color:white;">Abhishek</h4>
       <p style="margin-right: 10px; color:white;">Logout</p>
       {{-- <img src="{{ url('/images/userlogo.png') }}" alt="UploadError" width="60" height="60"> --}}
       {{-- <button type="button" class="btn btn-dark">logout</button> --}}

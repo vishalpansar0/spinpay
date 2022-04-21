@@ -49,8 +49,8 @@ Route::get('/dashboard', function(){
 Route::get('/navbar', function(){
     return view('user.layout.navbar');
 });
-Route::get('/a', function(){
-    return view('user.layout.header');
+Route::get('/content', function(){
+    return view('user.lender.contentpage');
 });
 
 

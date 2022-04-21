@@ -1,13 +1,18 @@
+*{
+    margin:0;
+    padding:0;
+}
 body{
-    background-color: #101010;
+    background-color: rgb(37, 37, 37);
 }
 .left-menu{
     background-color: #101010;
     /* background-color: grey; */
     position: fixed;
-    left: 0;
+    margin-left: 0;
     width: 25vh;
     height: 100%;
+    margin-top: 80px;
 }
 
 @font-face {
@@ -16,29 +21,33 @@ body{
     font-weight: bold;
 }
 
-.left-menu ul a{
+.left-menu ul button{
     display: block;
     text-decoration: none;
     font-size: 20px;
     font-family: myFirstFont;
+    background-color: #101010;
     /* font-weight: 200; */
     color: white;
     height: 100%;
     width: 100%;
-    line-height: 65px;
-    padding-left: 30px;
-    box-sizing: border-box;
-    border-top: 1px solid rgba(255, 255, 255, .1);
-    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    line-height: 50px;
+    /* padding-left: 30px; */
+    border: none;
+    /* box-sizing: border-box; */
+    /* border-top: 1px solid rgba(255, 255, 255, .1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1); */
     transition: all .4s ease;
 }
 
-.left-menu ul a:hover{
+.left-menu ul button:hover{
     padding-left: 40px;
     /* background-color: white; */
-    background-color: #00b140;
+    /* background-color: rgb(37, 37, 37); */
+    background-color: rgb(37, 37, 37);
     /* color: black; */
     color: white;
-    border-radius: 30px;
+    border-radius: 10px;
+    /* outline: none; */
 };
 
