@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CreditDetail;
+use App\Models\Users;
 use App\Models\Loan;
 use App\Models\Requests;
 use App\Models\Transaction;
@@ -18,7 +19,7 @@ class Borrower extends Controller
     {
         $loanRequest = new Requests();
         try {
-
+            
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required',
                 'amount_request' => 'required',
@@ -31,8 +32,26 @@ class Borrower extends Controller
                     'status' => 400,
                 ]);
             } else {
+                $user = new Users();
+                if(!$user->where('id',$request['user_id'])->get()->first()){
+                    return response()->json([
+                        'message'=>'user not present',
+                        'status'=>400
+                    ]);
+                }
+
+                //Checking one request is open or not
+                if ($loanRequest->where('user_id', $request['user_id'])->where('status','pending')->get()->first()) {
+                    return response()->json([
+                        'message' => "Already raised a request",
+                        'status' => 400,
+                    ]);
+                }
+
+
+                // Checking Loan Going on or not
                 $loan = new Loan();
-                if ($loan->where('borrower_id', $request['user_id'])->get()->first()) {
+                if ($loan->where('borrower_id', $request['user_id'])->where('status','ongoing')->orwhere('status','overdue')->get()->first()) {
                     return response()->json([
                         'message' => "One loan going on, can't apply for another",
                         'status' => 400,
@@ -45,8 +64,14 @@ class Borrower extends Controller
                     ]);
                 }
                 $creditDetails = new CreditDetail();
-                $details = $creditDetails->where('user_id', $request['user_id'])->get();
-                if ($details[0]->credit_limit < $request['amount_request']) {
+                $details = $creditDetails->where('user_id', $request['user_id'])->get()->first();
+                if(!$details){
+                    return response()->json([
+                        'message'=>'Profile Verification Pending, cant apply for loan',
+                        'status'=>400
+                    ]);
+                }
+                if ($details->credit_limit < $request['amount_request']) {
                     return response()->json([
                         'message' => "Requested Amount Greater Than Assigned Credit Limit",
                         'status' => 400,
@@ -127,7 +152,7 @@ class Borrower extends Controller
             }
 
             $loan = new Loan();
-            $loandetails = $loan->where('request_id', [$request['user_id']])->get();
+            $loandetails = $loan->where('borrower_id', [$request['user_id']])->get();
             return response()->json([
                 'message' => $loandetails,
                 'status' => 200,
@@ -195,6 +220,7 @@ class Borrower extends Controller
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
         } else {
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
+            $latefee=0;
         }
 
         try {
@@ -223,10 +249,15 @@ class Borrower extends Controller
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
 
                     // Taking Company Profit to Admin Wallet
-                    $wallet->where('user_id', 1)->update(['amount' => ($amountToPay - $newamount)]);
+                    $admin = $wallet->where('user_id', 1)->get()->first();
+                    $companyprofit = $admin->amount+($amountToPay - $lendershare);
+                    $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
                     return response()->json([
                         'message' => 'Loan Repayed Successfully',
-                        'lender share' => $amountToPay - $newamount,
+                        // 'user pay'=>$amountToPay,
+                        // 'original amount'=>$originalamount,
+                        // 'lender share' => $lendershare,
+                        // 'company profit'=>($amountToPay-$lendershare),
                         'status' => 200,
                     ]);
 

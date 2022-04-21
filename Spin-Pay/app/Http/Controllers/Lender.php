@@ -92,7 +92,7 @@ class Lender extends Controller
             ]);
         }
         $loan = new Loan();
-        if($loan->where('borrower_id',$request['borrower_id'])->get()->first()){
+        if($loan->where('borrower_id',$request['borrower_id'])->where('status','ongoing')->get()->first()){
             return response()->json([
                 'message'=>"One loan going on",
                 'status'=>400
