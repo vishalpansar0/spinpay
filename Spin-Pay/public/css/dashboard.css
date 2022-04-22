@@ -3,14 +3,24 @@
     padding:0;
 }
 .staticpage{
-    /* background-color: red; */
     margin-left: 25vh;
     height:100%;
     margin-top: 4%;
 }
 #content{
-    /* background-color: red; */
-    /* display: none; */
+    display: none;
+    margin-top: 80px;
+}
+#transaction-div{
+    display: none;
+    margin-top: 80px;
+}
+#request-div{
+    display: none;
+    margin-top: 80px;
+}
+#profilediv{
+    display: none;
     margin-top: 80px;
 }
 
@@ -21,4 +31,20 @@
     margin: 10px 10px;
     border-radius: 30px;
     transform: translate(100%, 0px);
+}
+
+
+
+
+/* Profile Section */
+#photo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    /* background-color: red; */
+    
+    padding-top: 30px;
+    padding: 20px;
+    
 }

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-    
-
+use App\Http\Controllers\Mailes;
+use App\Http\Controllers\AgentDashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/',[Mailes::class,'test1']);
+
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -23,6 +25,8 @@ Route::get('/', function () {
 Route::get('/register/userinfo', function () {
     return view('register.userinfo');
 })->name('registerBtn');
+
+// Route::get('/register/userinfo',[Mailes::class,'test1'])->name('registerBtn');
 
 Route::get('/register/userdata/{id}',function($id){
     $i = compact('id');
@@ -39,7 +43,8 @@ Route::get('/register/userdocuments/{id}',function($id){
 //  Login Routes
 Route::get('/signin', function () {
     return view('signin');
-});
+})->name('signin');
+
 
 // Borrower
 Route::get('/dashboard', function(){
@@ -53,6 +58,8 @@ Route::get('/content', function(){
     return view('user.lender.contentpage');
 });
 
+//Agent Routes
+Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
 
 

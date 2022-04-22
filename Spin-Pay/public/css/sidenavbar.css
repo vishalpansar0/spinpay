@@ -4,10 +4,14 @@
 }
 body{
     background-color: rgb(37, 37, 37);
+    /* background-color: #17202A; */
 }
+/* :root {
+    --primary-color: #17202A;
+} */
 .left-menu{
     background-color: #101010;
-    /* background-color: grey; */
+    /* background-color: #212F3D; */
     position: fixed;
     margin-left: 0;
     width: 25vh;
@@ -27,6 +31,7 @@ body{
     font-size: 20px;
     font-family: myFirstFont;
     background-color: #101010;
+    /* background-color: #212F3D; */
     /* font-weight: 200; */
     color: white;
     height: 100%;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CreditDetail;
 use App\Models\Requests;
 use App\Models\Loan;
+use App\Models\Wallet;
 use App\Models\Transaction;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -167,15 +168,81 @@ class Borrower extends Controller
 
     
     // Loan Repayment
-    public function loan_repayment(Request $request){
+    public function loan_repayment(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'loan_id' => 'required'
+            'loan_id' => 'required',
+            // 'amount'=>'required'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
                 'status' => 400,
+            ]);
+        }
+        $loan = new Loan();
+        $userLoan = $loan->where('id', $request['loan_id'])->get()->first();
+        $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
+        $currentDate = \Carbon\Carbon::now();
+        if ($currentDate > $end) {
+            $latefee = ($currentDate->diffInDays($userLoan->end_date) * $userLoan->late_fee);
+            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
+        } else {
+            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
+            $latefee=0;
+        }
+
+        try {
+            if ($userLoan) {
+                $transaction = new Transaction();
+                $transaction->from_id = $userLoan->borrower_id;
+                $transaction->to_id = $userLoan->lender_id;
+                $transaction->type = "repayed";
+                $transaction->amount = $amountToPay;
+                $transaction->status = 'successfull';
+                $isTrans = $transaction->save();
+                if ($isTrans) {
+                    // Changing loan status
+                    $loan->where('id', $request['loan_id'])->update(['status'=>'repaid']);
+
+                    //Fetching original amout from request table
+                    $requestTable = new Requests();
+                    $userRequest = $requestTable->where('id', $userLoan->request_id)->get()->first();
+                    $originalamount = $userRequest->amount_request;
+
+                    //Giving lender his money back;
+                    $wallet = new Wallet();
+                    $lendershare = ($latefee * 0.05) + ($originalamount) + ($userLoan->processing_fee * 0.07);
+                    $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
+                    $newamount = ($lenderwallet->amount) + ($lendershare);
+                    $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
+
+                    // Taking Company Profit to Admin Wallet
+                    $admin = $wallet->where('user_id', 1)->get()->first();
+                    $companyprofit = $admin->amount+($amountToPay - $lendershare);
+                    $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
+                    return response()->json([
+                        'message' => 'Loan Repayed Successfully',
+                        // 'user pay'=>$amountToPay,
+                        // 'original amount'=>$originalamount,
+                        // 'lender share' => $lendershare,
+                        // 'company profit'=>($amountToPay-$lendershare),
+                        'status' => 200,
+                    ]);
+
+                } else {
+                    $transaction->status = "failed";
+                    return response()->json([
+                        'message' => "Transaction Failed",
+                        'status' => 400,
+                    ]);
+                }
+            }
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => "Server Error",
+                'status' => 500,
             ]);
         }
     }
