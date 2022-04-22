@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Models\Requests;
 use App\Models\Transaction;
-use App\Models\Wallet;
+use App\Models\Wallet;  
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
