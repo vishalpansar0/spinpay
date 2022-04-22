@@ -48,6 +48,23 @@ Route::post('payslip',[UserController::class,'payslip']);
 // to store bankstate details
 Route::post('bankstatement',[UserController::class,'bankstatement']);
 
+
+// Change Password
+Route::post('changepassword',[UserController::class,'Change_password']);
+
+
+// Forgot Password
+Route::post('forgotpassword',[UserController::class,'Forgot_Password']);
+
+
+
+
+
+
+
+// Borrower Dashboard
+
+
 //Loan Request
 Route::post('request/loan',[Borrower::class,'loan_request']);
 
@@ -75,16 +92,14 @@ Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
 //get loan request of a users
 Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest']);
 
-// Change Password
-Route::post('changepassword',[UserController::class,'Change_password']);
-
-
-// Forgot Password
-Route::post('forgotpassword',[UserController::class,'Forgot_Password']);
 
 
 
 
+
+
+
+// Lender Dashboard
 
 // Add Money To Lender Wallet
 Route::post('addmoney',[Lender::class,'Add_money']);

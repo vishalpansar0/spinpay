@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CreditDetail;
-use App\Models\Requests;
+use App\Models\Users;
 use App\Models\Loan;
 use App\Models\Wallet;
+use App\Models\Requests;
 use App\Models\Transaction;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class Borrower extends Controller
     {
         $loanRequest = new Requests();
         try {
-
+            
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required',
                 'amount_request' => 'required',
@@ -31,6 +32,31 @@ class Borrower extends Controller
                     'status' => 400,
                 ]);
             } else {
+                $user = new Users();
+                if(!$user->where('id',$request['user_id'])->get()->first()){
+                    return response()->json([
+                        'message'=>'user not present',
+                        'status'=>400
+                    ]);
+                }
+
+                //Checking one request is open or not
+                if ($loanRequest->where('user_id', $request['user_id'])->where('status','pending')->get()->first()) {
+                    return response()->json([
+                        'message' => "Already raised a request",
+                        'status' => 400,
+                    ]);
+                }
+
+
+                // Checking Loan Going on or not
+                $loan = new Loan();
+                if ($loan->where('borrower_id', $request['user_id'])->where('status','ongoing')->orwhere('status','overdue')->get()->first()) {
+                    return response()->json([
+                        'message' => "One loan going on, can't apply for another",
+                        'status' => 400,
+                    ]);
+                }
                 if ($request->tenure > 5) {
                     return response()->json([
                         'message' => 'tenure should not be greater than Five Months',
@@ -38,8 +64,14 @@ class Borrower extends Controller
                     ]);
                 }
                 $creditDetails = new CreditDetail();
-                $details = $creditDetails->where('user_id', $request['user_id'])->get();
-                if ($details[0]->credit_limit < $request['amount_request']) {
+                $details = $creditDetails->where('user_id', $request['user_id'])->get()->first();
+                if(!$details){
+                    return response()->json([
+                        'message'=>'Profile Verification Pending, cant apply for loan',
+                        'status'=>400
+                    ]);
+                }
+                if ($details->credit_limit < $request['amount_request']) {
                     return response()->json([
                         'message' => "Requested Amount Greater Than Assigned Credit Limit",
                         'status' => 400,
@@ -120,11 +152,11 @@ class Borrower extends Controller
             }
 
             $loan = new Loan();
-            $loandetails = $loan->where('request_id',[$request['user_id']])->get();
+            $loandetails = $loan->where('borrower_id', [$request['user_id']])->get();
             return response()->json([
-                'message'=>$loandetails,
-                'status'=>200
-            ]);    
+                'message' => $loandetails,
+                'status' => 200,
+            ]);
 
         } catch (QueryException $e) {
             return response()->json([
@@ -133,7 +165,6 @@ class Borrower extends Controller
             ]);
         }
     }
-
 
     // All transaction
     public function all_transactions(Request $request)
@@ -152,11 +183,11 @@ class Borrower extends Controller
             }
 
             $transaction = new Transaction();
-            $transactiondetails = $transaction->where('from_id',[$request['user_id']])->get();
+            $transactiondetails = $transaction->where('from_id', [$request['user_id']])->get();
             return response()->json([
-                'message'=>$transactiondetails,
-                'status'=>200
-            ]);    
+                'message' => $transactiondetails,
+                'status' => 200,
+            ]);
 
         } catch (QueryException $e) {
             return response()->json([
@@ -166,7 +197,6 @@ class Borrower extends Controller
         }
     }
 
-    
     // Loan Repayment
     public function loan_repayment(Request $request)
     {
@@ -246,5 +276,5 @@ class Borrower extends Controller
             ]);
         }
     }
-    
+
 }
