@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Users;
 use App\Models\Requests;
 use App\Models\Transaction;
-use App\Models\Wallet;  
+use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -22,6 +23,13 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+        $userr = new Users();
+        if (!$userr->where('id', $request['lender_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
                 'status' => 400,
             ]);
         }
@@ -91,11 +99,18 @@ class Lender extends Controller
                 'status' => 400,
             ]);
         }
-        $loan = new Loan();
-        if($loan->where('borrower_id',$request['borrower_id'])->where('status','ongoing')->get()->first()){
+        $user = new Users();
+        if (!$user->where('id', $request['lender_id'])->get()->first()) {
             return response()->json([
-                'message'=>"One loan going on",
-                'status'=>400
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+        $loan = new Loan();
+        if ($loan->where('borrower_id', $request['borrower_id'])->where('status', 'ongoing')->get()->first()) {
+            return response()->json([
+                'message' => "One loan going on",
+                'status' => 400,
             ]);
         }
         try {
@@ -122,6 +137,7 @@ class Lender extends Controller
             $transaction->status = 'successfull';
             $isTransactSuccessfull = $transaction->save();
             if ($isTransactSuccessfull) {
+
                 // updating wallet balance
                 $newbalance = $wallet->where('user_id', $request['lender_id'])->get()->first()->amount;
                 $wallet->where('user_id', $request['lender_id'])->update(['amount' => $newbalance - $request['amount_request']]);
@@ -129,6 +145,7 @@ class Lender extends Controller
                 // updating request status from pending to approve
                 $userrequests = new Requests();
                 $userrequests->where('id', $request['request_id'])->update(['status' => 'approved']);
+                $userrequests->where('id', $request['request_id'])->update(['updated_at' => \Carbon\Carbon::now()]);
 
                 // Processing fee depends on loan amount
                 $processingFee = ($request['amount_request'] / 500) * 10;

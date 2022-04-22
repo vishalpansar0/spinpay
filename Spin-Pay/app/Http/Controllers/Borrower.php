@@ -233,8 +233,8 @@ class Borrower extends Controller
                 $transaction->status = 'successfull';
                 $isTrans = $transaction->save();
                 if ($isTrans) {
-                    // Changing loan status
-                    $userLoan->status = "payed";
+                    // Changing loan status and updating time
+                    $userLoan->where('id', $request['loan_id'])->update(['status'=>'repaid','updated_at'=>\Carbon\Carbon::now()]);
 
                     //Fetching original amout from request table
                     $requestTable = new Requests();
