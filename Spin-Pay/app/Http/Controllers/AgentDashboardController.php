@@ -34,7 +34,12 @@ class AgentDashboardController extends Controller
             else{
                 $query = $query->where('role_id', $req['role']);
             }
-            
+            if($req['searchInput']!=""){
+                // $query = $query->where('name', 'like', '%' . $req['searchInput'] . '%');
+
+                $query = $query->where('name', 'LIKE', "%{$req['searchInput']}%");
+            }
+                
             if($req['status'] == "all"){
                 $query=$query->get();
                 return $query;

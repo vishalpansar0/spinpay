@@ -92,7 +92,7 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="records_table">
                 @foreach ($users as $user)
                     <tr>
                         <td>{{ $user->id }}</td>
@@ -115,11 +115,11 @@
 
     </div>
 
-    <div class="table-container">
+    {{-- <div class="table-container">
         <table class="table table-dark text-center users-table">
             <thead>
                 <tr>
-                    {{-- <th scope="col">id</th> --}}
+                    <th scope="col">id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
@@ -132,7 +132,7 @@
             </tbody>
         </table>
 
-    </div>
+    </div> --}}
 
 
     <div id="page-links" style="background-color: #17202A;padding:10px">
@@ -214,7 +214,7 @@
                     dataType: "json",
                     data: getData,
                     beforeSend: function() {
-                        $('#allUsers').css('display', 'none');
+                        // $('#allUsers').css('display', 'none');   
                         $('#page-links').css('display', 'none');
                         $('#loader-container').css('display', 'block'); 
                         $("#records_table").empty();
@@ -233,7 +233,7 @@
                             trHTML += '<tr><td>' + item.name + '</td><td>' + item.email + '</td><td>' + item.phone + '</td><td>' + roleRow + '</td><td>'+ btnRow + '</td></tr>';
                         });
                         $('#records_table').append(trHTML);
-                        $('#filterDataTable').css('display', 'block');
+                        // $('#filterDataTable').css('display', 'block');
                     }
                 });
             }
