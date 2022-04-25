@@ -242,6 +242,7 @@ class Borrower extends Controller
         $userLoan = $loan->where('id', $request['loan_id'])->get()->first();
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
+        
         if ($currentDate > $end) {
             $latefee = ($currentDate->diffInDays($userLoan->end_date) * $userLoan->late_fee);
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
@@ -249,7 +250,7 @@ class Borrower extends Controller
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
             $latefee = 0;
         }
-
+        
         try {
             if ($userLoan) {
                 $transaction = new Transaction();
@@ -262,15 +263,16 @@ class Borrower extends Controller
                 if ($isTrans) {
                     // Changing loan status and updating time
                     $userLoan->where('id', $request['loan_id'])->update(['status' => 'repaid', 'updated_at' => \Carbon\Carbon::now()]);
+                    $userLoan->where('id', $request['loan_id'])->update(['repayment_transaction_id'=>$transaction->id]);
 
                     //Fetching original amout from request table
                     $requestTable = new Requests();
                     $userRequest = $requestTable->where('id', $userLoan->request_id)->get()->first();
-                    $originalamount = $userRequest->amount_request;
-
+                    $originalamount = $userRequest->amount;
+                    
                     //Giving lender his money back;
                     $wallet = new Wallet();
-                    $lendershare = ($latefee * 0.05) + ($originalamount) + ($userLoan->processing_fee * 0.07);
+                    $lendershare = (($latefee * 0.08) + ($originalamount) + ($userLoan->interest* 0.08));
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
@@ -284,7 +286,7 @@ class Borrower extends Controller
                         // 'user pay'=>$amountToPay,
                         // 'original amount'=>$originalamount,
                         // 'lender share' => $lendershare,
-                        // 'company profit'=>($amountToPay-$lendershare),
+                        // 'company profit'=>($amountToPay - $lendershare),
                         'status' => 200,
                     ]);
 
