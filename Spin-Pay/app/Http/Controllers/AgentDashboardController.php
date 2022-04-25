@@ -58,24 +58,21 @@ class AgentDashboardController extends Controller
         
     }
 
-    public function ShowUsersDetails(Request $req){
+    public function ShowUsersDetails($req){
         try{
-            $basicInfo = Users::where('users.id',$req['id'])
+            $basicInfo = Users::where('users.id',$req)
                     ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
                     ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
-                    ->select('users.name','users.email','users.phone','users.role_id','user_datas.age', 'user_datas.gender',
-                    'user_datas.dob','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
+                    ->select('users.name','users.email','users.phone','users.role_id','users.created_at','user_datas.age' ,'user_datas.gender',
+                    'user_datas.dob','user_datas.status','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
                     ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
                     ->first();
 
-        $docs = Users::where('users.id',$req['id'])
+            $docs = Users::where('users.id',$req)
                         ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
                         ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
                         ->get();
-        return response()->json([
-            $basicInfo,
-            $docs   
-        ]);
+        return view('agent.userview', ['user' => $basicInfo , 'userdocs'=>$docs]);
         }
         catch(QueryException $e){
             return response()->json([
@@ -89,7 +86,7 @@ class AgentDashboardController extends Controller
         try{
             $query = UserDocument::where('user_id', $req['user_id'])
                           ->where('master_document_id',$req['master_document_id'])
-                          ->update(['is_verified' => 1]);
+                          ->update(['is_verified' => $req['is_verified']]);
             if($query)
                 return "success";
             else
@@ -135,4 +132,5 @@ class AgentDashboardController extends Controller
             ]);
         }
     }
+
 }

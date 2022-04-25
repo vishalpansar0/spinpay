@@ -254,10 +254,12 @@ body {
 
 .inputDiv input:hover {
     border: 1px solid #3498DB;
+    background-color: transparent;
 }
 
 .inputDiv input:focus {
     border: 1px solid #3498DB;
+    background-color: transparent;
 }
 
 .inputDiv select {
@@ -335,26 +337,30 @@ body {
 
 
 /* register page css ends */
-            
+
+
 /* signin page css start */
 
-.login-main-div{
-    display:flex;
+.login-main-div {
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
- }
- .login-container{
-     /* border: 2px solid white; */
-     padding: 10px   ;
- }
- #login-heading{
-     font-family: myFirstFont;
-     color:white;
- }
- 
- 
- /* signin page css ends */
+}
+
+.login-container {
+    /* border: 2px solid white; */
+    padding: 10px;
+}
+
+#login-heading {
+    font-family: myFirstFont;
+    color: white;
+}
+
+
+/* signin page css ends */
+
 
 /* media queries */
 

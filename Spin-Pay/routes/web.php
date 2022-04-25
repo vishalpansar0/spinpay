@@ -52,3 +52,17 @@ Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+Route::get('/test', function () {
+    return view('agent.userview');
+});
+
+Route::get('/getTestData', [AgentDashboardController::class,'getTestData']);
+
+Route::get('userview/{id}',[AgentDashboardController::class,'ShowUsersDetails']);

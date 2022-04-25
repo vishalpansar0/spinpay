@@ -21,7 +21,7 @@
      </section>
 
 
-
+    
     <section class="jumbotron-fluid section-1">
           <div class="div-2 wow fadeInUpBig" data-wow-delay="0s">
               <div class="section-1-content-container">
@@ -41,7 +41,16 @@
               </div>
           </div>
     </section>
-
+    {{-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+      <a style="color:white" class="dropdown-item" href="{{ route('logout') }}"
+         onclick="event.preventDefault();
+                       document.getElementById('logout-form').submit();">
+          {{ __('Logout') }}
+      </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+      </form>
+  </div> --}}
     <div class="modal fade" id="join-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">

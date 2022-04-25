@@ -84,7 +84,7 @@
         <table class="table table-dark text-center users-table">
             <thead>
                 <tr>
-                    <th scope="col">id</th>
+                  
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
@@ -95,7 +95,7 @@
             <tbody id="records_table">
                 @foreach ($users as $user)
                     <tr>
-                        <td>{{ $user->id }}</td>
+                    
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
