@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Users;
 use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -22,6 +23,19 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+        $userr = new Users();
+        if (!$userr->where('id', $request['lender_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+        if ($request['amount'] < 500) {
+            return response()->json([
+                'message' => "Minimum Amount requested Amount is 500",
                 'status' => 400,
             ]);
         }
@@ -50,7 +64,7 @@ class Lender extends Controller
                         'status' => 200,
                     ]);
                 } else {
-                    $usertransaction = $transaction->where('from_id', $request['user_id'])->where('to_id', 1)->where('amount', $request['amount'])->where('status', $request['successfull'])->update(['status' => 'failed']);
+                    $transaction->status = "failed";
                     return response()->json([
                         'message' => 'Failed to Add Money',
                         'status' => 400,
@@ -58,6 +72,7 @@ class Lender extends Controller
                 }
 
             } else {
+                $transaction->status = "failed";
                 return response()->json([
                     'message' => 'Transaction Failed',
                     'status' => 400,
@@ -75,7 +90,7 @@ class Lender extends Controller
     // Approve Loan
     public function Approve_loan(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'borrower_id' => 'required',
             'lender_id' => 'required',
@@ -87,6 +102,20 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+        $user = new Users();
+        if (!$user->where('id', $request['lender_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+        $loan = new Loan();
+        if ($loan->where('borrower_id', $request['borrower_id'])->where('status', 'ongoing')->get()->first()) {
+            return response()->json([
+                'message' => "One loan going on",
                 'status' => 400,
             ]);
         }
@@ -114,6 +143,7 @@ class Lender extends Controller
             $transaction->status = 'successfull';
             $isTransactSuccessfull = $transaction->save();
             if ($isTransactSuccessfull) {
+
                 // updating wallet balance
                 $newbalance = $wallet->where('user_id', $request['lender_id'])->get()->first()->amount;
                 $wallet->where('user_id', $request['lender_id'])->update(['amount' => $newbalance - $request['amount_request']]);
@@ -121,30 +151,40 @@ class Lender extends Controller
                 // updating request status from pending to approve
                 $userrequests = new Requests();
                 $userrequests->where('id', $request['request_id'])->update(['status' => 'approved']);
-                $processingFee= ($request['amount_request']/500)*10;
+                $userrequests->where('id', $request['request_id'])->update(['updated_at' => \Carbon\Carbon::now()]);
+
+                // Processing fee depends on loan amount
+                $processingFee = ($request['amount_request'] / 500) * 10;
+
                 // Creating entry into loan table
-                $loan = new Loan();
                 $loan->request_id = $request['request_id'];
                 $loan->borrower_id = $request['borrower_id'];
                 $loan->lender_id = $request['lender_id'];
-                $loan->interest = 0.05*$request['amount_request'];
+                $loan->interest = 0.05 * $request['amount_request'];
                 $loan->processing_fee = $processingFee;
                 $loan->late_fee = 20;
-                $loan->amount = $request['amount_request']-$processingFee;
+                $loan->amount = $request['amount_request'] - $processingFee;
                 $loan->sent_transaction_id = $transaction->id;
                 $loan->repayment_transaction_id = null;
                 $loan->status = 'ongoing';
                 $loan->start_date = \Carbon\Carbon::now();
                 $loan->end_date = \Carbon\Carbon::now()->addMonths($request['tenure']);
-                $loan->save();
 
-                return response()->json([
-                    'message' => 'Loan Request Approved',
-                    'status' => 200,
-                ]);
+                if ($loan->save()) {
+                    return response()->json([
+                        'message' => 'Loan Request Approved',
+                        'status' => 200,
+                    ]);
+                } else {
+                    $transaction->status = "failed";
+                    return response()->json([
+                        'message' => 'Transaction Failed ',
+                        'status' => 400,
+                    ]);
+                }
 
             } else {
-                $usertransaction = $transaction->where('from_id', $request['lender_id'])->where('borrower_id', 1)->where('amount', $request['amount_request'])->where('status', $request['successfull'])->update(['status' => 'failed']);
+                $transaction->status = "failed";
                 return response()->json([
                     'message' => 'Transaction Failed ',
                     'status' => 400,
