@@ -91,6 +91,13 @@ class Borrower extends Controller
                     ]);
                 }
 
+                if ($request['amount_request'] < 500) {
+                    return response()->json([
+                        'message' => "Minimum Amount requested Amount is 500",
+                        'status' => 400,
+                    ]);
+                }
+
                 if ($details->credit_limit < $request['amount_request']) {
                     return response()->json([
                         'message' => "Requested Amount Greater Than Assigned Credit Limit",

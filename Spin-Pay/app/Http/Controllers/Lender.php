@@ -33,6 +33,12 @@ class Lender extends Controller
                 'status' => 400,
             ]);
         }
+        if ($request['amount'] < 500) {
+            return response()->json([
+                'message' => "Minimum Amount requested Amount is 500",
+                'status' => 400,
+            ]);
+        }
         try {
             $transaction = new Transaction();
             $transaction->from_id = $request['user_id'];
