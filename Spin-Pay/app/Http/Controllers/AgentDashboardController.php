@@ -12,21 +12,27 @@ use Illuminate\Database\QueryException;
 
 class AgentDashboardController extends Controller
 {
+    public function getAllUsers(){
+        return view('agent.dashboard', [
+            'users' => DB::table('users')->wherein('role_id',[3,4])->paginate(15),
+        ]);
+    }
+
     public function AllLenRoBorr(Request $req){
         try{
-            $query = Users::wherebetween(DB::raw('DATE(users.created_at)'), [$req['st'], $req['en']])
+            $query = Users::wherebetween(DB::raw('DATE(users.created_at)'), [$req['fromDate'], $req['toDate']])
                 ->leftjoin('user_datas','user_datas.user_id','users.id')
                 ->select('users.name', 'users.email', 'users.phone', 'users.role_id', 'users.email_verified');
 
-            if($req['id'] == 0){
+            if($req['role'] == 0){
                 $query = $query->wherein('role_id',[3,4]);
             }
-            else if($req['id'] == 3){
-                $query = $query->where('role_id', $req['id']);
+            else if($req['role'] == 3){
+                $query = $query->where('role_id', $req['role']);
             }
 
             else{
-                $query = $query->where('role_id', $req['id']);
+                $query = $query->where('role_id', $req['role']);
             }
             
             if($req['status'] == "all"){
