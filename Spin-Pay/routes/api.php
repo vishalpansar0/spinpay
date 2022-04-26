@@ -122,3 +122,8 @@ Route::post('lenderrequest',[Lender::class,'lender_request']);
 
 // show all loan details to lender
 Route::post('lenderloan',[Lender::class,'lender_loan']);
+
+// show all borrower details to lender
+Route::post('showborrower',[Lender::class,'borrower_details']);
+
+
