@@ -735,7 +735,7 @@
                 type: 'POST',
                 data: {
                     'amount': amount,
-                    'user_id': 1
+                    'user_id': 3
 
                 },
                 success: function(response) {
