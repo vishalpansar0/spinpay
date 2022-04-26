@@ -190,7 +190,7 @@
         function errormsg(str) {
             $('#errorDiv').html(str);
             $('#errorDiv').css('display', 'block');
-        }
+        }   
 
         $('#applyFilterBtn').click(function() {
             $("#fromDate").val() == "" ? fromDate = "0000-00-00" : fromDate = $("#fromDate").val();

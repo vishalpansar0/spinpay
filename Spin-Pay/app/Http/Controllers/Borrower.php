@@ -29,7 +29,7 @@ class Borrower extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'Validation Failed' => $validator->errors(),
-                    'status' => 400,
+                    'status' => 401,
                 ]);
             } else {
                 $user = new Users();
@@ -78,7 +78,7 @@ class Borrower extends Controller
                     ]);
                 } else {
                     $loanRequest->user_id = $request->user_id;
-                    $loanRequest->amount_request = $request->amount_request;
+                    $loanRequest->amount = $request->amount_request;
                     $loanRequest->tenure = $request->tenure;
                     $isSaved = $loanRequest->save();
                     if ($isSaved == 1) {
@@ -97,7 +97,9 @@ class Borrower extends Controller
             }
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
+                
+                // 'message' => 'Internal Server Error',
+                'message' => $e,
                 "status" => 500,
             ]);
         }
@@ -271,7 +273,8 @@ class Borrower extends Controller
             }
         } catch (QueryException $e) {
             return response()->json([
-                'message' => "Server Error",
+                'message' => $e,
+                // 'message' => "Server Error",
                 'status' => 500,
             ]);
         }

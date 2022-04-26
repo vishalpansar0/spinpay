@@ -47,16 +47,13 @@ Route::get('/signin', function () {
 
 
 // Borrower
-Route::get('/dashboard', function(){
+Route::get('/user/borrower', function(){
+    return view('user.borrower.dashboard');
+});
+Route::get('/user/lender', function(){
     return view('user.lender.dashboard');
-    // return view('user.lender.sidenavbar');
 });
-Route::get('/navbar', function(){
-    return view('user.layout.navbar');
-});
-Route::get('/content', function(){
-    return view('user.lender.contentpage');
-});
+
 
 //Agent Routes
 Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);

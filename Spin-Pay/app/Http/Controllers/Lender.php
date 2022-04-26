@@ -22,7 +22,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         try {
