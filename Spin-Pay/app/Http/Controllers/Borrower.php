@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\CreditDetail;
-use App\Models\Users;
 use App\Models\Loan;
 use App\Models\Wallet;
 use App\Models\Requests;
+use App\Models\SpinpayTransaction;
 use App\Models\Transaction;
+use App\Models\UserData;
+use App\Models\Users;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +21,7 @@ class Borrower extends Controller
     {
         $loanRequest = new Requests();
         try {
-            
+
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required',
                 'amount_request' => 'required',
@@ -33,25 +35,51 @@ class Borrower extends Controller
                 ]);
             } else {
                 $user = new Users();
-                if(!$user->where('id',$request['user_id'])->get()->first()){
+                if (!$user->where('id', $request['user_id'])->get()->first()) {
                     return response()->json([
-                        'message'=>'user not present',
-                        'status'=>400
+                        'message' => 'user not present',
+                        'status' => 400,
+                    ]);
+                }
+
+                // Checking User Profile Pending or not
+                $userdataTb = new UserData();
+                $userPending = $userdataTb->where('user_id', $request['user_id'])->where('status', 'pending')->get()->first();
+                $userReject = $userdataTb->where('user_id', $request['user_id'])->where('status', 'reject')->get()->first();
+                if ($userPending) {
+                    return response()->json([
+                        'message' => "Profile Verification Pending, cant apply for loan",
+                        'status' => 400,
+                    ]);
+                }
+                if ($userReject) {
+                    return response()->json([
+                        'message' => "Profile Rejected, Apply Documents Again",
+                        'status' => 400,
+                    ]);
+                }
+
+                // Checking Credit limit Assigned or not
+                $creditDetails = new CreditDetail();
+                $details = $creditDetails->where('user_id', $request['user_id'])->get()->first();
+                if (!$details) {
+                    return response()->json([
+                        'message' => 'Credit Limit Not Assigned, cant apply for loan',
+                        'status' => 400,
                     ]);
                 }
 
                 //Checking one request is open or not
-                if ($loanRequest->where('user_id', $request['user_id'])->where('status','pending')->get()->first()) {
+                if ($loanRequest->where('user_id', $request['user_id'])->where('status', 'pending')->get()->first()) {
                     return response()->json([
                         'message' => "Already raised a request",
                         'status' => 400,
                     ]);
                 }
 
-
                 // Checking Loan Going on or not
                 $loan = new Loan();
-                if ($loan->where('borrower_id', $request['user_id'])->where('status','ongoing')->orwhere('status','overdue')->get()->first()) {
+                if ($loan->where('borrower_id', $request['user_id'])->where('status', 'ongoing')->orwhere('status', 'overdue')->get()->first()) {
                     return response()->json([
                         'message' => "One loan going on, can't apply for another",
                         'status' => 400,
@@ -63,14 +91,14 @@ class Borrower extends Controller
                         'status' => 400,
                     ]);
                 }
-                $creditDetails = new CreditDetail();
-                $details = $creditDetails->where('user_id', $request['user_id'])->get()->first();
-                if(!$details){
+
+                if ($request['amount_request'] < 500) {
                     return response()->json([
-                        'message'=>'Profile Verification Pending, cant apply for loan',
-                        'status'=>400
+                        'message' => "Minimum Amount requested Amount is 500",
+                        'status' => 400,
                     ]);
                 }
+
                 if ($details->credit_limit < $request['amount_request']) {
                     return response()->json([
                         'message' => "Requested Amount Greater Than Assigned Credit Limit",
@@ -118,7 +146,7 @@ class Borrower extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'Validation Failed' => $validator->errors(),
-                    'status' => 400,
+                    'status' => 401,
                 ]);
             } else {
                 $loanRequest = new Requests();
@@ -149,7 +177,7 @@ class Borrower extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'Validation Failed' => $validator->errors(),
-                    'status' => 400,
+                    'status' => 401,
                 ]);
             }
 
@@ -180,7 +208,7 @@ class Borrower extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'Validation Failed' => $validator->errors(),
-                    'status' => 400,
+                    'status' => 401,
                 ]);
             }
 
@@ -210,56 +238,81 @@ class Borrower extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         $loan = new Loan();
+        if($loan->where('id',$request['loan_id'])->where('status','repaid')->get()->first()->status=='repaid'){
+            return response()->json([
+                'message'=>'loan Already Paid',
+                'status'=>200
+            ]);
+        }
         $userLoan = $loan->where('id', $request['loan_id'])->get()->first();
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
+
         if ($currentDate > $end) {
             $latefee = ($currentDate->diffInDays($userLoan->end_date) * $userLoan->late_fee);
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
         } else {
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
-            $latefee=0;
+            $latefee = 0;
         }
 
         try {
             if ($userLoan) {
                 $transaction = new Transaction();
                 $transaction->from_id = $userLoan->borrower_id;
-                $transaction->to_id = $userLoan->lender_id;
+                $transaction->to_id = 1;
                 $transaction->type = "repayed";
                 $transaction->amount = $amountToPay;
                 $transaction->status = 'successfull';
                 $isTrans = $transaction->save();
                 if ($isTrans) {
-                    // Changing loan status
-                    $loan->where('id', $request['loan_id'])->update(['status'=>'repaid']);
+                    // Changing loan status and updating time
+                    $userLoan->where('id', $request['loan_id'])->update(['status' => 'repaid', 'updated_at' => \Carbon\Carbon::now()]);
+                    $userLoan->where('id', $request['loan_id'])->update(['repayment_transaction_id' => $transaction->id]);
 
                     //Fetching original amout from request table
                     $requestTable = new Requests();
                     $userRequest = $requestTable->where('id', $userLoan->request_id)->get()->first();
-                    $originalamount = $userRequest->amount_request;
+                    $originalamount = $userRequest->amount;
 
                     //Giving lender his money back;
                     $wallet = new Wallet();
-                    $lendershare = ($latefee * 0.05) + ($originalamount) + ($userLoan->processing_fee * 0.07);
+                    $lendershare = (($latefee * 0.08) + ($originalamount) + ($userLoan->interest * 0.08));
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
 
+                    // Transaction Made from Admin to user
+                    $Lendertransaction = new Transaction();
+                    $Lendertransaction->from_id = 1;
+                    $Lendertransaction->to_id = $userLoan->lender_id;
+                    $Lendertransaction->type = "repayed";
+                    $Lendertransaction->amount = $lendershare;
+                    $Lendertransaction->status = 'successfull';
+                    $isLenTrans = $Lendertransaction->save();
+
                     // Taking Company Profit to Admin Wallet
                     $admin = $wallet->where('user_id', 1)->get()->first();
-                    $companyprofit = $admin->amount+($amountToPay - $lendershare);
+                    $companyprofit = $admin->amount + ($amountToPay - $lendershare);
                     $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
+
+                    // Transaction Made See Admin Profit
+                    $Companytransaction = new SpinpayTransaction();
+                    $Companytransaction->loan_id = $userLoan->id;
+                    $Companytransaction->borrower_id = $userLoan->borrower_id;
+                    $Companytransaction->amount = ($amountToPay - $lendershare);
+                    $isCompanyTrans = $Companytransaction->save();
+
                     return response()->json([
                         'message' => 'Loan Repayed Successfully',
                         // 'user pay'=>$amountToPay,
                         // 'original amount'=>$originalamount,
                         // 'lender share' => $lendershare,
-                        // 'company profit'=>($amountToPay-$lendershare),
+                        // 'company profit'=>($amountToPay - $lendershare),
                         'status' => 200,
                     ]);
 

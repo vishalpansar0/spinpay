@@ -99,6 +99,7 @@ Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest
 
 
 
+
 // Lender Dashboard
 
 // Add Money To Lender Wallet
@@ -106,3 +107,14 @@ Route::post('addmoney',[Lender::class,'Add_money']);
 
 // Approve loan
 Route::post('approveloan',[Lender::class,'Approve_loan']);
+
+// get all transaction of lender
+Route::post('lendertransaction',[Lender::class,'lender_transaction']);
+
+
+// show all pending request to lender
+Route::post('lenderrequest',[Lender::class,'lender_request']);
+
+
+// show all loan details to lender
+Route::post('lenderloan',[Lender::class,'lender_loan']);

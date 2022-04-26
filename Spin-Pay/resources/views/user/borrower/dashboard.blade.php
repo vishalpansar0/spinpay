@@ -177,14 +177,17 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="documents">
-                                <input type="file" required name="document_image">
+                            <div id="modalerror">
+
+                            </div>
+                            <form id="documentsReUploads">
+                                <input type="text" name="document_number" id="document_input" required>
+                                <input type="file" name="document_image" id="document_input_image" required>
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        style="display: none" id="close">Close</button>
-                                    <button type="submit" class="btn btn-primary" onclick="uploadDocuments()"
-                                        id="documentUpload">Upload</button>
+                                        style="display: none" id="close" onclick="closeButton()">Close</button>
+                                    <button type="submit" class="btn btn-primary" id="documentUpload">Upload</button>
                                 </div>
                             </form>
                         </div>
@@ -535,7 +538,7 @@
                 url: 'http://localhost:8000/api/ShowUsersDetails',
                 type: 'GET',
                 data: {
-                    id: 4
+                    id: 46
                 },
                 beforeSend: function() {
                     $('#documents').addClass('navbarBtn');
@@ -546,7 +549,7 @@
                     $('#profile').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    console.log(response[1]);
+                    // console.log(response[1]);
                     var details = {};
                     var documentcheck = {
                         one: false,
@@ -649,13 +652,14 @@
                             }
                         }
                         // console.log(details);
-                        
+
                         let button =
                             '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>Re-Upload</button>';
                         if (details.status == 'Rejected') {
                             button =
                                 '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                                item + '\')">Re-Upload</button>';
+                                item.master_document_id + '\'' + ',' + '\'' + item
+                                .document_number + '\')">Re-Upload</button>';
                             // console.log(details);
                         }
                         statustr = '';
@@ -680,34 +684,50 @@
                             statustr + '</td><td>' + button + '</td></tr>';
                     });
                     // console.log(documentcheck);
-                    var reupload =
-                        '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" data-toggle="modal" data-target="#exampleModal">Re-Upload</button>';
                     if (documentcheck.one == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            1 + '\'' + ',' + '\'' + 1 + '\')">Re-Upload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Aadhar Card</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
                     if (documentcheck.two == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            2 + '\'' + ',' + '\'' + 2 + '\')">Re-Upload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
                     if (documentcheck.threeone == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            3 + '\'' + ',' + '\'' + 31 + '\')">Re-Upload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Pay Slip-1</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
                     if (documentcheck.threetwo == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            3 + '\'' + ',' + '\'' + 32 + '\')">Re-Upload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Pay Slip-2</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
                     if (documentcheck.threethree == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            3 + '\'' + ',' + '\'' + 33 + '\')">Re-Upload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Pay Slip-3</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
                     if (documentcheck.four == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            4 + '\'' + ',' + '\'' + 41 + '\')">Re-Upload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Bank Statement</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
@@ -751,7 +771,7 @@
 
                 },
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     console.log(response['status']);
                     if (response['status'] == 500) {
                         alert('We are facing some issue please try later');
@@ -813,28 +833,41 @@
         // ReUploading Documents
         $('#documentUpload').click(function(event) {
             event.preventDefault();
-            let upload = new FormData(document.getElementById('documents'));
-            upload.append('user_id', user_id);
-            upload.append('master_document_id', 1);
-            // console.log(aadhardata.user_id);
+            let apiurl = $('#apiurl').text();
+            let documentNumber = $('#documentNumber').text();
+            let MasterdocumentNumber = $('#MasterdocumentNumber').text();
+
+            // console.log(documentNumber);
+            if (documentNumber == 31 || documentNumber == 32 || documentNumber == 33) {
+                $('#document_input').prop('value', documentNumber);
+            }
+            if(MasterdocumentNumber==4){
+                $('#document_input').prop('value', documentNumber);
+            }
+            let upload = new FormData(document.getElementById('documentsReUploads'));   
+            upload.append('user_id', 46);
+            upload.append('master_document_id', MasterdocumentNumber);
+
             $.ajax({
-                url: "http://localhost:8000/api/aadhar",
+                url: apiurl,
                 type: 'post',
                 dataType: 'json',
-                data: aadhardata,
+                data: upload,
                 processData: false,
                 contentType: false,
                 success: function(result) {
-                    // console.log(result);
-                    console.log(result['status']);
+                    console.log(result);
+                    // console.log(result['status']);
                     if (result['status'] == 200) {
-                        hideDiv('#aadharUploadMainDiv', '#panUploadMainDiv');
+                        $('#modalerror').empty();
+                        $('#document_input_image').val('');
+                        $('#document_input').val('');
+                        $('#close').click();
                     } else {
-                        errormsg('#error', result['message'])
+                        $('#modalerror').append(result['message']);
                     }
                 }
             });
-            $('#close').click();
         });
 
 
@@ -849,19 +882,59 @@
                 loan_id: id
             },
             success: function(response) {
-                console.log(btid, response)
+                // console.log(btid, response)
                 $("#" + btid).attr("disabled", true);
                 console.log(response);
             }
         });
     }
 
-    function DocumentReupload(details) {
-        console.log(details);
-        $('#modalid').click();
-        $('#exampleModalLabel').html(details.name);
-        // let ptag = "<p>"+details+"</p>";
-        // $('#exampleModalLabel').append(ptag);
+    function DocumentReupload(master_document_id, document_number) {
+        $('#document_input').css('display', 'block')
+        // console.log(master_document_id, " ", document_number);
+        let heading = "";
+        let url = "";
+        let document;
+        // exampleModalLabel
+        if (master_document_id == 1) {
+            heading = "Aadhar Card";
+            url = "http://localhost:8000/api/aadhar";
 
+        }
+        if (master_document_id == 2) {
+            heading = "Pan Card";
+            url = "http://localhost:8000/api/pancard";
+        }
+        if (master_document_id == 3) {
+            if (document_number == 31) {
+                heading = "Pan Slip 1";
+                document=31;
+            }
+            if (document_number == 32) {
+                heading = "Pan Slip 2";
+                document=32;
+            }
+            if (document_number == 33) {
+                heading = "Pan Slip 3";
+                document=33;
+            }
+            url = "http://localhost:8000/api/payslip";
+            $('#document_input').css('display', 'none')
+        }
+        if (master_document_id == 4) {
+            heading = "Bank Statement";
+            url = "http://localhost:8000/api/bankstatement";
+            $('#document_input').css('display', 'none');
+            document=41;
+        }
+        let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
+            '</p><p style="display:none" id="documentNumber"' + '>' + document + '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
+        $('#exampleModalLabel').html(heading);
+        $('#modalerror').append(ptag)
+        $('#modalid').click();
+    }
+
+    function closeButton(){
+        $('#documents').click();
     }
 </script>
