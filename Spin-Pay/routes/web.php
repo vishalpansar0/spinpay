@@ -49,6 +49,7 @@ Route::get('/signin', function () {
 //Agent Routes
 Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
+Route::get('transaction',[AgentDashboardController::class,'allTransaction']);
 
-
+Route::get('request',[AgentDashboardController::class,'request']);
 

@@ -96,6 +96,15 @@ Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
 //get loan request of a users
 Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest']);
 
+//transaction with filters 
+Route::post('transaction',[AgentDashboardController::class,'transaction']);
+
+//loan request with filters
+Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
+
+//add credit_limit and credit_score
+Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreAndLimit']);
+
 
 
 

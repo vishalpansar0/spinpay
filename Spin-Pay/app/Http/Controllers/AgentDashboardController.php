@@ -7,6 +7,9 @@ use App\Models\Users;
 use App\Models\UserData;
 Use App\Models\UserDocument;
 use App\Models\Requests;
+use App\Models\Transaction;
+use App\Models\CreditMapping;
+use App\Models\CreditDetail;
 use DB;
 use Illuminate\Database\QueryException;
 
@@ -84,7 +87,7 @@ class AgentDashboardController extends Controller
         try{
             $query = UserDocument::where('user_id', $req['user_id'])
                           ->where('master_document_id',$req['master_document_id'])
-                          ->update(['is_verified' => 1]);
+                          ->update(['is_verified' => $req['is_verified']]);
             if($query)
                 return "success";
             else
@@ -99,29 +102,63 @@ class AgentDashboardController extends Controller
 
     }
 
-    public function CheckLoanRequest(Request $req){
+
+    public function allTransaction(){
+        return view('agent.transaction', [
+            'transaction' => Transaction::select('transactions.id as id','s.name as from', 'ss.name as to', 'transactions.type as type', 'transactions.amount as amount',
+                                            'transactions.status as status', 'transactions.created_at as time', 'transactions.created_at as date')
+                                            ->leftjoin('users as s', 's.id', 'transactions.from_id')
+                                            ->leftjoin('users as ss', 'ss.id', 'transactions.to_id')->get()
+        ]);
+    }
+
+    public function transaction(Request $request){
+        $data = Transaction::select('transactions.id as id','s.name as from', 'ss.name as to', 'transactions.type as type', 'transactions.amount as amount',
+                                     'transactions.status as status', 'transactions.created_at as time', 'transactions.created_at as date')
+                            ->leftjoin('users as s', 's.id', 'transactions.from_id')
+                            ->leftjoin('users as ss', 'ss.id', 'transactions.to_id');
+        if($request['type'] == 'all'){
+            $data = $data;
+        }
+        else{
+            $data = $data->where('type', $request['type']);
+        }
+        if($request['id'] != null){
+            $data->where('from_id' ,$request['id'])->orwhere('to_id', $request['id']);
+        }
+        if($request['fromdate'] != null && $request['todate'] !=null){
+            $data->wherebetween(DB::raw('DATE(transactions.created_at)'), [$request['fromdate'], $request['todate']]);
+        }
+        if($request['status'] == "successfull" || $request['status'] == "failed"){
+            $data->where('status', $request['status']);
+        }
+        return $data->get();
+    }
+
+    public function request(){
+        return view('agent.request',[
+            'requests' => Requests::all(),
+        ]);
+    }
+
+    public function filterRequest(Request $req){
         try{
-            $query = Requests::where('user_id',$req['id'])
-                    ->wherebetween(DB::raw('DATE(`created_at`)'), [$req['st'], $req['en']])
-                    ->select('amount', 'status', 'tenure', 'created_at', 'updated_at');
-    
-    
+            $query = Requests::select('id','user_id','amount', 'status', 'tenure', 'created_at', 'updated_at');
+            
+            if($req['user_id'] != null){
+                $query->where('user_id', $req['user_id']);
+            }
+            if($req['fromdate'] != null && $req['todate'] != null){
+                $query = $query
+                ->wherebetween(DB::raw('DATE(`created_at`)'), [$req['fromdate'], $req['todate']]);
+            }   
             if($req['status'] == 'all'){
-                $query = $query->get();
-                return $query;
-            }
-            else if($req['status'] == 'pending'){
-                $query = $query->where('status', $req['status'])->get();
-                return $query;
-            }
-            else if($req['status'] == 'approved'){
-                $query = $query->where('status', $req['status'])->get();
-                return $query;
+                $query = $query;
             }
             else{
-                $query = $query->where('status', $req['status'])->get();
-                return $query;
+                $query = $query->where('status', $req['status']);
             }
+            return $query->get();
         }
         catch(QueryException $e){
             return response()->json([
@@ -129,5 +166,47 @@ class AgentDashboardController extends Controller
                 "status" => 500
             ]);
         }
+    }
+
+    public function creditScoreAndLimit(Request $request){
+        $salary = round($request->salary/2);
+        $credit_score = round(300+($salary/84));
+        // $query = CreditMapping::where('credit_score_from' , '<=', $credit_score)
+        //                 ->where('credit_score_to', '>=', $credit_score)
+        //                 ->select('credit_limit')->first();
+
+
+        // return response()->json([
+        //     'query' => $query,
+        //     'score' => $credit_score
+        // ]);
+
+        
+        $credit_limit = 0;
+        if($credit_score >= 300 && $credit_score <= 400){
+            $credit_limit = 1000;
+        }
+        else if($credit_score >= 401 && $credit_score <= 500){
+            $credit_limit = 5000;
+        }
+        else if($credit_score >= 501 && $credit_score <= 600){
+            $credit_limit = 10000;
+        }
+        else if($credit_score >= 601 && $credit_score <= 700){
+            $credit_limit = 20000;
+        }
+        else if($credit_score >= 701 && $credit_score <= 800){
+            $credit_limit = 25000;
+        }
+        else if($credit_score >= 801 && $credit_score <= 900){
+            $credit_limit = 30000;
+        }
+        
+        DB::table('credit_details')
+        ->updateOrInsert(
+            ['user_id' => $request['user_id']],
+            ['credit_limit'=> $credit_limit, 'credit_score'=> $credit_score]
+        );
+        
     }
 }
