@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CreditDetail;
 use App\Models\Loan;
 use App\Models\Requests;
+use App\Models\SpinpayTransaction;
 use App\Models\Transaction;
 use App\Models\UserData;
 use App\Models\Users;
@@ -239,6 +240,12 @@ class Borrower extends Controller
             ]);
         }
         $loan = new Loan();
+        if($loan->where('id',$request['loan_id'])->where('status','repaid')->get()->first()->status=='repaid'){
+            return response()->json([
+                'message'=>'loan Already Paid',
+                'status'=>200
+            ]);
+        }
         $userLoan = $loan->where('id', $request['loan_id'])->get()->first();
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
@@ -292,12 +299,10 @@ class Borrower extends Controller
                     $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
 
                     // Transaction Made See Admin Profit
-                    $Companytransaction = new Transaction();
-                    $Companytransaction->from_id = $userLoan->borrower_id;
-                    $Companytransaction->to_id = 1;
-                    $Companytransaction->type = "repayed";
+                    $Companytransaction = new SpinpayTransaction();
+                    $Companytransaction->loan_id = $userLoan->id;
+                    $Companytransaction->borrower_id = $userLoan->borrower_id;
                     $Companytransaction->amount = ($amountToPay - $lendershare);
-                    $Companytransaction->status = 'successfull';
                     $isCompanyTrans = $Companytransaction->save();
 
                     return response()->json([
