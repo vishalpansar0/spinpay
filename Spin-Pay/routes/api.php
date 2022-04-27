@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Borrower;
+use App\Http\Controllers\RaiseIssue;
 use App\Http\Controllers\Lender;
 use App\Http\Controllers\AgentDashboardController;
 
@@ -127,3 +128,14 @@ Route::post('lenderloan',[Lender::class,'lender_loan']);
 Route::post('showborrower',[Lender::class,'borrower_details']);
 
 
+
+
+
+
+// User Concerns
+
+// Raise any issue  user side
+Route::post('raise/query',[RaiseIssue::class,'new_issue']);
+
+// Raise any issue  user side
+Route::post('raise/show ',[RaiseIssue::class,'showissues']);

@@ -299,6 +299,7 @@ class Lender extends Controller
         try {
             $allloan = new Loan();
             $lenderloans = $allloan->where('lender_id', $request['lender_id'])->get();
+
             return response()->json([
                 'message' => $lenderloans,
                 'status' => 200,
@@ -335,12 +336,25 @@ class Lender extends Controller
 
         try {
             $allloan = new Loan();
-            $lenderloans = $allloan->where('borrower_id', $request['user_id'])->get();
-            $credit = new CreditDetail();
-            $usercredit = $credit->where('user_id',$request['user_id'])->get()->first();
-            $userdata = new UserData();
-            $userdetail = $userdata->where('id',$request['user_id'])->get()->first();
-            $data = compact('lenderloans','usercredit','userdetail');
+            $total = $allloan->where('borrower_id', $request['user_id'])->get()->count();
+            $ongoing = $allloan->where('borrower_id', $request['user_id'])->where('status','ongoing')->get()->count();
+            $overdue = $allloan->where('borrower_id', $request['user_id'])->where('status','overdue')->get()->count();
+            $paid = $allloan->where('borrower_id', $request['user_id'])->where('status','repaid')->get()->count();
+            
+            $lenderloans = [
+                'total'=>$total,
+                'ongoing'=>$ongoing,
+                'overdue'=>$overdue,
+                'repaid'=>$paid
+            ];
+            $basicInfo = Users::where('users.id',$request['user_id'])
+                    ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                    ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                    ->select('users.name','user_datas.age', 'user_datas.gender',
+                    'user_datas.dob','user_datas.address_line','user_datas.city','user_datas.state'
+                    ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
+                    ->first();
+            $data = compact('lenderloans','basicInfo',);
             return response()->json([
                 'message' => $data,
                 'status' => 200,

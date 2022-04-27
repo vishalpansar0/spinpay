@@ -52,3 +52,10 @@ Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
 
 
+
+
+
+// Queries Testing
+Route::get('query',function(){
+    return view('queries.userquery');
+});
