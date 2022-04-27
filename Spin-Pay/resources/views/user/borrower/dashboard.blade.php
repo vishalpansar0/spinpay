@@ -29,7 +29,7 @@
                     <P>700</P>
                 </div>
                 <div class="CreditPoint text-center" id="CreditPoint">
-                    <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT POINT</h5>
+                    <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT LIMIT</h5>
                     <P>300</P>
                 </div>
             </div>

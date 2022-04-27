@@ -234,20 +234,57 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Borrower Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div style="background-color:red;height:200px;display:flex">
-                    <div class="borrower_name"></div>
+                    <div id= "basicdetails" style="display:flex">
+                        <div id="borrower_name" style=" margin-left:80px;width:250px">
+                            <h5>Name</h5>
+                            <p>Sathwik</p>
+                        </div>
+                        <div id="borrower_location" style="width:250px">
+                            <h5>Gender</h5>
+                            <p>Male</p>
+                        </div>
+                        <div id="borrower_gender">
+                            <h5>Location</h5>
+                            <p>Banglore</p>
+                        </div>
                     </div>
+                    <div id=basicdetails style="display:flex;" style="margin-top: 20px">
+                        <div id="borrower_creditScore" style="margin-left:80px;width:250px">
+                            <h5>State</h5>
+                            <p>700</p>
+                        </div>
+                        <div id="borrower_creditPoint" style="width:250px">
+                            <h5>Total Loan</h5>
+                            <p>300</p>
+                        </div>
+                        <div id="borrower_gender">
+                            <h5>Repide</h5>
+                            <p>Male</p>
+                        </div>
+                    </div>
+
+                    <div id=basicdetails style="display:flex;" style="margin-top: 20px">
+                        <div id="borrower_creditScore" style="margin-left:80px;width:250px">
+                            <h5>Credit Score</h5>
+                            <p>700</p>
+                        </div>
+                        <div id="borrower_creditPoint" style="">
+                            <h5>Credit Limit</h5>
+                            <p>300</p>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="modal-footer">
+                {{-- <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -365,7 +402,7 @@
                                 '</td><td>' + ending_date +
                                 '</td><td>' +
                                 status +
-                                '</td><td>'+"username"+'</td></tr>';
+                                '</td><td>' + "username" + '</td></tr>';
                         });
                         $('#row').append(trHTML);
                     }
@@ -437,7 +474,8 @@
                             trHTML += '<tr style="color:white"><td>' +
                                 transactionid + '</td><td>$ ' + item
                                 .amount + '</td><td>' +
-                                statustr + '</td><td>'+statustype+'</td><td>'+ created + '</td></tr>';
+                                statustr + '</td><td>' + statustype + '</td><td>' +
+                                created + '</td></tr>';
                         });
                         $('#transaction_row').append(trHTML);
                     }
@@ -650,7 +688,7 @@
                                 details.status = "Pending";
                             }
                         }
-                
+
                         let button =
                             '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>reupload</button>';
                         if (details.status == 'Rejected') {
@@ -821,19 +859,19 @@
             });
             $('#close').click();
         });
-    
+
 
 
     });
 
     function ViewDetails(details) {
-                // console.log(details);
-                console.log('check');
-                $('#borrowerdetails').click();
-                $('#exampleModalLabel').html('for checking');
-                // let ptag = "<p>"+details+"</p>";
-                // $('#exampleModalLabel').append(ptag);
-         }
+        // console.log(details);
+        console.log('check');
+        $('#borrowerdetails').click();
+        $('#exampleModalLabel').html('for checking');
+        // let ptag = "<p>"+details+"</p>";
+        // $('#exampleModalLabel').append(ptag);
+    }
 
     function repayment(id, btid) {
         console.log(id, btid);
