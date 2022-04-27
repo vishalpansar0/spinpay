@@ -34,7 +34,12 @@ class AgentDashboardController extends Controller
             else{
                 $query = $query->where('role_id', $req['role']);
             }
-            
+            if($req['searchInput']!=""){
+                // $query = $query->where('name', 'like', '%' . $req['searchInput'] . '%');
+
+                $query = $query->where('name', 'LIKE', "%{$req['searchInput']}%");
+            }
+                
             if($req['status'] == "all"){
                 $query=$query->get();
                 return $query;
@@ -53,38 +58,66 @@ class AgentDashboardController extends Controller
         
     }
 
-    public function ShowUsersDetails(Request $req){
+    public function ShowUsersDetails($req){
         try{
-            $basicInfo = Users::where('users.id',$req['id'])
+            $basicInfo = Users::where('users.id',$req)
                     ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
                     ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
-                    ->select('users.name','users.email','users.phone','users.role_id','user_datas.age', 'user_datas.gender',
-                    'user_datas.dob','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
+                    ->select('users.name','users.email','users.phone','users.role_id','users.created_at','user_datas.age' ,'user_datas.gender',
+                    'user_datas.dob','user_datas.status','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
                     ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
                     ->first();
 
-        $docs = Users::where('users.id',$req['id'])
-                        ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
-                        ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
-                        ->get();
-        return response()->json([
-            $basicInfo,
-            $docs   
-        ]);
+            // $docs = Users::where('users.id',$req)
+            //             ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
+            //             ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
+            //             ->get();
+
+           
+            // echo '<pre>';
+            // print_r($aadhar->document_image);
+            return view('agent.userview', ['user' => $basicInfo]);
         }
         catch(QueryException $e){
             return response()->json([
-                'message' => 'Internal Server Error',
+                'message' => $e,
                 "status" => 500
             ]);
         } 
+    }
+
+    public function fetchUserDocs($req){
+        try{
+            $aadhar = UserDocument::where('user_id',$req)->where('master_document_id',1)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $pan = UserDocument::where('user_id',$req)->where('master_document_id',2)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $bankslip = UserDocument::where('user_id',$req)->where('master_document_id',4)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            return response()->json([
+                'aadhar_image'=>$aadhar->document_image,
+                'aadhar_num'=>$aadhar->document_number,
+                'isAdhrVer'=>$aadhar->is_verified,
+                'pan_image'=>$pan->document_image,
+                'pan_num'=>$pan->document_number,
+                'isPanVer'=>$pan->is_verified,
+                'bankslip_image'=>$bankslip->document_image,
+                'bankslip_num'=>$bankslip->document_number,
+                'isBsVer'=>$bankslip->is_verified,
+            ]);
+        }
+        catch(QueryException $e){
+            return response()->json([
+                'message' => $e,
+                "status" => 500
+            ]);
+        } 
+        
+        
     }
 
     public function DocAprv(Request $req){
         try{
             $query = UserDocument::where('user_id', $req['user_id'])
                           ->where('master_document_id',$req['master_document_id'])
-                          ->update(['is_verified' => 1]);
+                          ->update(['is_verified' => $req['is_verified']]);
             if($query)
                 return "success";
             else
@@ -130,4 +163,5 @@ class AgentDashboardController extends Controller
             ]);
         }
     }
+
 }
