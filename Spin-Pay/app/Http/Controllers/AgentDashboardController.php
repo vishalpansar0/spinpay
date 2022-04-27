@@ -68,18 +68,49 @@ class AgentDashboardController extends Controller
                     ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
                     ->first();
 
-            $docs = Users::where('users.id',$req)
-                        ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
-                        ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
-                        ->get();
-        return view('agent.userview', ['user' => $basicInfo , 'userdocs'=>$docs]);
+            // $docs = Users::where('users.id',$req)
+            //             ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
+            //             ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
+            //             ->get();
+
+           
+            // echo '<pre>';
+            // print_r($aadhar->document_image);
+            return view('agent.userview', ['user' => $basicInfo]);
         }
         catch(QueryException $e){
             return response()->json([
-                'message' => 'Internal Server Error',
+                'message' => $e,
                 "status" => 500
             ]);
         } 
+    }
+
+    public function fetchUserDocs($req){
+        try{
+            $aadhar = UserDocument::where('user_id',$req)->where('master_document_id',1)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $pan = UserDocument::where('user_id',$req)->where('master_document_id',2)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $bankslip = UserDocument::where('user_id',$req)->where('master_document_id',4)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            return response()->json([
+                'aadhar_image'=>$aadhar->document_image,
+                'aadhar_num'=>$aadhar->document_number,
+                'isAdhrVer'=>$aadhar->is_verified,
+                'pan_image'=>$pan->document_image,
+                'pan_num'=>$pan->document_number,
+                'isPanVer'=>$pan->is_verified,
+                'bankslip_image'=>$bankslip->document_image,
+                'bankslip_num'=>$bankslip->document_number,
+                'isBsVer'=>$bankslip->is_verified,
+            ]);
+        }
+        catch(QueryException $e){
+            return response()->json([
+                'message' => $e,
+                "status" => 500
+            ]);
+        } 
+        
+        
     }
 
     public function DocAprv(Request $req){

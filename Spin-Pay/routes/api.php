@@ -110,3 +110,5 @@ Route::post('addmoney',[Lender::class,'Add_money']);
 
 // Approve loan
 Route::post('approveloan',[Lender::class,'Approve_loan']);
+
+Route::get('fetchUserDocs/{id}',[AgentDashboardController::class,'fetchUserDocs']);

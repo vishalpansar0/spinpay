@@ -13,6 +13,11 @@
         <a href=""> Logout</a>
     </div>
 </div>
+{{-- @php
+    echo "<pre style='color:white'>";
+    print_r($aadhar);
+    echo '</pre>';
+@endphp --}}
 <div style="margin-top:70px">
     <div class="left-menu-div">
         <div class="menu-wrapper">
@@ -38,11 +43,7 @@
 
     </div>
     <div class="right-main-div">
-        @php
-            echo '<pre style="color:white">';
-    var_dump($user);
-    echo '</pre>';
-        @endphp
+        
         {{-- docs view modal --}}
         <!-- Button trigger modal -->
         {{-- <button style="float:right;margin-top:7px;text-decoration:none;"
@@ -55,7 +56,7 @@
 
         <div style="display:flex;height:350px;padding:20px;">
             <div class="userImageContainer" style="width:20%">
-                <img src="{{ url('/images/hands.jpg') }}" width="100%" style="border-radius: 10px">
+                <img src="{{ asset('storage') }}/{{$user->image}}"  style="min-width:100%;max-width:100%;min-height:100%;max-height:100%;border-radius: 10px">
             </div>
             <div class="userDataContainer" style="margin-left:2%;width:30%">
                 <div>
@@ -124,10 +125,8 @@
 
                         @if ($user->role_id == 3)
                             <span style="color:green">Lender</span>
-                            
                         @else
                             <span style="color:blue">Borrower</span>
-                            
                         @endif
                     </div>
                 </div>
@@ -139,15 +138,14 @@
                         status
                     </div>
                     <div style="color:white;font-size:24px">
-                        
-                        @if ($user->status == "pending")
-                        <span style="color:orange;">pending</span>
-                        
-                    @elseif($user->status == "approved")
-                    <span style="color:green;">approved</span>
-                    @else
-                    <span style="color:red;">rejected</span>
-                    @endif
+
+                        @if ($user->status == 'pending')
+                            <span style="color:orange;">pending</span>
+                        @elseif($user->status == 'approved')
+                            <span style="color:green;">approved</span>
+                        @else
+                            <span style="color:red;">rejected</span>
+                        @endif
                     </div>
                 </div>
                 <div>
@@ -155,7 +153,11 @@
                         credit limit
                     </div>
                     <div style="color:white;font-size:24px">
-                        <span style="color:aqua;">{{ $user->credit_limit }}</span>
+                        @if ($user->credit_limit == '')
+                            <span style="color:orange;">not assigned</span>
+                        @else
+                            <span style="color:green;">{{ $user->credit_limit }}</span>
+                        @endif
                     </div>
                 </div>
                 <div>
@@ -177,8 +179,14 @@
         <div style="display:flex;padding:20px;">
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="400px"
-                    style="border-radius: 10px" />
+                <embed src="
+                {{-- @if ($aadhar->document_image != "" )
+                   {{ asset('storage') }}/{{$aadhar->document_image}}
+                @else    
+                   {{ url('/images/notAvailable.png') }}
+                @endif --}}
+                " id="aadhar_image" width="100%" height="400px"
+                    style="border-radius: 10px;"/>
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
@@ -188,24 +196,23 @@
                     </div>
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
-                        <div class="col-6" style="color:aqua;font-size:24px">
-                            <span style="color:green">approved</span>
+                        <div class="col-6" style="font-size:24px">
+                            <span id="aadhar_status">Not available</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            1234-1234-1234-1234
+                            <p id="aadhar_num">Not available</p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
-                                data-bs-toggle="modal" data-bs-target="#newStorageAddModel"
-                                style="width:100%">View</button></div>
+                                style="width:100%" onclick="viewImage('aadhar_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                                style="width:100%">Approve</button></div>
+                                id="aadharAprBtn" style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                style="width:100%">Reject</button></div>
+                            id="aadharRejectBtn" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -213,34 +220,40 @@
             </div>
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="400px"
+                <embed src="
+                {{-- @if ($pan->document_image != "" )
+                   {{ asset('storage') }}/{{$pan->document_image}}
+                @else    
+                   {{ url('/images/notAvailable.png') }}
+                @endif --}}
+                " id="pan_image" width="100%" height="400px"
                     style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            Aadhar
+                            Pan Card
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            <span style="color:green">approved</span>
+                            <span id="pan_status">Not available</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            1234-1234-1234-1234
+                            <p id="pan_num">Not Available</p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
-                                style="width:100%">View</button></div>
+                                style="width:100%" onclick="viewImage('pan_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                                style="width:100%">Approve</button></div>
+                            id="panAprBtn" style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                style="width:100%">Reject</button></div>
+                            id="panRejectBtn" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -248,34 +261,34 @@
             </div>
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="400px"
+                <embed src="" id="bankslip_image" width="100%" height="400px"
                     style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            Aadhar
+                            Bank Slip
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            <span style="color:green">approved</span>
+                            <span id="bankSlip_status">Not available</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            1234-1234-1234-1234
+                            <p id="bankslip_num"></p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
-                                style="width:100%">View</button></div>
+                                style="width:100%" onclick="viewImage('bankslip_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                                style="width:100%">Approve</button></div>
+                            id="bankSlipAprBtn" style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                style="width:100%">Reject</button></div>
+                            id="bankSlipRejectBtn" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -403,17 +416,26 @@
     </div>
 </div>
 <!-- Add New Storage Modal -->
+
+<button id="openModalBtn" data-bs-toggle="modal" data-bs-target="#newStorageAddModel" style="display:none"></button>
+
 <div class="modal fade bd-example-modal-lg" id="newStorageAddModel" data-bs-backdrop="static" data-bs-keyboard="false"
     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="min-width:90vw ">
     <div class="modal-dialog modal-lg" style="min-width:90vw; ">
         <div class="modal-content" style="min-width:90vw;min-height:90vh">
             <div class="modal-header" style="min-width:90vw;">
-                <h6 class="modal-title" id="staticBackdropLabel">Forgot Password?</h6>
+                <h6 class="modal-title" id="staticBackdropLabel">Document View</h6>
                 <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border:none;background:none;"><i
                         class="fas fa-times" style="color:blue;"></i></button>
             </div>
             <div class="modal-body" style="min-width:90vw;min-height:90vh">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="1000px"
+                <embed id="modal-image-view" src="
+                {{-- @if ($aadhar->document_image != "" ) --}}
+                    {{-- {{ asset('storage') }}/{{$aadhar[0]->document_image}} --}}
+                 {{-- @else    
+                    {{ url('/images/notAvailable.png') }}
+                 @endif --}}
+                 " width="100%" height="1000px"
                     style="border-radius: 10px" />
             </div>
         </div>
@@ -423,6 +445,101 @@
 
 {{-- <p id="test111"></p> --}}
 {{-- <button onclick="getData()">get data</button> --}}
-
+{{-- <script>
+  fetch('http://localhost:8000/api/fetchUserDocs/46')
+  .then(response => response.json())
+  .then(data => console.log(data));
+</script> --}}
 @include('agent.agentLayouts.jsAgent')
+<script>
+        $(document).ready(function() {
+                $.ajax({
+                    url: "/api/fetchUserDocs/46",
+                    type: "get",
+                    dataType: "json",
+                    // data: getData,
+                    beforeSend: function() {
+                    
+                    },      
+                    success: function(response) {
+                        console.log(response);
+                        if(response['aadhar_image']!=""){
+                            $('#aadhar_image').prop('src','{{ asset("storage") }}/'+response['aadhar_image']);
+                            $('#aadhar_num').html(response['aadhar_num']);
+                            if(response['isAdhrVer']=="pending"){
+                                $('#aadhar_status').html(response['isAdhrVer']);
+                                $('#aadhar_status').css('color','orange');
+                            }else if(response['isAdhrVer']=="approved"){
+                                $('#aadhar_status').html(response['isAdhrVer']);
+                                $('#aadhar_status').css('color','green');
+                                $('#aadharAprBtn').prop('disabled',true);
+                            }else if(response['isAdhrVer']=="reject"){
+                                $('#aadhar_status').html(response['isAdhrVer']);
+                                $('#aadhar_status').css('color','red');
+                                $('#aadharRejectBtn').prop('disabled',true);
+                            }else{
+                                $('#aadhar_status').html('Not assigned');
+                                $('#aadhar_status').css('color','aqua');
+                            }
+                        }else{
+                            $('#aadhar_image').prop('src',"{{ asset('/images/notAvailable.png') }}");
+                            $('#aadhar_num').html('not available');
+                        }
+                        if(response['pan_image']!=""){
+                            $('#pan_image').prop('src','{{ asset("storage") }}/'+response['pan_image']);
+                            $('#pan_num').html(response['pan_num']);
+                            if(response['isPanVer']=="pending"){
+                                $('#pan_status').html(response['isPanVer']);
+                                $('#pan_status').css('color','orange');
+                            }else if(response['isPanVer']=="approved"){
+                                $('#pan_status').html(response['isPanVer']);
+                                $('#pan_status').css('color','green');
+                                $('#panAprBtn').prop('disabled',true);
+                            }else if(response['isPanVer']=="reject"){
+                                $('#pan_status').html(response['isPanVer']);
+                                $('#pan_status').css('color','red');
+                                $('#panRejectBtn').prop('disabled',true);
+                            }else{
+                                $('#pan_status').html('Not assigned');
+                                $('#pan_status').css('color','aqua');
+                            }
+                        }else{
+                            $('#pan_image').prop('src',"{{ asset('/images/notAvailable.png') }}");
+                            $('#pan_num').html('not available');
+                        }
+                        if(response['bankslip_image']!=""){
+                            $('#bankslip_image').prop('src','{{ asset("storage") }}/'+response['bankslip_image']);
+                            $('#bankslip_num').html('Not assigned');
+                            if(response['isBsVer']=="pending"){
+                                $('#bankSlip_status').html(response['isBsVer']);
+                                $('#bankSlip_status').css('color','orange');
+                            }else if(response['isBsVer']=="approved"){
+                                $('#bankSlip_status').html(response['isBsVer']);
+                                $('#bankSlip_status').css('color','green');
+                                $('#bankSlipAprBtn').prop('disabled',true);
+                            }else if(response['isBsVer']=="reject"){
+                                $('#bankSlip_status').html(response['isBsVer']);
+                                $('#bankSlip_status').css('color','red');
+                                $('#bankSlipRejectBtn').prop('disabled',true);
+                            }else{
+                                $('#bankSlip_status').html('Not assigned');
+                                $('#bankSlip_status').css('color','aqua');
+                            }
+                        }else{
+                            $('#bankslip_image').prop('src',"{{ asset('/images/notAvailable.png') }}");
+                            $('#bankslip_num').html('not available');
+                        }
+
+                        $('#modal-image-view').prop('src','{{ asset("storage") }}/'+response['aadhar_image']);
+                    }
+                });
+    });
+    function viewImage(divId){
+        var obj = document.getElementById(divId);
+        var image_source = obj.src;
+        console.log(image_source);
+        $("#modal-image-view").prop('src',image_source);
+        $('#openModalBtn').click();
+    }
+</script>
 @include('agent.agentLayouts.footer')

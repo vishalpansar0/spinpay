@@ -87,6 +87,7 @@ class UserController extends Controller
                 $user->gender = $request['gender'];
                 $user->dob = $request['dob'];
                 $path = $request->file('image')->store('public/images/profileImage');
+                $path = str_replace("public/","",$path);
                 $user->image = $path;
                 $isSaved = $user->save();
                 if ($isSaved == 1) {
@@ -127,7 +128,7 @@ class UserController extends Controller
             ]);
         } else {
             $size = $request->file('document_image')->getsize();
-            if ($size > 2000000) {
+            if ($size > 5000000) {
                 return response()->json([
                     "message" => "image size should be less than 100kb",
                     "status" => 400,
@@ -147,6 +148,7 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request['master_document_id'];
                 $user_doc->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/pan_images');
+                $path = str_replace("public/","",$path);
                 $user_doc->document_image = $path;
                 $ifsaved = $user_doc->save();
                 if ($ifsaved == 1) {
@@ -189,6 +191,7 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request->master_document_id;
                 $user_doc->document_number = $request->document_number;
                 $path = $request->file('document_image')->store('public/images/documentImage');
+                $path = str_replace("public/","",$path);
                 $user_doc->document_image = $path;
                 $ifSaved = $user_doc->save();
                 // return $ifSaved;
@@ -232,6 +235,7 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request->master_document_id;
                 $user_doc->document_number = $request->document_number;
                 $path = $request->file('document_image')->store('public/images/documentImage');
+                $path = str_replace("public/","",$path);
                 $user_doc->document_image = $path;
                 $ifSaved = $user_doc->save();
                 // return $ifSaved;
@@ -271,7 +275,7 @@ class UserController extends Controller
             ]);
         } else {
             $size = $request->file('document_image')->getSize();
-            if ($size > 100000) {
+            if ($size > 500000) {
                 return response()->json([
                     'Upload Failed' => 'Photos must be less then 100kB',
                     'status' => 400,
@@ -283,6 +287,7 @@ class UserController extends Controller
                 $user->master_document_id = $request['master_document_id'];
                 $user->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/documentImage');
+                $path = str_replace("public/","",$path);
                 $user->document_image = $path;
                 $isSaved = $user->save();
                 if ($isSaved == 1) {
