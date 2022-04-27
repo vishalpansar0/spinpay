@@ -78,18 +78,16 @@ Route::post('request/loandetails',[Borrower::class,'loan_details']);
 //Get Transactions details
 Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
 
-// Laon Repayment
+//Loan Repayment
 Route::post('loanrepayment',[Borrower::class,'loan_repayment']);
 
-
-
-// Agent Dashboard
+Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
 
 //Get All Borrowers and Lenders with date and status filter
 Route::post('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
 
 //Get users details from agentdashboard
-Route::get('ShowUsersDetails',[AgentDashboardController::class,'ShowUsersDetails']);
+Route::get('ShowUsersDetails/{id}',[AgentDashboardController::class,'ShowUsersDetails']);
 
 //Document approve form agentdashboard
 Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
@@ -105,6 +103,8 @@ Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
 
 //add credit_limit and credit_score
 Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreAndLimit']);
+
+
 
 
 

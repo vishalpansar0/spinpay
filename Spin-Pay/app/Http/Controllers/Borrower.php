@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\CreditDetail;
 use App\Models\Loan;
+use App\Models\Wallet;
 use App\Models\Requests;
 use App\Models\SpinpayTransaction;
 use App\Models\Transaction;
 use App\Models\UserData;
 use App\Models\Users;
-use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -125,7 +125,9 @@ class Borrower extends Controller
             }
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
+                
+                // 'message' => 'Internal Server Error',
+                'message' => $e,
                 "status" => 500,
             ]);
         }
@@ -324,7 +326,8 @@ class Borrower extends Controller
             }
         } catch (QueryException $e) {
             return response()->json([
-                'message' => "Server Error",
+                'message' => $e,
+                // 'message' => "Server Error",
                 'status' => 500,
             ]);
         }
