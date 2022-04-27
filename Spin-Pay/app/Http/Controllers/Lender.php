@@ -294,7 +294,6 @@ class Lender extends Controller
                 'status' => 400,
             ]);
         }
-
         try {
             $allloan = new Loan();
             $lenderloans = $allloan->where('lender_id', $request['lender_id'])->get();

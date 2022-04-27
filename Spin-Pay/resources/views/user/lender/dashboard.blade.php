@@ -96,6 +96,7 @@
                         <th scope="col">TRANSACTION ID</th>
                         <th scope="col">AMOUNT</th>
                         <th scope="col">STATUS</th>
+                        <th scope="col">Type</th>
                         <th scope="col">TRANSACTION DATE</th>
                     </tr>
                 </thead>
@@ -239,7 +240,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div style="background-color:red;height:200px; "></div>
+                    <div style="background-color:red;height:200px;display:flex">
+                    <div class="borrower_name"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -304,10 +307,10 @@
 
         $('#loan').click(function() {
             $.ajax({
-                url: 'http://localhost:8000/api/request/loandetails',
+                url: '/api/lenderloan',
                 type: 'POST',
                 data: {
-                    user_id: 1
+                    lender_id: 4
                 },
                 beforeSend: function() {
                     $('#loan').addClass('navbarBtn');
@@ -318,6 +321,7 @@
                     $('#request').removeClass('navbarBtn');
                 },
                 success: function(response) {
+                    console.log(response);
                     if (response['status'] != 200) {
                         alert('We are facing some issue please try later');
                     } else {
@@ -361,12 +365,7 @@
                                 '</td><td>' + ending_date +
                                 '</td><td>' +
                                 status +
-                                '</td><td><button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick="repayment(' +
-                                item.id +
-                                ',' + i +
-                                ')" id="' + i + '" ' + buttonDisbaled +
-                                '>PAY NOW<button>' +
-                                '</td></tr>';
+                                '</td><td>'+"username"+'</td></tr>';
                         });
                         $('#row').append(trHTML);
                     }
@@ -377,7 +376,7 @@
         $('#transaction').click(function() {
             $.ajax({
                 // url: 'http://localhost:8000/api/request/transactiondetails',
-                url: 'http://localhost:8000/api/lendertransaction',
+                url: '/api/lendertransaction',
                 type: 'POST',
                 data: {
                     lender_id: 3
@@ -414,6 +413,7 @@
                             created = date.getDate() + "/" + (date.getMonth() + 1) +
                                 "/" + date.getFullYear();
                             let statustr = "";
+                            let statustype = "";
                             if (item.status == "failed") {
                                 statustr =
                                     '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Failed</span>';
@@ -422,10 +422,22 @@
                                 statustr =
                                     '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Success</span>';
                             }
+                            if (item.type == "disburse") {
+                                statustype =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Disbursed</span>';
+                            }
+                            if (item.type == "repayed") {
+                                statustype =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Repayed</span>';
+                            }
+                            if (item.type == "self") {
+                                statustype =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">Self</span>';
+                            }
                             trHTML += '<tr style="color:white"><td>' +
                                 transactionid + '</td><td>$ ' + item
                                 .amount + '</td><td>' +
-                                statustr + '</td><td>' + created + '</td></tr>';
+                                statustr + '</td><td>'+statustype+'</td><td>'+ created + '</td></tr>';
                         });
                         $('#transaction_row').append(trHTML);
                     }
@@ -434,7 +446,7 @@
         });
         $('#request').click(function() {
             $.ajax({
-                url: 'http://localhost:8000/api/request/allrequest',
+                url: '/api/request/allrequest',
                 type: 'POST',
                 data: {
                     user_id: 4
@@ -484,7 +496,7 @@
                                 item + '\')">viewdetails</button>' +
                                 '</td><td>' +
                                 '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "GiveLoan(\'' +
-                                item + '\')">giveloan<button>' +
+                                item + '\')">aprove <button>' +
                                 '</td></tr>';
                         });
                         $('#request_row').append(trHTML);
@@ -494,7 +506,7 @@
         });
         $('#profile').click(function() {
             $.ajax({
-                url: 'http://localhost:8000/api/ShowUsersDetails',
+                url: '/api/ShowUsersDetails',
                 type: 'GET',
                 data: {
                     id: 2
@@ -583,7 +595,7 @@
             var hd = 'All the Documnets';
             $('#detailHeading').append(hd);
             $.ajax({
-                url: 'http://localhost:8000/api/ShowUsersDetails',
+                url: '/api/ShowUsersDetails',
                 type: 'GET',
                 data: {
                     id: 3
@@ -731,7 +743,7 @@
             $('#successMsg').hide();
             console.log(amount);
             $.ajax({
-                url: 'http://localhost:8000/api/addmoney',
+                url: '/api/addmoney',
                 type: 'POST',
                 data: {
                     'amount': amount,
@@ -826,7 +838,7 @@
     function repayment(id, btid) {
         console.log(id, btid);
         $.ajax({
-            url: 'http://localhost:8000/api/loanrepayment',
+            url: '/api/loanrepayment',
             type: 'POST',
             data: {
                 loan_id: id
