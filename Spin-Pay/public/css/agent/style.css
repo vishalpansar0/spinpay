@@ -10,7 +10,7 @@
 body {
     padding: 0%;
     margin: 0%;
-    /* background-color: var(--primary-color); */
+    background-color: var(--primary-color);
 }
 
 @font-face {
@@ -208,3 +208,95 @@ body {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.main-heading {
+    color: white;
+    font-family: myFirstFont;
+    font-size: 32px;
+    margin-left: 20px;
+}
+
+.right-main-div {
+    width: calc(100%-100px);
+    margin-left: 100px;
+    /* background-color: chartreuse; */
+    height: 1000px;
+    /* margin-top: 50px; */
+}
+
+.searchBtn-wrapper {
+    padding: 4px;
+    border: 1px solid white;
+    background: white;
+    margin-left: 40px;
+    width: 400px;
+    border-radius: 20px;
+}
+
+.searchinput {
+    border: none;
+    margin-left: 5px;
+    width: 340px;
+    color: var(--secondary-color);
+}
+
+.searchinput:focus {
+    border: none;
+    outline: none;
+}
+
+.left-menu-div {
+    height: 100%;
+    position: fixed;
+    width: 100px;
+    background-color: var(--primary-color);
+}
+
+.menu-item-div {
+    width: 100%;
+    height: 70px;
+    background-color: #394253
+}
+
+.menu-item-div:hover {
+    background-color: #273143;
+}
+
+.m-btn {
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-size: 12px;
+    /* text-transform: uppercase; */
+}
+
+.active {
+    background-color: var(--primary-color);
+}
+
+.card {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 20px 0px #ccc;
+    /* display: flex; */
+}
+
+.card-title {
+    margin-bottom: .75rem;
+    margin-top: 1.25rem;
+}
+
+h5.card-title {
+    font-family: 'exo 2';
+    font-weight: bold;
+}
+
+
+/* .card:hover {
+    transform: translateY(-15px);
+    transition: 0.3s;
+    background: #000;
+} */
