@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CreditDetail;
 use App\Models\Loan;
+use App\Models\UserData;
 use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\Users;
@@ -226,7 +228,7 @@ class Lender extends Controller
             $lenderTfrom = $transaction->where('from_id', $request['lender_id'])->orwhere('to_id', $request['lender_id'])->get();
             return response()->json([
                 'message' => $lenderTfrom,
-                'status'=>200
+                'status' => 200,
             ]);
         } catch (QueryException $e) {
             return response()->json([
@@ -273,7 +275,6 @@ class Lender extends Controller
         }
     }
 
-
     // All Loan Details for Lender
     public function lender_loan(Request $request)
     {
@@ -298,8 +299,64 @@ class Lender extends Controller
         try {
             $allloan = new Loan();
             $lenderloans = $allloan->where('lender_id', $request['lender_id'])->get();
+
             return response()->json([
                 'message' => $lenderloans,
+                'status' => 200,
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Server Error',
+                'status' => 500,
+            ]);
+        }
+    }
+
+    // Fetching Borrower Details to show in Lender UI
+    public function borrower_details(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Validation Failed' => $validator->errors(),
+                'status' => 401,
+            ]);
+        }
+        $user = new Users();
+        if (!$user->where('id', $request['user_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+
+        try {
+            $allloan = new Loan();
+            $total = $allloan->where('borrower_id', $request['user_id'])->get()->count();
+            $ongoing = $allloan->where('borrower_id', $request['user_id'])->where('status','ongoing')->get()->count();
+            $overdue = $allloan->where('borrower_id', $request['user_id'])->where('status','overdue')->get()->count();
+            $paid = $allloan->where('borrower_id', $request['user_id'])->where('status','repaid')->get()->count();
+            
+            $lenderloans = [
+                'total'=>$total,
+                'ongoing'=>$ongoing,
+                'overdue'=>$overdue,
+                'repaid'=>$paid
+            ];
+            $basicInfo = Users::where('users.id',$request['user_id'])
+                    ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                    ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                    ->select('users.name','user_datas.age', 'user_datas.gender',
+                    'user_datas.dob','user_datas.address_line','user_datas.city','user_datas.state'
+                    ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
+                    ->first();
+            $data = compact('lenderloans','basicInfo',);
+            return response()->json([
+                'message' => $data,
                 'status' => 200,
             ]);
 
