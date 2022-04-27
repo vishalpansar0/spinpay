@@ -285,5 +285,5 @@
 
 
 @include('layouts.jsfiles')
-
+<script src="{{url('js/userdoc.js')}}"></script>  
 @include('layouts.footer')
