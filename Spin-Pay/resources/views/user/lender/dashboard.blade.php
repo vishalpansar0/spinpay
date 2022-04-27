@@ -240,43 +240,44 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <p style="display: none" id="PassingRequestID"></p>
                     <div id= "basicdetails" style="display:flex">
                         <div id="borrower_name" style=" margin-left:80px;width:250px">
                             <h5>Name</h5>
-                            <p>Sathwik</p>
+                            <p id="ModalBname">Sathwik</p>
                         </div>
-                        <div id="borrower_location" style="width:250px">
+                        <div id="borrower_gender" style="width:250px">
                             <h5>Gender</h5>
-                            <p>Male</p>
+                            <p id="ModalBgender">Male</p>
                         </div>
-                        <div id="borrower_gender">
+                        <div id="borrower_location">
                             <h5>Location</h5>
-                            <p>Banglore</p>
+                            <p id="ModalBcity">Banglore</p>
                         </div>
                     </div>
                     <div id=basicdetails style="display:flex;" style="margin-top: 20px">
-                        <div id="borrower_creditScore" style="margin-left:80px;width:250px">
+                        <div id="borrower_state" style="margin-left:80px;width:250px">
                             <h5>State</h5>
-                            <p>700</p>
+                            <p id="ModalBstate">700</p>
                         </div>
-                        <div id="borrower_creditPoint" style="width:250px">
+                        <div id="borrower_totalloan" style="width:250px">
                             <h5>Total Loan</h5>
-                            <p>300</p>
+                            <p id="ModalBtotal">300</p>
                         </div>
-                        <div id="borrower_gender">
-                            <h5>Repide</h5>
-                            <p>Male</p>
+                        <div id="borrower_laoanstatus">
+                            <h5>Repaid</h5>
+                            <p id="ModalBrepaid">Male</p>
                         </div>
                     </div>
 
                     <div id=basicdetails style="display:flex;" style="margin-top: 20px">
                         <div id="borrower_creditScore" style="margin-left:80px;width:250px">
                             <h5>Credit Score</h5>
-                            <p>700</p>
+                            <p id="ModalBcreditscore">700</p>
                         </div>
-                        <div id="borrower_creditPoint" style="">
+                        <div id="borrower_creditlimit" style="">
                             <h5>Credit Limit</h5>
-                            <p>300</p>
+                            <p id="ModalBcreditlimit">300</p>
                         </div>
                     </div>
 
@@ -484,10 +485,10 @@
         });
         $('#request').click(function() {
             $.ajax({
-                url: '/api/request/allrequest',
+                url: '/api/lenderrequest',
                 type: 'POST',
                 data: {
-                    user_id: 4
+                    lender_id: 4
                 },
                 beforeSend: function() {
                     $('#request').addClass('navbarBtn');
@@ -499,7 +500,8 @@
                 },
                 success: function(response) {
                     if (response['status'] != 200) {
-                        alert('We are facing some issue please try later');
+                        // alert('We are facing some issue please try later');
+                        console.log(response);
                     } else {
                         isapproved = "-";
                         $('#dashboard-div').hide();
@@ -531,10 +533,10 @@
                                 .tenure + ' month</td><td>' + created +
                                 '</td><td>' +
                                 '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "ViewDetails(\'' +
-                                item + '\')">viewdetails</button>' +
+                                item.user_id + '\')">viewdetails</button>' +
                                 '</td><td>' +
                                 '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "GiveLoan(\'' +
-                                item + '\')">aprove <button>' +
+                                item.user_id + '\')">aprove <button>' +
                                 '</td></tr>';
                         });
                         $('#request_row').append(trHTML);
@@ -861,20 +863,56 @@
         });
 
 
-
+        $('#borrowerdetails').click(function() {
+            // console.log('modal button clicked');
+            let userids = $('#PassingRequestID').text();
+            // console.log()
+            $.ajax({
+                url: "/api/showborrower",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'user_id' : userids
+                },
+                success: function(result) { 
+                    // console.log(result.message);
+                    let ids={
+                        name:"#ModalBname",
+                        gender:"#ModalBgender",
+                        city:"#ModalBcity",
+                        state:"#ModalBstate",
+                        totalloan:"#ModalBtotal",
+                        repaid:"#ModalBrepaid",
+                        cscore:"#ModalBcreditscore",
+                        climit:"#ModalBcreditlimit"
+                    };
+                    $(ids.name).html(result.message.basicInfo.name);
+                    $(ids.gender).html(result.message.basicInfo.gender);
+                    $(ids.city).html(result.message.basicInfo.city);
+                    $(ids.state).html(result.message.basicInfo.state);
+                    $(ids.cscore).html(result.message.basicInfo.credit_score);
+                    $(ids.climit).html(result.message.basicInfo.credit_limit);
+                    $(ids.totalloan).html(result.message.lenderloans.total);
+                    $(ids.repaid).html(result.message.lenderloans.repaid);
+                }
+            });
+        });
+     
+        
     });
 
     function ViewDetails(details) {
-        console.log(details);
-        console.log('check');
+        // console.log(details);
+        // console.log('check');
+        $('#PassingRequestID').html(details);
         $('#borrowerdetails').click();
-        $('#exampleModalLabel').html('for checking');
+        // $('#exampleModalLabel').html('for checking');
         // let ptag = "<p>"+details+"</p>";
         // $('#exampleModalLabel').append(ptag);
     }
 
     function repayment(id, btid) {
-        console.log(id, btid);
+        // console.log(id, btid);
         $.ajax({
             url: '/api/loanrepayment',
             type: 'POST',

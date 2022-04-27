@@ -340,7 +340,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 401,
+                'status' => 401,x
             ]);
         }
         $user = new Users();
