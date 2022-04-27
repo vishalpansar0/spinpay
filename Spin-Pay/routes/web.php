@@ -43,6 +43,15 @@ Route::get('/register/userdocuments/{id}',function($id){
 
 
 
+// Borrower
+Route::get('/user/borrower', function(){
+    return view('user.borrower.dashboard');
+});
+Route::get('/user/lender', function(){
+    return view('user.lender.dashboard');
+});
+
+
 //Agent Routes
 Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
