@@ -122,3 +122,4 @@ Route::post('lenderrequest',[Lender::class,'lender_request']);
 
 // show all loan details to lender
 Route::post('lenderloan',[Lender::class,'lender_loan']);
+Route::get('fetchUserDocs/{id}',[AgentDashboardController::class,'fetchUserDocs']);
