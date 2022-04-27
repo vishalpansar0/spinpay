@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
-use App\Models\Users;
 use App\Models\Requests;
 use App\Models\Transaction;
+use App\Models\Users;
 use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -199,4 +199,116 @@ class Lender extends Controller
         }
 
     }
+
+    // Lender all Transactions
+    public function lender_transaction(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'lender_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+        $user = new Users();
+        if (!$user->where('id', $request['lender_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+
+        try {
+            $transaction = new Transaction();
+            $lenderTfrom = $transaction->where('from_id', $request['lender_id'])->orwhere('to_id', $request['lender_id'])->get();
+            return response()->json([
+                'message' => $lenderTfrom,
+                'status'=>200
+            ]);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Server Error',
+                'status' => 500,
+            ]);
+        }
+    }
+
+    // All pending request for lender dashboard
+    public function lender_request(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'lender_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+        $user = new Users();
+        if (!$user->where('id', $request['lender_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+
+        try {
+            $allrequest = new Requests();
+            $lenderRequest = $allrequest->where('status', 'pending')->get();
+            return response()->json([
+                'message' => $lenderRequest,
+                'status' => 200,
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Server Error',
+                'status' => 500,
+            ]);
+        }
+    }
+
+
+    // All Loan Details for Lender
+    public function lender_loan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'lender_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Validation Failed' => $validator->errors(),
+                'status' => 400,
+            ]);
+        }
+        $user = new Users();
+        if (!$user->where('id', $request['lender_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+
+        try {
+            $allloan = new Loan();
+            $lenderloans = $allloan->where('lender_id', $request['lender_id'])->get();
+            return response()->json([
+                'message' => $lenderloans,
+                'status' => 200,
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Server Error',
+                'status' => 500,
+            ]);
+        }
+    }
+
 }
