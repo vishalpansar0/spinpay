@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Borrower;
+use App\Http\Controllers\RaiseIssue;
 use App\Http\Controllers\Lender;
 use App\Http\Controllers\AgentDashboardController;
 
@@ -77,24 +78,33 @@ Route::post('request/loandetails',[Borrower::class,'loan_details']);
 //Get Transactions details
 Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
 
-// Laon Repayment
+//Loan Repayment
 Route::post('loanrepayment',[Borrower::class,'loan_repayment']);
 
-
-
-// Agent Dashboard
+Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
 
 //Get All Borrowers and Lenders with date and status filter
 Route::post('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
 
 //Get users details from agentdashboard
-Route::get('ShowUsersDetails',[AgentDashboardController::class,'ShowUsersDetails']);
+Route::get('ShowUsersDetails/{id}',[AgentDashboardController::class,'ShowUsersDetails']);
 
 //Document approve form agentdashboard
 Route::post('DocAprv',[AgentDashboardController::class,'DocAprv']);
 
 //get loan request of a users
 Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest']);
+
+//transaction with filters 
+Route::post('transaction',[AgentDashboardController::class,'transaction']);
+
+//loan request with filters
+Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
+
+//add credit_limit and credit_score
+Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreAndLimit']);
+
+
 
 
 
@@ -122,4 +132,24 @@ Route::post('lenderrequest',[Lender::class,'lender_request']);
 
 // show all loan details to lender
 Route::post('lenderloan',[Lender::class,'lender_loan']);
+
+// show all borrower details to lender
+Route::post('showborrower',[Lender::class,'borrower_details']);
+
+
+
+
+
+
+// User Concerns
+
+// Raise any issue  user side
+Route::post('raise/query',[RaiseIssue::class,'new_issue']);
+
+// Raise any issue  user side
+Route::post('raise/show ',[RaiseIssue::class,'showissues']);
+
+
+
+
 Route::get('fetchUserDocs/{id}',[AgentDashboardController::class,'fetchUserDocs']);

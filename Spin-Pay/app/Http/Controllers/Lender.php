@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CreditDetail;
 use App\Models\Loan;
+use App\Models\UserData;
 use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\Users;
@@ -13,6 +15,33 @@ use Illuminate\Support\Facades\Validator;
 
 class Lender extends Controller
 {
+    public function ShowUsersDetails(Request $request){
+        try{
+            $basicInfo = Users::where('users.id',$request['id'])
+                    ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                    ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                    ->select('users.name','users.email','users.phone','users.role_id','user_datas.age', 'user_datas.gender',
+                    'user_datas.dob','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
+                    ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
+                    ->first();
+
+        $docs = Users::where('users.id',$request['id'])
+                        ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
+                        ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
+                        ->get();
+        return response()->json([
+            $basicInfo,
+            $docs   
+        ]);
+        }
+        catch(QueryException $e){
+            return response()->json([
+                'message' => 'Internal Server Error',
+                "status" => 500
+            ]);
+        } 
+    }
+
     //Add Money To Wallet
     public function Add_money(Request $request)
     {
@@ -23,7 +52,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         $userr = new Users();
@@ -70,7 +99,6 @@ class Lender extends Controller
                         'status' => 400,
                     ]);
                 }
-
             } else {
                 $transaction->status = "failed";
                 return response()->json([
@@ -78,7 +106,6 @@ class Lender extends Controller
                     'status' => 400,
                 ]);
             }
-
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
@@ -182,7 +209,6 @@ class Lender extends Controller
                         'status' => 400,
                     ]);
                 }
-
             } else {
                 $transaction->status = "failed";
                 return response()->json([
@@ -190,14 +216,12 @@ class Lender extends Controller
                     'status' => 400,
                 ]);
             }
-
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
                 "status" => 500,
             ]);
         }
-
     }
 
     // Lender all Transactions
@@ -226,11 +250,11 @@ class Lender extends Controller
             $lenderTfrom = $transaction->where('from_id', $request['lender_id'])->orwhere('to_id', $request['lender_id'])->get();
             return response()->json([
                 'message' => $lenderTfrom,
-                'status'=>200
+                'status' => 200,
             ]);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Server Error',
+                'message' => 'server error',
                 'status' => 500,
             ]);
         }
@@ -264,7 +288,6 @@ class Lender extends Controller
                 'message' => $lenderRequest,
                 'status' => 200,
             ]);
-
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Server Error',
@@ -272,7 +295,6 @@ class Lender extends Controller
             ]);
         }
     }
-
 
     // All Loan Details for Lender
     public function lender_loan(Request $request)
@@ -294,15 +316,14 @@ class Lender extends Controller
                 'status' => 400,
             ]);
         }
-
         try {
             $allloan = new Loan();
             $lenderloans = $allloan->where('lender_id', $request['lender_id'])->get();
+
             return response()->json([
                 'message' => $lenderloans,
                 'status' => 200,
             ]);
-
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Server Error',
@@ -311,4 +332,66 @@ class Lender extends Controller
         }
     }
 
+    // Fetching Borrower Details to show in Lender UI
+    public function borrower_details(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Validation Failed' => $validator->errors(),
+                'status' => 401,
+            ]);
+        }
+        $user = new Users();
+        if (!$user->where('id', $request['user_id'])->get()->first()) {
+            return response()->json([
+                'message' => 'user not present',
+                'status' => 400,
+            ]);
+        }
+
+        try {
+            $allloan = new Loan();
+            $total = $allloan->where('borrower_id', $request['user_id'])->get()->count();
+            $ongoing = $allloan->where('borrower_id', $request['user_id'])->where('status', 'ongoing')->get()->count();
+            $overdue = $allloan->where('borrower_id', $request['user_id'])->where('status', 'overdue')->get()->count();
+            $paid = $allloan->where('borrower_id', $request['user_id'])->where('status', 'repaid')->get()->count();
+
+            $lenderloans = [
+                'total' => $total,
+                'ongoing' => $ongoing,
+                'overdue' => $overdue,
+                'repaid' => $paid
+            ];
+            $basicInfo = Users::where('users.id', $request['user_id'])
+                ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                ->select(
+                    'users.name',
+                    'user_datas.age',
+                    'user_datas.gender',
+                    'user_datas.dob',
+                    'user_datas.address_line',
+                    'user_datas.city',
+                    'user_datas.state',
+                    'user_datas.pincode',
+                    'credit_details.credit_limit',
+                    'credit_details.credit_score'
+                )
+                ->first();
+            $data = compact('lenderloans', 'basicInfo',);
+            return response()->json([
+                'message' => $data,
+                'status' => 200,
+            ]);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Server Error',
+                'status' => 500,
+            ]);
+        }
+    }
 }

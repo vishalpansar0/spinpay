@@ -40,19 +40,33 @@ Route::get('/register/userdocuments/{id}',function($id){
 
 // registration routes end
 
-//  Login Routes
-Route::get('/signin', function () {
-    return view('signin');
-})->name('signin');
+
+
+
+// Borrower
+Route::get('/user/borrower', function(){
+    return view('user.borrower.dashboard');
+});
+Route::get('/user/lender', function(){
+    return view('user.lender.dashboard');
+});
 
 
 //Agent Routes
 Route::get('agent/',[AgentDashboardController::class,'getAllUsers']);
 
+Route::get('transaction',[AgentDashboardController::class,'allTransaction']);
+
+Route::get('request',[AgentDashboardController::class,'request']);
 
 
 
 
+
+// Queries Testing
+Route::get('query',function(){
+    return view('queries.userquery');
+});
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
