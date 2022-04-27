@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CreditDetail;
 use App\Models\Loan;
-use App\Models\UserData;
 use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\Users;
@@ -15,6 +13,35 @@ use Illuminate\Support\Facades\Validator;
 
 class Lender extends Controller
 {
+
+    // User Documents
+    public function ShowUsersDetails(Request $request)
+    {
+        try {
+            $basicInfo = Users::where('users.id', $request['id'])
+                ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                ->select('users.name', 'users.email', 'users.phone', 'users.role_id', 'user_datas.age', 'user_datas.gender',
+                    'user_datas.dob', 'user_datas.image', 'user_datas.address_line', 'user_datas.city', 'user_datas.state'
+                    , 'user_datas.pincode', 'credit_details.credit_limit', 'credit_details.credit_score')
+                ->first();
+
+            $docs = Users::where('users.id', $request['id'])
+                ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
+                ->select('user_documents.master_document_id', 'user_documents.document_number', 'user_documents.document_image', 'user_documents.is_verified')
+                ->get();
+            return response()->json([
+                $basicInfo,
+                $docs,
+            ]);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Internal Server Error',
+                "status" => 500,
+            ]);
+        }
+    }
+
     //Add Money To Wallet
     public function Add_money(Request $request)
     {
@@ -337,24 +364,24 @@ class Lender extends Controller
         try {
             $allloan = new Loan();
             $total = $allloan->where('borrower_id', $request['user_id'])->get()->count();
-            $ongoing = $allloan->where('borrower_id', $request['user_id'])->where('status','ongoing')->get()->count();
-            $overdue = $allloan->where('borrower_id', $request['user_id'])->where('status','overdue')->get()->count();
-            $paid = $allloan->where('borrower_id', $request['user_id'])->where('status','repaid')->get()->count();
-            
+            $ongoing = $allloan->where('borrower_id', $request['user_id'])->where('status', 'ongoing')->get()->count();
+            $overdue = $allloan->where('borrower_id', $request['user_id'])->where('status', 'overdue')->get()->count();
+            $paid = $allloan->where('borrower_id', $request['user_id'])->where('status', 'repaid')->get()->count();
+
             $lenderloans = [
-                'total'=>$total,
-                'ongoing'=>$ongoing,
-                'overdue'=>$overdue,
-                'repaid'=>$paid
+                'total' => $total,
+                'ongoing' => $ongoing,
+                'overdue' => $overdue,
+                'repaid' => $paid,
             ];
-            $basicInfo = Users::where('users.id',$request['user_id'])
-                    ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
-                    ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
-                    ->select('users.name','user_datas.age', 'user_datas.gender',
-                    'user_datas.dob','user_datas.address_line','user_datas.city','user_datas.state'
-                    ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
-                    ->first();
-            $data = compact('lenderloans','basicInfo',);
+            $basicInfo = Users::where('users.id', $request['user_id'])
+                ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                ->select('users.name', 'user_datas.age', 'user_datas.gender',
+                    'user_datas.dob', 'user_datas.address_line', 'user_datas.city', 'user_datas.state'
+                    , 'user_datas.pincode', 'credit_details.credit_limit', 'credit_details.credit_score')
+                ->first();
+            $data = compact('lenderloans', 'basicInfo', );
             return response()->json([
                 'message' => $data,
                 'status' => 200,
