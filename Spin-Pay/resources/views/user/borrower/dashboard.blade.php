@@ -446,7 +446,7 @@
         });
         $('#profile').click(function() {
             $.ajax({
-                url: 'http://localhost:8000/api/ShowUsersDetails',
+                url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
                 data: {
                     id: 2
@@ -523,6 +523,7 @@
             });
         });
         $('#documents').click(function() {
+            // console.log("hola");
             $('#dashboard-div').hide();
             $("#loan-div").hide();
             $('#loanApply-div').hide();
@@ -535,10 +536,10 @@
             var hd = 'Document Details';
             $('#detailHeading').append(hd);
             $.ajax({
-                url: 'http://localhost:8000/api/ShowUsersDetails',
+                url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
-                data: {
-                    id: 46
+                data:{
+                      id: 46
                 },
                 beforeSend: function() {
                     $('#documents').addClass('navbarBtn');
@@ -549,7 +550,7 @@
                     $('#profile').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    // console.log(response[1]);
+                    console.log(response[1]);
                     var details = {};
                     var documentcheck = {
                         one: false,
@@ -841,10 +842,10 @@
             if (documentNumber == 31 || documentNumber == 32 || documentNumber == 33) {
                 $('#document_input').prop('value', documentNumber);
             }
-            if(MasterdocumentNumber==4){
+            if (MasterdocumentNumber == 4) {
                 $('#document_input').prop('value', documentNumber);
             }
-            let upload = new FormData(document.getElementById('documentsReUploads'));   
+            let upload = new FormData(document.getElementById('documentsReUploads'));
             upload.append('user_id', 46);
             upload.append('master_document_id', MasterdocumentNumber);
 
@@ -908,15 +909,15 @@
         if (master_document_id == 3) {
             if (document_number == 31) {
                 heading = "Pan Slip 1";
-                document=31;
+                document = 31;
             }
             if (document_number == 32) {
                 heading = "Pan Slip 2";
-                document=32;
+                document = 32;
             }
             if (document_number == 33) {
                 heading = "Pan Slip 3";
-                document=33;
+                document = 33;
             }
             url = "http://localhost:8000/api/payslip";
             $('#document_input').css('display', 'none')
@@ -925,16 +926,17 @@
             heading = "Bank Statement";
             url = "http://localhost:8000/api/bankstatement";
             $('#document_input').css('display', 'none');
-            document=41;
+            document = 41;
         }
         let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
-            '</p><p style="display:none" id="documentNumber"' + '>' + document + '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
+            '</p><p style="display:none" id="documentNumber"' + '>' + document +
+            '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
         $('#exampleModalLabel').html(heading);
         $('#modalerror').append(ptag)
         $('#modalid').click();
     }
 
-    function closeButton(){
+    function closeButton() {
         $('#documents').click();
     }
 </script>

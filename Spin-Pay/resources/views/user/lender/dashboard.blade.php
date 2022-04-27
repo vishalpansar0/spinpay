@@ -544,7 +544,7 @@
         });
         $('#profile').click(function() {
             $.ajax({
-                url: '/api/ShowUsersDetails',
+                url: '/api/showuserdetails',
                 type: 'GET',
                 data: {
                     id: 2
@@ -633,7 +633,7 @@
             var hd = 'All the Documnets';
             $('#detailHeading').append(hd);
             $.ajax({
-                url: '/api/ShowUsersDetails',
+                url: '/api/showuserdetails',
                 type: 'GET',
                 data: {
                     id: 3
@@ -865,7 +865,7 @@
     });
 
     function ViewDetails(details) {
-        // console.log(details);
+        console.log(details);
         console.log('check');
         $('#borrowerdetails').click();
         $('#exampleModalLabel').html('for checking');
