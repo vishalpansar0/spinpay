@@ -43,7 +43,7 @@
 
     </div>
     <div class="right-main-div">
-        
+
         {{-- docs view modal --}}
         <!-- Button trigger modal -->
         {{-- <button style="float:right;margin-top:7px;text-decoration:none;"
@@ -56,7 +56,8 @@
 
         <div style="display:flex;height:350px;padding:20px;">
             <div class="userImageContainer" style="width:20%">
-                <img src="{{ asset('storage') }}/{{$user->image}}"  style="min-width:100%;max-width:100%;min-height:100%;max-height:100%;border-radius: 10px">
+                <img src="{{ asset('storage') }}/{{ $user->image }}"
+                    style="min-width:100%;max-width:100%;min-height:100%;max-height:100%;border-radius: 10px">
             </div>
             <div class="userDataContainer" style="margin-left:2%;width:30%">
                 <div>
@@ -180,13 +181,12 @@
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
                 <embed src="
-                {{-- @if ($aadhar->document_image != "" )
+                {{-- @if ($aadhar->document_image != '')
                    {{ asset('storage') }}/{{$aadhar->document_image}}
                 @else    
                    {{ url('/images/notAvailable.png') }}
                 @endif --}}
-                " id="aadhar_image" width="100%" height="400px"
-                    style="border-radius: 10px;"/>
+                " id="aadhar_image" width="100%" height="400px" style="border-radius: 10px;" />
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
@@ -210,9 +210,10 @@
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
                                 style="width:100%" onclick="viewImage('aadhar_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                                id="aadharAprBtn" style="width:100%">Approve</button></div>
+                                id="aadharAprBtn" onclick="AprvDoc({{ $user->id }},1,'approved','aadharAprBtn','aadhar_status')"
+                                style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                            id="aadharRejectBtn" style="width:100%">Reject</button></div>
+                                id="aadharRejectBtn" onclick="AprvDoc({{ $user->id }},1,'reject','aadharRejectBtn','aadhar_status')" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -221,13 +222,12 @@
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
                 <embed src="
-                {{-- @if ($pan->document_image != "" )
+                {{-- @if ($pan->document_image != '')
                    {{ asset('storage') }}/{{$pan->document_image}}
                 @else    
                    {{ url('/images/notAvailable.png') }}
                 @endif --}}
-                " id="pan_image" width="100%" height="400px"
-                    style="border-radius: 10px" />
+                " id="pan_image" width="100%" height="400px" style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
@@ -251,9 +251,9 @@
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
                                 style="width:100%" onclick="viewImage('pan_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                            id="panAprBtn" style="width:100%">Approve</button></div>
+                                id="panAprBtn" onclick="AprvDoc({{ $user->id }},2,'approved','panAprBtn','pan_status')" style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                            id="panRejectBtn" style="width:100%">Reject</button></div>
+                                id="panRejectBtn" onclick="AprvDoc({{ $user->id }},2,'reject','panRejectBtn','pan_status')" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -261,8 +261,7 @@
             </div>
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="" id="bankslip_image" width="100%" height="400px"
-                    style="border-radius: 10px" />
+                <embed src="" id="bankslip_image" width="100%" height="400px" style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
@@ -286,10 +285,9 @@
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
                                 style="width:100%" onclick="viewImage('bankslip_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                            id="bankSlipAprBtn" style="width:100%">Approve</button></div>
+                                id="bankSlipAprBtn" onclick="AprvDoc({{ $user->id }},4,'approved','bankSlipAprBtn','bankSlip_status')" style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                            id="bankSlipRejectBtn" style="width:100%">Reject</button></div>
-
+                                id="bankSlipRejectBtn" onclick="AprvDoc({{ $user->id }},4,'reject','bankSlipRejectBtn','bankSlip_status')" style="width:100%">Reject</button></div>
                     </div>
 
                 </div>
@@ -430,116 +428,149 @@
             </div>
             <div class="modal-body" style="min-width:90vw;min-height:90vh">
                 <embed id="modal-image-view" src="
-                {{-- @if ($aadhar->document_image != "" ) --}}
+                {{-- @if ($aadhar->document_image != '') --}}
                     {{-- {{ asset('storage') }}/{{$aadhar[0]->document_image}} --}}
                  {{-- @else    
                     {{ url('/images/notAvailable.png') }}
                  @endif --}}
-                 " width="100%" height="1000px"
-                    style="border-radius: 10px" />
+                 " width="100%" height="1000px" style="border-radius: 10px" />
             </div>
         </div>
     </div>
 </div>
 
 
-{{-- <p id="test111"></p> --}}
-{{-- <button onclick="getData()">get data</button> --}}
-{{-- <script>
-  fetch('http://localhost:8000/api/fetchUserDocs/46')
-  .then(response => response.json())
-  .then(data => console.log(data));
-</script> --}}
 @include('agent.agentLayouts.jsAgent')
 <script>
-        $(document).ready(function() {
-                $.ajax({
-                    url: "/api/fetchUserDocs/46",
-                    type: "get",
-                    dataType: "json",
-                    // data: getData,
-                    beforeSend: function() {
-                    
-                    },      
-                    success: function(response) {
-                        console.log(response);
-                        if(response['aadhar_image']!=""){
-                            $('#aadhar_image').prop('src','{{ asset("storage") }}/'+response['aadhar_image']);
-                            $('#aadhar_num').html(response['aadhar_num']);
-                            if(response['isAdhrVer']=="pending"){
-                                $('#aadhar_status').html(response['isAdhrVer']);
-                                $('#aadhar_status').css('color','orange');
-                            }else if(response['isAdhrVer']=="approved"){
-                                $('#aadhar_status').html(response['isAdhrVer']);
-                                $('#aadhar_status').css('color','green');
-                                $('#aadharAprBtn').prop('disabled',true);
-                            }else if(response['isAdhrVer']=="reject"){
-                                $('#aadhar_status').html(response['isAdhrVer']);
-                                $('#aadhar_status').css('color','red');
-                                $('#aadharRejectBtn').prop('disabled',true);
-                            }else{
-                                $('#aadhar_status').html('Not assigned');
-                                $('#aadhar_status').css('color','aqua');
-                            }
-                        }else{
-                            $('#aadhar_image').prop('src',"{{ asset('/images/notAvailable.png') }}");
-                            $('#aadhar_num').html('not available');
-                        }
-                        if(response['pan_image']!=""){
-                            $('#pan_image').prop('src','{{ asset("storage") }}/'+response['pan_image']);
-                            $('#pan_num').html(response['pan_num']);
-                            if(response['isPanVer']=="pending"){
-                                $('#pan_status').html(response['isPanVer']);
-                                $('#pan_status').css('color','orange');
-                            }else if(response['isPanVer']=="approved"){
-                                $('#pan_status').html(response['isPanVer']);
-                                $('#pan_status').css('color','green');
-                                $('#panAprBtn').prop('disabled',true);
-                            }else if(response['isPanVer']=="reject"){
-                                $('#pan_status').html(response['isPanVer']);
-                                $('#pan_status').css('color','red');
-                                $('#panRejectBtn').prop('disabled',true);
-                            }else{
-                                $('#pan_status').html('Not assigned');
-                                $('#pan_status').css('color','aqua');
-                            }
-                        }else{
-                            $('#pan_image').prop('src',"{{ asset('/images/notAvailable.png') }}");
-                            $('#pan_num').html('not available');
-                        }
-                        if(response['bankslip_image']!=""){
-                            $('#bankslip_image').prop('src','{{ asset("storage") }}/'+response['bankslip_image']);
-                            $('#bankslip_num').html('Not assigned');
-                            if(response['isBsVer']=="pending"){
-                                $('#bankSlip_status').html(response['isBsVer']);
-                                $('#bankSlip_status').css('color','orange');
-                            }else if(response['isBsVer']=="approved"){
-                                $('#bankSlip_status').html(response['isBsVer']);
-                                $('#bankSlip_status').css('color','green');
-                                $('#bankSlipAprBtn').prop('disabled',true);
-                            }else if(response['isBsVer']=="reject"){
-                                $('#bankSlip_status').html(response['isBsVer']);
-                                $('#bankSlip_status').css('color','red');
-                                $('#bankSlipRejectBtn').prop('disabled',true);
-                            }else{
-                                $('#bankSlip_status').html('Not assigned');
-                                $('#bankSlip_status').css('color','aqua');
-                            }
-                        }else{
-                            $('#bankslip_image').prop('src',"{{ asset('/images/notAvailable.png') }}");
-                            $('#bankslip_num').html('not available');
-                        }
+    $(document).ready(function() {
+        $.ajax({
+            url: "/api/fetchUserDocs/"+{{$user->id}},
+            type: "get",
+            dataType: "json",
+            // data: getData,
+            beforeSend: function() {
 
-                        $('#modal-image-view').prop('src','{{ asset("storage") }}/'+response['aadhar_image']);
+            },
+            success: function(response) {
+                console.log(response);
+                if (response['aadhar_image'] != "") {
+                    $('#aadhar_image').prop('src', '{{ asset('storage') }}/' + response[
+                        'aadhar_image']);
+                    $('#aadhar_num').html(response['aadhar_num']);
+                    if (response['isAdhrVer'] == "pending") {
+                        $('#aadhar_status').html(response['isAdhrVer']);
+                        $('#aadhar_status').css('color', 'orange');
+                    } else if (response['isAdhrVer'] == "approved") {
+                        $('#aadhar_status').html(response['isAdhrVer']);
+                        $('#aadhar_status').css('color', 'green');
+                        $('#aadharAprBtn').prop('disabled', true);
+                    } else if (response['isAdhrVer'] == "reject") {
+                        $('#aadhar_status').html(response['isAdhrVer']);
+                        $('#aadhar_status').css('color', 'red');
+                        $('#aadharRejectBtn').prop('disabled', true);
+                    } else {
+                        $('#aadhar_status').html('Not assigned');
+                        $('#aadhar_status').css('color', 'aqua');
                     }
-                });
+                } else {
+                    $('#aadhar_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
+                    $('#aadhar_num').html('not available');
+                    $('#aadharAprBtn').prop('disabled', true);
+                    $('#aadharRejectBtn').prop('disabled', true);
+                }
+                if (response['pan_image'] != "") {
+                    $('#pan_image').prop('src', '{{ asset('storage') }}/' + response[
+                        'pan_image']);
+                    $('#pan_num').html(response['pan_num']);
+                    if (response['isPanVer'] == "pending") {
+                        $('#pan_status').html(response['isPanVer']);
+                        $('#pan_status').css('color', 'orange');
+                    } else if (response['isPanVer'] == "approved") {
+                        $('#pan_status').html(response['isPanVer']);
+                        $('#pan_status').css('color', 'green');
+                        $('#panAprBtn').prop('disabled', true);
+                    } else if (response['isPanVer'] == "reject") {
+                        $('#pan_status').html(response['isPanVer']);
+                        $('#pan_status').css('color', 'red');
+                        $('#panRejectBtn').prop('disabled', true);
+                    } else {
+                        $('#pan_status').html('Not assigned');
+                        $('#pan_status').css('color', 'aqua');
+                    }
+                } else {
+                    $('#pan_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
+                    $('#pan_num').html('not available');
+                    $('#panRejectBtn').prop('disabled', true);
+                    $('#panAprBtn').prop('disabled', true);
+                }
+                if (response['bankslip_image'] != "") {
+                    $('#bankslip_image').prop('src', '{{ asset('storage') }}/' + response[
+                        'bankslip_image']);
+                    $('#bankslip_num').html('Not assigned');
+                    if (response['isBsVer'] == "pending") {
+                        $('#bankSlip_status').html(response['isBsVer']);
+                        $('#bankSlip_status').css('color', 'orange');
+                    } else if (response['isBsVer'] == "approved") {
+                        $('#bankSlip_status').html(response['isBsVer']);
+                        $('#bankSlip_status').css('color', 'green');
+                        $('#bankSlipAprBtn').prop('disabled', true);
+                    } else if (response['isBsVer'] == "reject") {
+                        $('#bankSlip_status').html(response['isBsVer']);
+                        $('#bankSlip_status').css('color', 'red');
+                        $('#bankSlipRejectBtn').prop('disabled', true);
+                    } else {
+                        $('#bankSlip_status').html('Not assigned');
+                        $('#bankSlip_status').css('color', 'aqua');
+                    }
+                } else {
+                    $('#bankslip_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
+                    $('#bankslip_num').html('not available');
+                    $('#bankSlipAprBtn').prop('disabled', true);
+                    $('#bankSlipRejectBtn').prop('disabled', true);
+                }
+                $('#modal-image-view').prop('src', '{{ asset('storage') }}/' + response[
+                    'aadhar_image']);
+            }
+        });
+
     });
-    function viewImage(divId){
+
+    function viewImage(divId) {
         var obj = document.getElementById(divId);
         var image_source = obj.src;
         console.log(image_source);
-        $("#modal-image-view").prop('src',image_source);
+        $("#modal-image-view").prop('src', image_source);
         $('#openModalBtn').click();
     }
+    function AprvDoc(userId, docId, request , btnId, docStatus) {
+        console.log(userId + " " + docId);
+        const getData = {
+            'user_id' : userId,
+            'doc_id' : docId,
+            'request_type': request,
+        };
+        $.ajax({
+            url: "/api/DocAprv",
+            type: "post",
+            // dataType: "json",
+            data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                if(response['status']==200){
+                    $('#'+docStatus).html(request);
+                    $('#'+btnId).prop('disabled', true);
+                    $('#'+btnId).prop('color', 'green');
+                }else if(response['status']==400){
+                    alert('failed');
+                }
+                
+
+            }
+        });
+    }
+
+
 </script>
 @include('agent.agentLayouts.footer')

@@ -63,7 +63,7 @@ class AgentDashboardController extends Controller
             $basicInfo = Users::where('users.id',$req)
                     ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
                     ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
-                    ->select('users.name','users.email','users.phone','users.role_id','users.created_at','user_datas.age' ,'user_datas.gender',
+                    ->select('users.id','users.name','users.email','users.phone','users.role_id','users.created_at','user_datas.age' ,'user_datas.gender',
                     'user_datas.dob','user_datas.status','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
                     ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
                     ->first();
@@ -87,10 +87,66 @@ class AgentDashboardController extends Controller
     }
 
     public function fetchUserDocs($req){
-        try{
+    try{
             $aadhar = UserDocument::where('user_id',$req)->where('master_document_id',1)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
             $pan = UserDocument::where('user_id',$req)->where('master_document_id',2)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
             $bankslip = UserDocument::where('user_id',$req)->where('master_document_id',4)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $payslip1 = UserDocument::where('user_id',$req)->where('master_document_id',3)->where('document_number',31)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $payslip2 = UserDocument::where('user_id',$req)->where('master_document_id',3)->where('document_number',32)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            $payslip3 = UserDocument::where('user_id',$req)->where('master_document_id',3)->where('document_number',33)->select('master_document_id','document_number','document_image','is_verified')->get()->first();
+            
+            if(!$bankslip){
+                return response()->json([
+                    'aadhar_image'=>$aadhar->document_image,
+                    'aadhar_num'=>$aadhar->document_number,
+                    'isAdhrVer'=>$aadhar->is_verified,
+                    'pan_image'=>$pan->document_image,
+                    'pan_num'=>$pan->document_number,
+                    'isPanVer'=>$pan->is_verified,
+                    'bankslip_image'=>"",
+                    'bankslip_num'=>"",
+                    'isBsVer'=>"",
+                ]); 
+            }
+            if(!$aadhar){
+                return response()->json([
+                    'aadhar_image'=>"",
+                'aadhar_num'=>"",
+                'isAdhrVer'=>"",
+                'pan_image'=>$pan->document_image,
+                'pan_num'=>$pan->document_number,
+                'isPanVer'=>$pan->is_verified,
+                'bankslip_image'=>$bankslip->document_image,
+                'bankslip_num'=>$bankslip->document_number,
+                'isBsVer'=>$bankslip->is_verified,
+                ]); 
+            }
+            if(!$pan){
+                return response()->json([
+                    'aadhar_image'=>$aadhar->document_image,
+                    'aadhar_num'=>$aadhar->document_number,
+                    'isAdhrVer'=>$aadhar->is_verified,
+                    'pan_image'=>"",
+                    'pan_num'=>"",
+                    'isPanVer'=>"",
+                    'bankslip_image'=>$bankslip->document_image,
+                    'bankslip_num'=>$bankslip->document_number,
+                    'isBsVer'=>$bankslip->is_verified,
+                ]); 
+            }
+            // if(!$payslip1){
+            //     return response()->json([
+            //         'aadhar_image'=>$aadhar->document_image,
+            //         'aadhar_num'=>$aadhar->document_number,
+            //         'isAdhrVer'=>$aadhar->is_verified,
+            //         'pan_image'=>"",
+            //         'pan_num'=>"",
+            //         'isPanVer'=>"",
+            //         'bankslip_image'=>$bankslip->document_image,
+            //         'bankslip_num'=>$bankslip->document_number,
+            //         'isBsVer'=>$bankslip->is_verified,
+            //     ]); 
+            // }
             return response()->json([
                 'aadhar_image'=>$aadhar->document_image,
                 'aadhar_num'=>$aadhar->document_number,
@@ -101,27 +157,38 @@ class AgentDashboardController extends Controller
                 'bankslip_image'=>$bankslip->document_image,
                 'bankslip_num'=>$bankslip->document_number,
                 'isBsVer'=>$bankslip->is_verified,
+                // 'paySlip1'=>[$payslip1->document_image,$payslip1->is_verified],
+                // 'paySlip1'=>$payslip1->is_verified,
+                // 'paySlip2'=>$payslip2->document_image,
+                // 'paySlip2'=>$payslip2->is_verified,
+                // 'paySlip3'=>$payslip3->document_image,
+                // 'paySlip3'=>$payslip3->is_verified,
             ]);
         }
         catch(QueryException $e){
             return response()->json([
-                'message' => $e,
+                'message' => 'Internal Server Error',
                 "status" => 500
             ]);
-        } 
-        
-        
+        }
+       
     }
 
     public function DocAprv(Request $req){
         try{
             $query = UserDocument::where('user_id', $req['user_id'])
-                          ->where('master_document_id',$req['master_document_id'])
-                          ->update(['is_verified' => $req['is_verified']]);
+                          ->where('master_document_id',$req['doc_id'])
+                          ->update(['is_verified' => $req['request_type']]);
             if($query)
-                return "success";
+            return response()->json([
+                'message' => 'success',
+                "status" => 200
+            ]);
             else
-                return "failed";
+            return response()->json([
+                'message' => 'failed',
+                "status" => 400
+            ]);
         }
         catch(QueryException $e){
             return response()->json([
