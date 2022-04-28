@@ -117,11 +117,8 @@ class Lender extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'borrower_id' => 'required',
             'lender_id' => 'required',
-            'amount_request' => 'required',
-            'tenure' => 'required',
-            'request_id' => 'required',
+            'request_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -137,15 +134,18 @@ class Lender extends Controller
                 'status' => 400,
             ]);
         }
+        $requesttb = new Requests();
+        $requestdata = $requesttb->where('id',$request['request_id'])->get()->first();
+        $userrequestID=$requestdata->user_id;
         $loan = new Loan();
-        if ($loan->where('borrower_id', $request['borrower_id'])->where('status', 'ongoing')->get()->first()) {
+        if ($loan->where('borrower_id', $userrequestID)->where('status', 'ongoing')->get()->first()) {
             return response()->json([
                 'message' => "One loan going on",
                 'status' => 400,
             ]);
         }
         try {
-            if ($request->tenure > 5) {
+            if ($requestdata->tenure > 5) {
                 return response()->json([
                     'message' => 'tenure should not be greater than Five Months',
                     'status' => 400,
@@ -153,7 +153,7 @@ class Lender extends Controller
             }
             $wallet = new Wallet();
             $userdetails = $wallet->where('user_id', $request['lender_id'])->get()->first();
-            if ($userdetails->amount < $request['amount_request']) {
+            if ($userdetails->amount < $requestdata->amount) {
                 return response()->json([
                     'message' => 'Insufficient Amount',
                     'status' => 400,
@@ -162,16 +162,16 @@ class Lender extends Controller
 
             $transaction = new Transaction();
             $transaction->from_id = $request['lender_id'];
-            $transaction->to_id = $request['borrower_id'];
-            $transaction->type = 'deburst';
-            $transaction->amount = $request['amount_request'];
+            $transaction->to_id = $userrequestID;
+            $transaction->type = 'disburse';
+            $transaction->amount = $requestdata->amount;
             $transaction->status = 'successfull';
             $isTransactSuccessfull = $transaction->save();
             if ($isTransactSuccessfull) {
 
                 // updating wallet balance
                 $newbalance = $wallet->where('user_id', $request['lender_id'])->get()->first()->amount;
-                $wallet->where('user_id', $request['lender_id'])->update(['amount' => $newbalance - $request['amount_request']]);
+                $wallet->where('user_id', $request['lender_id'])->update(['amount' => $newbalance - $requestdata->amount]);
 
                 // updating request status from pending to approve
                 $userrequests = new Requests();
@@ -179,21 +179,21 @@ class Lender extends Controller
                 $userrequests->where('id', $request['request_id'])->update(['updated_at' => \Carbon\Carbon::now()]);
 
                 // Processing fee depends on loan amount
-                $processingFee = ($request['amount_request'] / 500) * 10;
+                $processingFee = ($requestdata->amount / 500) * 10;
 
                 // Creating entry into loan table
                 $loan->request_id = $request['request_id'];
-                $loan->borrower_id = $request['borrower_id'];
+                $loan->borrower_id = $userrequestID;
                 $loan->lender_id = $request['lender_id'];
-                $loan->interest = 0.05 * $request['amount_request'];
+                $loan->interest = 0.05 * $requestdata->amount;
                 $loan->processing_fee = $processingFee;
                 $loan->late_fee = 20;
-                $loan->amount = $request['amount_request'] - $processingFee;
+                $loan->amount = $requestdata->amount - $processingFee;
                 $loan->sent_transaction_id = $transaction->id;
                 $loan->repayment_transaction_id = null;
                 $loan->status = 'ongoing';
                 $loan->start_date = \Carbon\Carbon::now();
-                $loan->end_date = \Carbon\Carbon::now()->addMonths($request['tenure']);
+                $loan->end_date = \Carbon\Carbon::now()->addMonths($requestdata->tenure);
 
                 if ($loan->save()) {
                     return response()->json([
@@ -216,7 +216,7 @@ class Lender extends Controller
             }
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
+                'message' => $e,
                 "status" => 500,
             ]);
         }
