@@ -71,7 +71,7 @@ class RaiseIssue extends Controller
                 'status'=>200
             ]);
         }
-        catch(QeryException $e){
+        catch(QueryException $e){
             return response()->json([
                 // 'message'=>"Internal Server Error",
                 'message'=>$e,

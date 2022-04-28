@@ -449,7 +449,7 @@
                 url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
                 data: {
-                    id: 47
+                    id: 2
                 },
                 beforeSend: function() {
                     $('#profile').addClass('navbarBtn');
@@ -511,13 +511,13 @@
                         var location = '<h3 style = "color:white">' + response[0].city +
                             '</h3>';
                         $('#location-div').append(location);
-                        var path = '{{asset("storage")}}/';
+
                         var pfeimage =
-                            '<img src="'+path+response[0].image +
+                            '<img src="' + response[0].image +
                             '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
                         $('#photo-container').append(pfeimage);
                         var down = "";
-                        console.log(response[0].image );
+
                     }
                 }
             });
@@ -839,6 +839,12 @@
             let MasterdocumentNumber = $('#MasterdocumentNumber').text();
 
             // console.log(documentNumber);
+            if (documentNumber == 31 || documentNumber == 32 || documentNumber == 33) {
+                $('#document_input').prop('value', documentNumber);
+            }
+            if (MasterdocumentNumber == 4) {
+                $('#document_input').prop('value', documentNumber);
+            }
             let upload = new FormData(document.getElementById('documentsReUploads'));
             upload.append('user_id', 46);
             upload.append('master_document_id', MasterdocumentNumber);
@@ -899,6 +905,28 @@
         if (master_document_id == 2) {
             heading = "Pan Card";
             url = "http://localhost:8000/api/pancard";
+        }
+        if (master_document_id == 3) {
+            if (document_number == 31) {
+                heading = "Pan Slip 1";
+                document = 31;
+            }
+            if (document_number == 32) {
+                heading = "Pan Slip 2";
+                document = 32;
+            }
+            if (document_number == 33) {
+                heading = "Pan Slip 3";
+                document = 33;
+            }
+            url = "http://localhost:8000/api/payslip";
+            $('#document_input').css('display', 'none')
+        }
+        if (master_document_id == 4) {
+            heading = "Bank Statement";
+            url = "http://localhost:8000/api/bankstatement";
+            $('#document_input').css('display', 'none');
+            document = 41;
         }
         let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
             '</p><p style="display:none" id="documentNumber"' + '>' + document +

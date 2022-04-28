@@ -10,6 +10,8 @@
         <div class="ul"><button class="" id="transaction">TRANSACTION</button></div>
         <div class="ul"><button class="" id="profile">PROFILE</button></div>
         <div class="ul"><button class="" id="documents">DOCUMENTS</button></div>
+        <div class="ul"><button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#exampleModalquery" data-whatever="@mdo">ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
         <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white">Hide</button>
@@ -171,6 +173,7 @@
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
+                        <div id="lenderdocsuploadkre"></div>
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -180,14 +183,14 @@
                         <div class="modal-body">
                             <form id="lenderdocuments">
                                 <input type="text" name="document_number" id="document_input" required>
-                                    <input type="file" name="document_image" id="document_input_image" required>
+                                <input type="file" name="document_image" id="document_input_image" required>
 
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            style="display: none" id="close">Close</button>
-                                        <button type="submit" class="btn btn-primary"
-                                            id="documentUploadlender">Upload</button>
-                                    </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        style="display: none" id="close">Close</button>
+                                    <button type="submit" class="btn btn-primary"
+                                        id="documentUploadlender">Upload</button>
+                                </div>
                             </form>
                         </div>
 
@@ -291,7 +294,7 @@
         </div>
     </div>
 
-    {{-- Borrower give --}}
+    {{-- Borrower give loan --}}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModala" id="giveloan"
         style="display: none">
         Launch demo modal
@@ -303,21 +306,65 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Payment Gateway</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <p style="display: none" id="PassingRequestID"></p>
-                    <div style="background-color:red;height:200px; "></div>
+                <div class="modal-body" style="height: 250px">
+                    <div style="height:100px">
+                        <h1>This is temporaray payment gateway</h1>
+                    </div>
+                    <p style="display: none;" id="PassingRequestID"></p>
+                    <div class="alert alert-danger" role="alert" id="low_amount_error_message" style="display: none">
+                    </div>
+                    <p id="check"></p>
+
                 </div>
                 <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="display: none "
+                        id="modalhiddenloanapprove">Close</button>
                     <button type="button" class="btn btn-primary" id="completePayment">Complete Payment</button>
                 </div>
             </div>
         </div>
+    </div>
+
+{{-- any query from the user --}}
+    <div class="anyquery">
+        <div class="modal fade" id="exampleModalquery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Raise A Query</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="error">
+
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Category</label>
+                                <input type="text" class="form-control" id="category-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Issue</label>
+                                <textarea class="form-control" id="issue-text" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            id="closequery">Close</button>
+                        <button type="button" class="btn btn-primary" id="submitquery">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>  
     </div>
 
 </div>
@@ -501,9 +548,11 @@
                     $('#documents').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    if (response['status'] != 200) {
-                        // alert('We are facing some issue please try later');
-                        console.log(response);
+                    if (response['status'] == 300) {
+                        alert('Profile Verification Pending');
+                        // console.log(response);
+                    } else if (response['status'] != 200) {
+                        alert('We Are Facing Tetcnical Issue')
                     } else {
                         isapproved = "-";
                         $('#dashboard-div').hide();
@@ -538,7 +587,7 @@
                                 item.user_id + '\')">viewdetails</button>' +
                                 '</td><td>' +
                                 '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "GiveLoan(\'' +
-                                item.user_id + '\')">aprove <button>' +
+                                item.id + '\')">aprove <button>' +
                                 '</td></tr>';
                         });
                         $('#request_row').append(trHTML);
@@ -552,7 +601,7 @@
                 url: '/api/showuserdetails',
                 type: 'GET',
                 data: {
-                    id: 2
+                    id: 47
                 },
                 beforeSend: function() {
                     $('#profile').addClass('navbarBtn');
@@ -616,7 +665,7 @@
                         $('#location-div').append(location);
 
                         var pfeimage =
-                            '<img src="' + response[0].image +
+                            '<img src="' + '{{ asset('storage') }}/' + response[0].image +
                             '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
                         $('#photo-container').append(pfeimage);
                         var down = "";
@@ -641,7 +690,7 @@
                 url: '/api/showuserdetails',
                 type: 'GET',
                 data: {
-                    id: 3
+                    id: 46
                 },
                 beforeSend: function() {
                     $('#documents').addClass('navbarBtn');
@@ -845,13 +894,8 @@
             let documentNumber = $('#documentNumber').text();
             let MasterdocumentNumber = $('#MasterdocumentNumber').text();
 
-            // console.log(documentNumber);
-            if (documentNumber == 31 || documentNumber == 32 || documentNumber == 33) {
-                $('#document_input').prop('value', documentNumber);
-            }
-            if (MasterdocumentNumber == 4) {
-                $('#document_input').prop('value', documentNumber);
-            }
+            console.log(apiurl, '  ', MasterdocumentNumber);
+
             let upload = new FormData(document.getElementById('lenderdocuments'));
             upload.append('user_id', 46);
             upload.append('master_document_id', MasterdocumentNumber);
@@ -918,45 +962,74 @@
 
         $('#completePayment').click(function() {
             // console.log('modal button clicked');
-            let userids = $('#PassingRequestID').text();
-            // console.log()
+            let userrequestids = $('#PassingRequestID').text();
+            console.log(userrequestids)
             $.ajax({
-                url: "/api/showborrower",
+                url: "/api/approveloan",
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    'user_id': userids
+                    'lender_id': 46,
+                    'request_id': userrequestids
                 },
                 success: function(result) {
-                    // console.log(result.message);
-                    let ids = {
-                        name: "#ModalBname",
-                        gender: "#ModalBgender",
-                        city: "#ModalBcity",
-                        state: "#ModalBstate",
-                        totalloan: "#ModalBtotal",
-                        repaid: "#ModalBrepaid",
-                        cscore: "#ModalBcreditscore",
-                        climit: "#ModalBcreditlimit"
-                    };
-                    $(ids.name).html(result.message.basicInfo.name);
-                    $(ids.gender).html(result.message.basicInfo.gender);
-                    $(ids.city).html(result.message.basicInfo.city);
-                    $(ids.state).html(result.message.basicInfo.state);
-                    $(ids.cscore).html(result.message.basicInfo.credit_score);
-                    $(ids.climit).html(result.message.basicInfo.credit_limit);
-                    $(ids.totalloan).html(result.message.lenderloans.total);
-                    $(ids.repaid).html(result.message.lenderloans.repaid);
+                    $('#low_amount_error_message').show();
+                    console.log(result);
+                    $('#low_amount_error_message').html(result['message']);
+                    // if(result['status']==500){
+                    //     $('#low_amount_error_message').show();
+                    //     $('#low_amount_e
+                    // }
+                    $('#modalhiddenloanapprove').click();
+                    $('#request').click();
+
                 }
             });
         });
 
-         
+        // query
+        $('#submitquery').click(function(event) {
+            $('#error').empty();
+            event.preventDefault();
+            let category = $('#category-name').val();
+            let issue = $('#issue-text').val();
+            if (category == "" || issue == "") {
+                $('#error').append("<p style='color:red'>*Fields Cannot Be Empty</p>");
+            } else {
+                let raisequery = {
+                    'user_id':1,
+                    'category':category,
+                    'user_message':issue
+                }
+                $.ajax({
+                    url: 'api/raise/query',
+                    type: 'post',
+                    data: raisequery,
+                    success: function(response) {
+                        if(response['status']==401){
+                            let ptag = "<p style='color:red'>*" + response['Validation Failed'] + "</p>"
+                            $('#error').append(ptag);
+                        }
+                        else if (response['status'] != 200) {
+                            let ptag = "<p style='color:red'>*" + response['message'] + "</p>"
+                            $('#error').append(ptag);
+
+                        } else {
+                            $('#closequery').click();
+                        }
+                    }
+                });
+
+            }
+
+        });
+
+
     });
 
     function ViewDetails(details) {
         // console.log(details);
-        // console.log('check');
+        // console.log('check');apiurl,'  ',MasterdocumentNumber
         $('#PassingRequestID').html(details);
         $('#borrowerdetails').click();
         // $('#exampleModalLabel').html('for checking');
@@ -981,11 +1054,10 @@
     }
 
     function DocumentReupload(master_document_id, document_number) {
+        // console.log(master_document_id," // ",document_number);
         $('#document_input').css('display', 'block')
-        // console.log(master_document_id, " ", document_number);
         let heading = "";
         let url = "";
-        let document;
         // exampleModalLabel
         if (master_document_id == 1) {
             heading = "Aadhar Card";
@@ -996,33 +1068,13 @@
             heading = "Pan Card";
             url = "http://localhost:8000/api/pancard";
         }
-        if (master_document_id == 3) {
-            if (document_number == 31) {
-                heading = "Pan Slip 1";
-                document = 31;
-            }
-            if (document_number == 32) {
-                heading = "Pan Slip 2";
-                document = 32;
-            }
-            if (document_number == 33) {
-                heading = "Pan Slip 3";
-                document = 33;
-            }
-            url = "http://localhost:8000/api/payslip";
-            $('#document_input').css('display', 'none')
-        }
-        if (master_document_id == 4) {
-            heading = "Bank Statement";
-            url = "http://localhost:8000/api/bankstatement";
-            $('#document_input').css('display', 'none');
-            document = 41;
-        }
+
         let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
-            '</p><p style="display:none" id="documentNumber"' + '>' + document +
+            '</p><p style="display:none" id="documentNumber"' + '>' + document_number +
             '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
+        // console.log(ptag);
         $('#exampleModalLabel').html(heading);
-        $('#modalerror').append(ptag)
+        $('#lenderdocsuploadkre').append(ptag)
         $('#modalid').click();
     }
 
@@ -1031,8 +1083,5 @@
         // console.log(details);
         $('#PassingRequestID').html(details);
         $('#giveloan').click();
-        $('#exampleModalLabel').html('for checking');
-        // let ptag = "<p>"+details+"</p>";
-        // $('#exampleModalLabel').append(ptag);
     }
 </script>

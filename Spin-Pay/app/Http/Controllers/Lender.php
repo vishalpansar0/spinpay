@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\Users;
+use App\Models\UserData;
 use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -13,31 +14,44 @@ use Illuminate\Support\Facades\Validator;
 
 class Lender extends Controller
 {
-    public function ShowUsersDetails(Request $request){
-        try{
-            $basicInfo = Users::where('users.id',$request['id'])
-                    ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
-                    ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
-                    ->select('users.name','users.email','users.phone','users.role_id','user_datas.age', 'user_datas.gender',
-                    'user_datas.dob','user_datas.image','user_datas.address_line','user_datas.city','user_datas.state'
-                    ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
-                    ->first();
+    public function ShowUsersDetails(Request $request)
+    {
+        try {
+            $basicInfo = Users::where('users.id', $request['id'])
+                ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
+                ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
+                ->select(
+                    'users.name',
+                    'users.email',
+                    'users.phone',
+                    'users.role_id',
+                    'user_datas.age',
+                    'user_datas.gender',
+                    'user_datas.dob',
+                    'user_datas.image',
+                    'user_datas.address_line',
+                    'user_datas.city',
+                    'user_datas.state',
+                    'user_datas.pincode',
+                    'credit_details.credit_limit',
+                    'credit_details.credit_score'
+                )
+                ->first();
 
-        $docs = Users::where('users.id',$request['id'])
-                        ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
-                        ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
-                        ->get();
-        return response()->json([
-            $basicInfo,
-            $docs   
-        ]);
-        }
-        catch(QueryException $e){
+            $docs = Users::where('users.id', $request['id'])
+                ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
+                ->select('user_documents.master_document_id', 'user_documents.document_number', 'user_documents.document_image', 'user_documents.is_verified')
+                ->get();
+            return response()->json([
+                $basicInfo,
+                $docs
+            ]);
+        } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
                 "status" => 500
             ]);
-        } 
+        }
     }
 
     //Add Money To Wallet
@@ -135,8 +149,8 @@ class Lender extends Controller
             ]);
         }
         $requesttb = new Requests();
-        $requestdata = $requesttb->where('id',$request['request_id'])->get()->first();
-        $userrequestID=$requestdata->user_id;
+        $requestdata = $requesttb->where('id', $request['request_id'])->get()->first();
+        $userrequestID = $requestdata->user_id;
         $loan = new Loan();
         if ($loan->where('borrower_id', $userrequestID)->where('status', 'ongoing')->get()->first()) {
             return response()->json([
@@ -278,7 +292,14 @@ class Lender extends Controller
                 'status' => 400,
             ]);
         }
-
+        $userdatatb=new UserData();
+        $userdata = $userdatatb->where('user_id', $request['lender_id'])->get()->first();
+        if ($userdata->status == 'pending' || $userdata->status == 'reject  ') {
+            return response()->json([
+                'message' => 'Pending',
+                'status' => 300,
+            ]);
+        }
         try {
             $allrequest = new Requests();
             $lenderRequest = $allrequest->where('status', 'pending')->get();
@@ -340,7 +361,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 401,x
+                'status' => 401, x
             ]);
         }
         $user = new Users();
@@ -367,11 +388,20 @@ class Lender extends Controller
             $basicInfo = Users::where('users.id', $request['user_id'])
                 ->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')
                 ->leftjoin('credit_details', 'credit_details.user_id', '=', 'users.id')
-                ->select('users.name', 'user_datas.age', 'user_datas.gender',
-                    'user_datas.dob', 'user_datas.address_line', 'user_datas.city', 'user_datas.state'
-                    , 'user_datas.pincode', 'credit_details.credit_limit', 'credit_details.credit_score')
+                ->select(
+                    'users.name',
+                    'user_datas.age',
+                    'user_datas.gender',
+                    'user_datas.dob',
+                    'user_datas.address_line',
+                    'user_datas.city',
+                    'user_datas.state',
+                    'user_datas.pincode',
+                    'credit_details.credit_limit',
+                    'credit_details.credit_score'
+                )
                 ->first();
-            $data = compact('lenderloans', 'basicInfo', );
+            $data = compact('lenderloans', 'basicInfo',);
             return response()->json([
                 'message' => $data,
                 'status' => 200,
