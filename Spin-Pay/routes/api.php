@@ -105,9 +105,16 @@ Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
 Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreAndLimit']);
 
 
+//add credit_limit and credit_score
+Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
 
 
 
+
+
+
+
+    
 
 
 
