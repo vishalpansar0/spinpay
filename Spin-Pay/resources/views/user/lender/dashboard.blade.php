@@ -178,15 +178,16 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="documents">
-                                <input type="file" required name="document_image">
+                            <form id="lenderdocuments">
+                                <input type="text" name="document_number" id="document_input" required>
+                                    <input type="file" name="document_image" id="document_input_image" required>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        style="display: none" id="close">Close</button>
-                                    <button type="submit" class="btn btn-primary" onclick="uploadDocuments()"
-                                        id="documentUpload">Upload</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            style="display: none" id="close">Close</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            id="documentUploadlender">Upload</button>
+                                    </div>
                             </form>
                         </div>
 
@@ -241,7 +242,7 @@
                 </div>
                 <div class="modal-body">
                     <p style="display: none" id="PassingRequestID"></p>
-                    <div id= "basicdetails" style="display:flex">
+                    <div id="basicdetails" style="display:flex">
                         <div id="borrower_name" style=" margin-left:80px;width:250px">
                             <h5>Name</h5>
                             <p id="ModalBname">Sathwik</p>
@@ -308,11 +309,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <p style="display: none" id="PassingRequestID"></p>
                     <div style="background-color:red;height:200px; "></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                    <button type="button" class="btn btn-primary" id="completePayment">Complete Payment</button>
                 </div>
             </div>
         </div>
@@ -540,6 +542,7 @@
                                 '</td></tr>';
                         });
                         $('#request_row').append(trHTML);
+                        console.log(response);
                     }
                 }
             });
@@ -654,10 +657,6 @@
                     var documentcheck = {
                         one: false,
                         two: false,
-                        // threeone: false,
-                        // threetwo: false,
-                        // threethree: false,
-                        // four: false
                     }
                     var trHTML = "";
                     $.each(response[1], function(i, item) {
@@ -722,13 +721,17 @@
                     });
                     // console.log(documentcheck);
                     var reupload =
-                        '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)"  data-toggle="modal" data-target="#exampleModal">Re-Upload</button>';
+                        '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                        1 + '\'' + ',' + '\'' + 1 + '\')">reupload</button>';
                     if (documentcheck.one == false) {
                         trHTML +=
                             '<tr style="color:white"><td>Aadhar Card</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
                     if (documentcheck.two == false) {
+                        var reupload =
+                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                            2 + '\'' + ',' + '\'' + 2 + '\')">reupload</button>';
                         trHTML +=
                             '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
@@ -836,30 +839,43 @@
 
 
         // ReUploading Documents
-        $('#documentUpload').click(function(event) {
+        $('#documentUploadlender').click(function(event) {
             event.preventDefault();
-            let upload = new FormData(document.getElementById('documents'));
-            upload.append('user_id', user_id);
-            upload.append('master_document_id', 1);
-            // console.log(aadhardata.user_id);
+            let apiurl = $('#apiurl').text();
+            let documentNumber = $('#documentNumber').text();
+            let MasterdocumentNumber = $('#MasterdocumentNumber').text();
+
+            // console.log(documentNumber);
+            if (documentNumber == 31 || documentNumber == 32 || documentNumber == 33) {
+                $('#document_input').prop('value', documentNumber);
+            }
+            if (MasterdocumentNumber == 4) {
+                $('#document_input').prop('value', documentNumber);
+            }
+            let upload = new FormData(document.getElementById('lenderdocuments'));
+            upload.append('user_id', 46);
+            upload.append('master_document_id', MasterdocumentNumber);
+
             $.ajax({
-                url: "http://localhost:8000/api/aadhar",
+                url: apiurl,
                 type: 'post',
                 dataType: 'json',
-                data: aadhardata,
+                data: upload,
                 processData: false,
                 contentType: false,
                 success: function(result) {
-                    // console.log(result);
-                    console.log(result['status']);
+                    console.log(result);
+                    // console.log(result['status']);
                     if (result['status'] == 200) {
-                        hideDiv('#aadharUploadMainDiv', '#panUploadMainDiv');
+                        $('#modalerror').empty();
+                        $('#document_input_image').val('');
+                        $('#document_input').val('');
+                        $('#close').click();
                     } else {
-                        errormsg('#error', result['message'])
+                        $('#modalerror').append(result['message']);
                     }
                 }
             });
-            $('#close').click();
         });
 
 
@@ -872,19 +888,19 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    'user_id' : userids
+                    'user_id': userids
                 },
-                success: function(result) { 
+                success: function(result) {
                     // console.log(result.message);
-                    let ids={
-                        name:"#ModalBname",
-                        gender:"#ModalBgender",
-                        city:"#ModalBcity",
-                        state:"#ModalBstate",
-                        totalloan:"#ModalBtotal",
-                        repaid:"#ModalBrepaid",
-                        cscore:"#ModalBcreditscore",
-                        climit:"#ModalBcreditlimit"
+                    let ids = {
+                        name: "#ModalBname",
+                        gender: "#ModalBgender",
+                        city: "#ModalBcity",
+                        state: "#ModalBstate",
+                        totalloan: "#ModalBtotal",
+                        repaid: "#ModalBrepaid",
+                        cscore: "#ModalBcreditscore",
+                        climit: "#ModalBcreditlimit"
                     };
                     $(ids.name).html(result.message.basicInfo.name);
                     $(ids.gender).html(result.message.basicInfo.gender);
@@ -897,8 +913,45 @@
                 }
             });
         });
-     
-        
+
+
+
+        $('#completePayment').click(function() {
+            // console.log('modal button clicked');
+            let userids = $('#PassingRequestID').text();
+            // console.log()
+            $.ajax({
+                url: "/api/showborrower",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'user_id': userids
+                },
+                success: function(result) {
+                    // console.log(result.message);
+                    let ids = {
+                        name: "#ModalBname",
+                        gender: "#ModalBgender",
+                        city: "#ModalBcity",
+                        state: "#ModalBstate",
+                        totalloan: "#ModalBtotal",
+                        repaid: "#ModalBrepaid",
+                        cscore: "#ModalBcreditscore",
+                        climit: "#ModalBcreditlimit"
+                    };
+                    $(ids.name).html(result.message.basicInfo.name);
+                    $(ids.gender).html(result.message.basicInfo.gender);
+                    $(ids.city).html(result.message.basicInfo.city);
+                    $(ids.state).html(result.message.basicInfo.state);
+                    $(ids.cscore).html(result.message.basicInfo.credit_score);
+                    $(ids.climit).html(result.message.basicInfo.credit_limit);
+                    $(ids.totalloan).html(result.message.lenderloans.total);
+                    $(ids.repaid).html(result.message.lenderloans.repaid);
+                }
+            });
+        });
+
+         
     });
 
     function ViewDetails(details) {
@@ -927,17 +980,56 @@
         });
     }
 
-    function DocumentReupload(details) {
-        console.log(details);
+    function DocumentReupload(master_document_id, document_number) {
+        $('#document_input').css('display', 'block')
+        // console.log(master_document_id, " ", document_number);
+        let heading = "";
+        let url = "";
+        let document;
+        // exampleModalLabel
+        if (master_document_id == 1) {
+            heading = "Aadhar Card";
+            url = "http://localhost:8000/api/aadhar";
+
+        }
+        if (master_document_id == 2) {
+            heading = "Pan Card";
+            url = "http://localhost:8000/api/pancard";
+        }
+        if (master_document_id == 3) {
+            if (document_number == 31) {
+                heading = "Pan Slip 1";
+                document = 31;
+            }
+            if (document_number == 32) {
+                heading = "Pan Slip 2";
+                document = 32;
+            }
+            if (document_number == 33) {
+                heading = "Pan Slip 3";
+                document = 33;
+            }
+            url = "http://localhost:8000/api/payslip";
+            $('#document_input').css('display', 'none')
+        }
+        if (master_document_id == 4) {
+            heading = "Bank Statement";
+            url = "http://localhost:8000/api/bankstatement";
+            $('#document_input').css('display', 'none');
+            document = 41;
+        }
+        let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
+            '</p><p style="display:none" id="documentNumber"' + '>' + document +
+            '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
+        $('#exampleModalLabel').html(heading);
+        $('#modalerror').append(ptag)
         $('#modalid').click();
-        $('#exampleModalLabel').html(details.name);
-        // let ptag = "<p>"+details+"</p>";
-        // $('#exampleModalLabel').append(ptag);
     }
+
 
     function GiveLoan(details) {
         // console.log(details);
-        console.log('check');
+        $('#PassingRequestID').html(details);
         $('#giveloan').click();
         $('#exampleModalLabel').html('for checking');
         // let ptag = "<p>"+details+"</p>";
