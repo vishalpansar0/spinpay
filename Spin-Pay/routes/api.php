@@ -104,6 +104,13 @@ Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
 //add credit_limit and credit_score
 Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreAndLimit']);
 
+//approve profile 
+Route::post('profileApprove',[AgentDashboardController::class,'profileApprove']);
+
+//reject profile
+Route::get('profileReject',[AgentDashboardController::class,'profileReject']);
+
+
 
 //add credit_limit and credit_score
 Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
