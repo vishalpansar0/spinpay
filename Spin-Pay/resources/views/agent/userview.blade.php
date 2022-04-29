@@ -10,6 +10,7 @@
     </div>
     <div class="nav-menu">
         <a href="">Vishal Sharma </a>&nbsp;&nbsp;&nbsp;
+        <a href="{{url('agent/dashboard')}}">Dashboard </a>&nbsp;&nbsp;&nbsp;
         <a href=""> Logout</a>
     </div>
 </div>
@@ -27,7 +28,7 @@
             </div>
 
             <div class="menu-item-div">
-                <button class="m-btn"><i class="fas fa-glass-cheers"></i><br> Transactions</button>
+                <a href="{{url('userview/transaction')}}/{{$user->id}}"><button class="m-btn"><i class="fas fa-glass-cheers"></i><br> Transactions</button></a>
             </div>
 
             <div class="menu-item-div">
@@ -272,13 +273,13 @@
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            <span id="bankSlip_status">Not available</span>
+                            <span id="bankSlip_status"></span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            <p id="bankslip_num"></p>
+                            <p id="bankslip_num">Not available</p>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -303,34 +304,35 @@
         <div style="display:flex;padding:20px;">
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="400px"
+                <embed src="" id="payslip1_image" width="100%" height="400px"
                     style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            Aadhar
+                            Payslip1
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            <span style="color:green">approved</span>
+                            <span id="payslip1_status">Not available</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            1234-1234-1234-1234
+                            <p id="payslip1_num">Not available</p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
-                                style="width:100%">View</button></div>
+                                style="width:100%" onclick="viewImage('payslip1_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
+                                id="pay1AprBtn" onclick="AprvPaySlips({{ $user->id }},3,'approved','pay1AprBtn','payslip1_status',31)"
                                 style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                style="width:100%">Reject</button></div>
+                                id="pay1RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay1RejectBtn','payslip1_status',31)" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -338,7 +340,7 @@
             </div>
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="400px"
+                <embed src="" id="payslip2_image" width="100%" height="400px"
                     style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
@@ -350,22 +352,23 @@
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            <span style="color:green">approved</span>
+                            <span id="payslip2_status">Not available</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            1234-1234-1234-1234
+                            <p id="payslip2_num">Not available</p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
-                                style="width:100%">View</button></div>
+                                style="width:100%" onclick="viewImage('payslip2_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
+                                id="pay2AprBtn" onclick="AprvPaySlips({{ $user->id }},3,'approved','pay2AprBtn','payslip2_status',32)"
                                 style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                style="width:100%">Reject</button></div>
+                                id="pay2RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay2RejectBtn','payslip2_status',32)" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -373,7 +376,7 @@
             </div>
             <div class="userImageContainer"
                 style="width:32%;height:100%;margin-left:1%;padding:10px;border:1px solid white;border-radius:10px">
-                <embed src="{{ url('/images/payslip.pdf') }}" width="100%" height="400px"
+                <embed src="" id="payslip3_image" width="100%" height="400px"
                     style="border-radius: 10px" />
                 <div style="margin-left:10px">
                     <div class="row">
@@ -385,22 +388,23 @@
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Status: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            <span style="color:green">approved</span>
+                            <span id="payslip3_status">Not available</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px">Doc number: </div>
                         <div class="col-6" style="color:aqua;font-size:18px">
-                            1234-1234-1234-1234
+                            <p id="payslip3_num">Not available</p>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
-                                style="width:100%">View</button></div>
+                                style="width:100%" onclick="viewImage('payslip3_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
+                                id="pay3AprBtn" onclick="AprvPaySlips({{ $user->id }},3,'approved','pay3AprBtn','payslip3_status',33)"
                                 style="width:100%">Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                style="width:100%">Reject</button></div>
+                                id="pay3RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay3RejectBtn','payslip3_status',33)" style="width:100%">Reject</button></div>
 
                     </div>
 
@@ -443,8 +447,11 @@
 @include('agent.agentLayouts.jsAgent')
 <script>
     $(document).ready(function() {
+        function loadDocs(){
+
+        }
         $.ajax({
-            url: "/api/fetchUserDocs/"+{{$user->id}},
+            url: "/api/fetchUserDocs/"+{{$user->id}}+"/1",
             type: "get",
             dataType: "json",
             // data: getData,
@@ -453,19 +460,19 @@
             },
             success: function(response) {
                 console.log(response);
-                if (response['aadhar_image'] != "") {
+                if (response['doc_image'] != "") {
                     $('#aadhar_image').prop('src', '{{ asset('storage') }}/' + response[
-                        'aadhar_image']);
-                    $('#aadhar_num').html(response['aadhar_num']);
-                    if (response['isAdhrVer'] == "pending") {
-                        $('#aadhar_status').html(response['isAdhrVer']);
+                        'doc_image']);
+                    $('#aadhar_num').html(response['doc_num']);
+                    if (response['doc_verfy'] == "pending") {
+                        $('#aadhar_status').html(response['doc_verfy']);
                         $('#aadhar_status').css('color', 'orange');
-                    } else if (response['isAdhrVer'] == "approved") {
-                        $('#aadhar_status').html(response['isAdhrVer']);
+                    } else if (response['doc_verfy'] == "approved") {
+                        $('#aadhar_status').html(response['doc_verfy']);
                         $('#aadhar_status').css('color', 'green');
                         $('#aadharAprBtn').prop('disabled', true);
-                    } else if (response['isAdhrVer'] == "reject") {
-                        $('#aadhar_status').html(response['isAdhrVer']);
+                    } else if (response['doc_verfy'] == "reject") {
+                        $('#aadhar_status').html(response['doc_verfy']);
                         $('#aadhar_status').css('color', 'red');
                         $('#aadharRejectBtn').prop('disabled', true);
                     } else {
@@ -478,19 +485,32 @@
                     $('#aadharAprBtn').prop('disabled', true);
                     $('#aadharRejectBtn').prop('disabled', true);
                 }
-                if (response['pan_image'] != "") {
+               
+            }
+        });
+        $.ajax({
+            url: "/api/fetchUserDocs/"+{{$user->id}}+"/2",
+            type: "get",
+            dataType: "json",
+            // data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                console.log(response);
+                if (response['doc_image'] != "") {
                     $('#pan_image').prop('src', '{{ asset('storage') }}/' + response[
-                        'pan_image']);
-                    $('#pan_num').html(response['pan_num']);
-                    if (response['isPanVer'] == "pending") {
-                        $('#pan_status').html(response['isPanVer']);
+                        'doc_image']);
+                    $('#pan_num').html(response['doc_num']);
+                    if (response['doc_verfy'] == "pending") {
+                        $('#pan_status').html(response['doc_verfy']);
                         $('#pan_status').css('color', 'orange');
-                    } else if (response['isPanVer'] == "approved") {
-                        $('#pan_status').html(response['isPanVer']);
+                    } else if (response['doc_verfy'] == "approved") {
+                        $('#pan_status').html(response['doc_verfy']);
                         $('#pan_status').css('color', 'green');
                         $('#panAprBtn').prop('disabled', true);
-                    } else if (response['isPanVer'] == "reject") {
-                        $('#pan_status').html(response['isPanVer']);
+                    } else if (response['doc_verfy'] == "reject") {
+                        $('#pan_status').html(response['doc_verfy']);
                         $('#pan_status').css('color', 'red');
                         $('#panRejectBtn').prop('disabled', true);
                     } else {
@@ -500,24 +520,37 @@
                 } else {
                     $('#pan_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
                     $('#pan_num').html('not available');
-                    $('#panRejectBtn').prop('disabled', true);
                     $('#panAprBtn').prop('disabled', true);
+                    $('#panRejectBtn').prop('disabled', true);
                 }
-                if (response['bankslip_image'] != "") {
+               
+            }
+        });
+        $.ajax({
+            url: "/api/fetchUserDocs/"+{{$user->id}}+"/4",
+            type: "get",
+            dataType: "json",
+            // data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                console.log(response['doc_verfy']);
+                if (response['doc_image'] != "") {
                     $('#bankslip_image').prop('src', '{{ asset('storage') }}/' + response[
-                        'bankslip_image']);
-                    $('#bankslip_num').html('Not assigned');
-                    if (response['isBsVer'] == "pending") {
-                        $('#bankSlip_status').html(response['isBsVer']);
+                        'doc_image']);
+                    // $('#bankslip_num').html(response['doc_num']);
+                    if (response['doc_verfy'] == "pending") {
+                        $('#bankSlip_status').html(response['doc_verfy']);
                         $('#bankSlip_status').css('color', 'orange');
-                    } else if (response['isBsVer'] == "approved") {
-                        $('#bankSlip_status').html(response['isBsVer']);
+                    } else if (response['doc_verfy'] == "approved") {
+                        $('#bankSlip_status').html(response['doc_verfy']);
                         $('#bankSlip_status').css('color', 'green');
-                        $('#bankSlipAprBtn').prop('disabled', true);
-                    } else if (response['isBsVer'] == "reject") {
-                        $('#bankSlip_status').html(response['isBsVer']);
+                        $('#bankslipAprBtn').prop('disabled', true);
+                    } else if (response['doc_verfy'] == "reject") {
+                        $('#bankSlip_status').html(response['doc_verfy']);
                         $('#bankSlip_status').css('color', 'red');
-                        $('#bankSlipRejectBtn').prop('disabled', true);
+                        $('#bankslipRejectBtn').prop('disabled', true);
                     } else {
                         $('#bankSlip_status').html('Not assigned');
                         $('#bankSlip_status').css('color', 'aqua');
@@ -525,13 +558,128 @@
                 } else {
                     $('#bankslip_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
                     $('#bankslip_num').html('not available');
-                    $('#bankSlipAprBtn').prop('disabled', true);
-                    $('#bankSlipRejectBtn').prop('disabled', true);
+                    $('#bankslipAprBtn').prop('disabled', true);
+                    $('#bankslipRejectBtn').prop('disabled', true);
                 }
-                $('#modal-image-view').prop('src', '{{ asset('storage') }}/' + response[
-                    'aadhar_image']);
+               
             }
         });
+        $.ajax({
+            url: "/api/fetchUserDocs/"+{{$user->id}}+"/3/31",
+            type: "get",
+            dataType: "json",
+            // data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                // console.log('payslip'+i+'_image');
+                if (response['doc_image'] != "") {
+                    $('#payslip1_image').prop('src', '{{ asset('storage') }}/' + response[
+                        'doc_image']);
+                    // $('#payslip1_num').html(response['doc_num']);
+                    if (response['doc_verfy'] == "pending") {
+                        $('#payslip1_status').html(response['doc_verfy']);
+                        $('#payslip1_status').css('color', 'orange');
+                    } else if (response['doc_verfy'] == "approved") {
+                        $('#paysli1_status').html(response['doc_verfy']);
+                        $('#paysli1_status').css('color', 'green');
+                        $('#paysli1AprBtn').prop('disabled', true);
+                    } else if (response['doc_verfy'] == "reject") {
+                        $('#payslip1_status').html(response['doc_verfy']);
+                        $('#payslip1_status').css('color', 'red');
+                        $('#payslip1RejectBtn').prop('disabled', true);
+                    } else {
+                        $('#payslip1_status').html('Not assigned');
+                        $('#payslip1_status').css('color', 'aqua');
+                    }
+                } else {
+                    $('#payslip1_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
+                    $('#payslip1_num').html('not available');
+                    $('#payslip1AprBtn').prop('disabled', true);
+                    $('#payslip1RejectBtn').prop('disabled', true);
+                }
+               
+            }
+        });
+        $.ajax({
+            url: "/api/fetchUserDocs/"+{{$user->id}}+"/3/32",
+            type: "get",
+            dataType: "json",
+            // data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                // console.log('payslip'+i+'_image');
+                if (response['doc_image'] != "") {
+                    $('#payslip2_image').prop('src', '{{ asset('storage') }}/' + response[
+                        'doc_image']);
+                    // $('#payslip1_num').html(response['doc_num']);
+                    if (response['doc_verfy'] == "pending") {
+                        $('#payslip2_status').html(response['doc_verfy']);
+                        $('#payslip2_status').css('color', 'orange');
+                    } else if (response['doc_verfy'] == "approved") {
+                        $('#paysli2_status').html(response['doc_verfy']);
+                        $('#paysli2_status').css('color', 'green');
+                        $('#paysli2AprBtn').prop('disabled', true);
+                    } else if (response['doc_verfy'] == "reject") {
+                        $('#payslip2_status').html(response['doc_verfy']);
+                        $('#payslip2_status').css('color', 'red');
+                        $('#payslip2RejectBtn').prop('disabled', true);
+                    } else {
+                        $('#payslip2_status').html('Not assigned');
+                        $('#payslip2_status').css('color', 'aqua');
+                    }
+                } else {
+                    $('#payslip2_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
+                    $('#payslip2_num').html('not available');
+                    $('#payslip2AprBtn').prop('disabled', true);
+                    $('#payslip2RejectBtn').prop('disabled', true);
+                }
+               
+            }
+        });
+        $.ajax({
+            url: "/api/fetchUserDocs/"+{{$user->id}}+"/3/33",
+            type: "get",
+            dataType: "json",
+            // data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                // console.log('payslip'+i+'_image');
+                if (response['doc_image'] != "") {
+                    $('#payslip3_image').prop('src', '{{ asset('storage') }}/' + response[
+                        'doc_image']);
+                    // $('#payslip1_num').html(response['doc_num']);
+                    if (response['doc_verfy'] == "pending") {
+                        $('#payslip3_status').html(response['doc_verfy']);
+                        $('#payslip3_status').css('color', 'orange');
+                    } else if (response['doc_verfy'] == "approved") {
+                        $('#paysli3_status').html(response['doc_verfy']);
+                        $('#paysli3_status').css('color', 'green');
+                        $('#paysli3AprBtn').prop('disabled', true);
+                    } else if (response['doc_verfy'] == "reject") {
+                        $('#payslip3_status').html(response['doc_verfy']);
+                        $('#payslip3_status').css('color', 'red');
+                        $('#payslip3RejectBtn').prop('disabled', true);
+                    } else {
+                        $('#payslip3_status').html('Not assigned');
+                        $('#payslip3_status').css('color', 'aqua');
+                    }
+                } else {
+                    $('#payslip3_image').prop('src', "{{ asset('/images/notAvailable.png') }}");
+                    $('#payslip3_num').html('not available');
+                    $('#payslip3AprBtn').prop('disabled', true);
+                    $('#payslip3RejectBtn').prop('disabled', true);
+                }
+               
+            }
+        });
+        
+ 
 
     });
 
@@ -548,6 +696,35 @@
             'user_id' : userId,
             'doc_id' : docId,
             'request_type': request,
+        };
+        $.ajax({
+            url: "/api/DocAprv",
+            type: "post",
+            // dataType: "json",
+            data: getData,
+            beforeSend: function() {
+
+            },
+            success: function(response) {
+                if(response['status']==200){
+                    $('#'+docStatus).html(request);
+                    $('#'+btnId).prop('disabled', true);
+                    $('#'+btnId).prop('color', 'green');
+                }else if(response['status']==400){
+                    alert('failed');
+                }
+                
+
+            }
+        });
+    }
+    function AprvPaySlips(userId, docId, request , btnId, docStatus, docNum) {
+        // console.log(userId + " " + docId);
+        const getData = {
+            'user_id' : userId,
+            'doc_id' : docId,
+            'request_type': request,
+            'doc_num':docNum,
         };
         $.ajax({
             url: "/api/DocAprv",

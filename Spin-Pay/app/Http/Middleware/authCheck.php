@@ -2,31 +2,27 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
+class authCheck
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @param  string|null  ...$guards
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$guards)
-    {
-        $guards = empty($guards) ? [null] : $guards;
-
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect('agent');
+    public function handle(Request $request, Closure $next)
+    {   
+        if($request->session()->has('user_id')){
+            if($request->session()->has('role') == 4){
+                return redirect('/user/borrower');
+            }else if($request->session()->has('role') == 3){
+                return redirect('/user/lender');
             }
         }
-
         return $next($request);
     }
 }
