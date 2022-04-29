@@ -9,8 +9,8 @@
         SpinPay
     </div>
     <div class="nav-menu">
-        <a href="">Vishal Sharma </a>&nbsp;&nbsp;&nbsp;
-        <a href=""> Logout</a>
+        <a href="">{{Session::get('agent_name')}}</a>&nbsp;&nbsp;&nbsp;
+        <a href="{{url('api/agentLogout')}}"> Logout</a>
     </div>
 </div>
 
@@ -107,7 +107,7 @@
                             <td><span style="padding:5px 15px;border-radius:1000px;background-color:#E74C3C;">Borrower</span>
                             </td>
                         @endif
-                        <td><button class="actionbtn" id="pendingUsersBtn">view</button></td>
+                        <td><a href="{{url('userview/'.$user->id)}}"><button class="actionbtn" id="pendingUsersBtn"> view</button></a></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -216,14 +216,14 @@
                     beforeSend: function() {
                         // $('#allUsers').css('display', 'none');   
                         $('#page-links').css('display', 'none');
-                        $('#loader-container').css('display', 'block'); 
+                        // $('#loader-container').css('display', 'block'); 
                         $("#records_table").empty();
                     },
                     success: function(response) {
                         console.log(response[0]['name']);
                         var trHTML = '';
                         $.each(response, function(i, item) {
-                            btnRow = '<button class="actionbtn" id="pendingUsersBtn">view</button>';
+                            btnRow = '<a href="'+'{{url("userview/")}}/'+item.id+'"><button class="actionbtn" id="pendingUsersBtn"> view</button></a>';
                             if(item.role_id == 3){
                                 roleRow = '<span style="padding:5px 15px;border-radius:1000px;background-color:#3498DB;">Lender</span>';
                             }
