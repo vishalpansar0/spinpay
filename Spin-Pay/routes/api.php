@@ -41,6 +41,16 @@ Route::post('sendotp',[Mailes::class,"sendotp"]);
 //for verify otp entered by user
 Route::post('/verifyotp',[Mailes::class,"verifyotp"]);
 
+
+
+// for send otp to users mail for forgot password
+Route::post('sendotpforgotpassword',[Mailes::class,"sendotpforforgotpassword"]);
+
+
+// for send otp to users mail for forgot password
+Route::post('verifyotpforgotpassword',[Mailes::class,"verifyforgotpasswordotp"]);
+
+
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"]);
 Route::post('/userdata', [UserController::class, 'userdata']);
@@ -112,10 +122,24 @@ Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
 //add credit_limit and credit_score
 Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreAndLimit']);
 
+//approve profile 
+Route::post('profileApprove',[AgentDashboardController::class,'profileApprove']);
+
+//reject profile
+Route::get('profileReject',[AgentDashboardController::class,'profileReject']);
+
+
+
+//add credit_limit and credit_score
+Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
 
 
 
 
+
+
+
+    
 
 
 
