@@ -35,6 +35,16 @@ Route::post('sendotp',[Mailes::class,"sendotp"]);
 //for verify otp entered by user
 Route::post('/verifyotp',[Mailes::class,"verifyotp"]);
 
+
+
+// for send otp to users mail for forgot password
+Route::post('sendotpforgotpassword',[Mailes::class,"sendotpforforgotpassword"]);
+
+
+// for send otp to users mail for forgot password
+Route::post('verifyotpforgotpassword',[Mailes::class,"verifyforgotpasswordotp"]);
+
+
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"])->middleware('auth:api');
 Route::post('/userdata', [UserController::class, 'userdata']);
