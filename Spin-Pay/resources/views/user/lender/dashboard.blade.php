@@ -10,13 +10,13 @@
         <div class="ul"><button class="" id="transaction">TRANSACTION</button></div>
         <div class="ul"><button class="" id="profile">PROFILE</button></div>
         <div class="ul"><button class="" id="documents">DOCUMENTS</button></div>
-        <div class="ul"><button type="button" class="btn btn-primary" data-toggle="modal"
-                data-target="#exampleModalquery" data-whatever="@mdo">ANY QUERY</button></div>
+        <div class="ul"><button class="" id="anyquery">ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
-        <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white">Hide</button>
-        <button id="showSideNavbar"
-            style="display: none;border: none;background-color:rgb(37, 37, 37);color:white">Show</button>
+        <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white"><i
+                class="fa-solid fa-eye-slash"></i></button>
+        <button id="showSideNavbar" style="display: none;border: none;background-color:rgb(37, 37, 37);color:white"><i
+                class="fa-solid fa-eye"></i></button>
         <span class="detailHeading" id="detailHeading"
             style="color:white;font-family: myFirstFont; margin-left:400px;font-size:30px;font-weight: bold;">
         </span>
@@ -27,8 +27,9 @@
                     <img src="" alt="">
                 </div> --}}
                 <div class="creditScore text-center" id="creditScore">
-                    <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">TOTAL AMOUNT</h5>
-                    <P>700</P>
+                    <h1 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;"><i style=""
+                            class="fa-solid fa-wallet"></i></h1>
+                    <P style="color:white">700</P>
                 </div>
                 {{-- <div class="CreditPoint text-center" id="CreditPoint">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT POINT</h5>
@@ -146,6 +147,67 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- any query from the user --}}
+        <div class="anyquery" id="query-div" style="display: none;font-family: myFirstFont;margin-top:20px">
+            <div id="querybtn" style="display: flex">
+                <h3 style="color:#0af7e8;margin-left:20px">If you have any concern raise a query</h3>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalquery"
+                    data-whatever="@mdo" id="borrowerquery" style="margin-left: auto">ASK QUERY</button>
+            </div>
+            <div class="allquery" id="allquery" style="margin-top: 50px">
+                <table class="table text-center table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">ISSUE ID</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">CONCERN</th>
+                            <th scope="col">REPLY</th>
+                            <th scope="col">RIASED TIME </th>
+                            <th scope="col">REPLY TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody id="query_row">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal fade" id="exampleModalquery" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Raise A Query</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="error">
+
+                            </div>
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Category</label>
+                                    <input type="text" class="form-control" id="category-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Issue</label>
+                                    <textarea class="form-control" id="issue-text" required></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="closequery">Close</button>
+                            <button type="button" class="btn btn-primary" id="submitquery">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- Documents --}}
         <div class="document-div" id="document-div" style="display: none;font-family: myFirstFont;margin-top:20px">
             <span id="error" style="color:white"></span>
@@ -204,7 +266,7 @@
     <div class="profile-div" id="profile-div" style="color:white; display: none;font-family: myFirstFont;">
         <div class="row">
             <div class="col-4">
-                <div id="photo-container" style="margin-left:200px;margin-top:70px">
+                <div id="photo-container" style="margin-left:300px;margin-top:70px">
 
                 </div>
             </div>
@@ -330,43 +392,6 @@
         </div>
     </div>
 
-{{-- any query from the user --}}
-    <div class="anyquery">
-        <div class="modal fade" id="exampleModalquery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Raise A Query</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="error">
-
-                        </div>
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Category</label>
-                                <input type="text" class="form-control" id="category-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Issue</label>
-                                <textarea class="form-control" id="issue-text" required></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            id="closequery">Close</button>
-                        <button type="button" class="btn btn-primary" id="submitquery">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>  
-    </div>
-
 </div>
 
 
@@ -381,6 +406,7 @@
             $('#loanApply-div').hide();
             $("#profile-div").hide();
             $("#document-div").hide();
+            $("#query-div").hide();
             $("#loan-div").hide();
             $('#dashboard-div').show();
             $('#dashboard').addClass('navbarBtn');
@@ -418,6 +444,7 @@
                         $("#request-div").hide();
                         $("#profile-div").hide();
                         $("#document-div").hide();
+                        $("#query-div").hide();
                         $("#loan-div").show();
                         $("#row").empty();
                         $("#detailHeading").empty();
@@ -477,7 +504,7 @@
                     $('#request').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    console.log(response);
+                    console.log(response['status']);
                     if (response['status'] != 200) {
                         alert('We are facing some issue please try later');
                     } else {
@@ -486,6 +513,7 @@
                         $('#loanApply-div').hide();
                         $("#request-div").hide();
                         $("#profile-div").hide();
+                        $("#query-div").hide();
                         $("#document-div").hide();
                         $("#transaction-div").show();
                         $("#transaction_row").empty();
@@ -537,7 +565,7 @@
                 url: '/api/lenderrequest',
                 type: 'POST',
                 data: {
-                    lender_id: 4
+                    lender_id: 47
                 },
                 beforeSend: function() {
                     $('#request').addClass('navbarBtn');
@@ -623,6 +651,7 @@
                         $('#loanApply-div').hide();
                         $("#profile-div").show();
                         $("#document-div").hide();
+                        $("#query-div").hide();
                         $("#details").empty();
                         $("#age-div").empty();
                         $("#gender-div").empty();
@@ -632,19 +661,19 @@
                         var hd = 'Profile Details'
                         // $('#detailHeading').append(hd);
                         var details =
-                            '<h1 style = "color:goldenrod ">Personal Details</h1><h3 style = "padding-left:100px;color:#d267f0">' +
+                            '<h1 style = "color:goldenrod; margin-left:100px">Personal Details</h1><h3 style = "padding-left:200px;color:#d267f0">' +
                             response[0].name +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px;color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
                             .email +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px; color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px; color:#d267f0">' + response[0]
                             .phone +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px;color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
                             .address_line +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px;color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
                             .pincode +
                             '</h3>';
                         $('#details').append(details);
@@ -675,17 +704,6 @@
             });
         });
         $('#documents').click(function() {
-            $('#dashboard-div').hide();
-            $("#loan-div").hide();
-            $('#loanApply-div').hide();
-            $("#request-div").hide();
-            $("#profile-div").hide();
-            $("#transaction-div").hide();
-            $("#document-div").show();
-            $("#detailHeading").empty();
-            $("#document_row").empty();
-            var hd = 'All the Documnets';
-            $('#detailHeading').append(hd);
             $.ajax({
                 url: '/api/showuserdetails',
                 type: 'GET',
@@ -701,113 +719,130 @@
                     $('#profile').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    console.log(response[1]);
-                    var details = {};
-                    var documentcheck = {
-                        one: false,
-                        two: false,
-                    }
-                    var trHTML = "";
-                    $.each(response[1], function(i, item) {
-                        if (item.master_document_id == 1) {
-                            documentcheck.one = true;
-                            details.name = "Adharcard Card";
-                            details.number = item.document_number;
-                            if (item.is_verified == 'approved') {
-                                details.status = "Approved";
+                    console.log('documnet');
+                    if (response['status'] == 500) {
+                        alert('We are facing issue please try')
+                    } else {
+                        $('#dashboard-div').hide();
+                        $("#loan-div").hide();
+                        $('#loanApply-div').hide();
+                        $("#request-div").hide();
+                        $("#profile-div").hide();
+                        $("#transaction-div").hide();
+                        $("#query-div").hide();
+                        $("#document-div").show();
+                        $("#detailHeading").empty();
+                        $("#document_row").empty();
+                        var hd = 'All the Documnets';
+                        $('#detailHeading').append(hd);
+                        console.log(response[1]);
+                        var details = {};
+                        var documentcheck = {
+                            one: false,
+                            two: false,
+                        }
+                        var trHTML = "";
+                        $.each(response[1], function(i, item) {
+                            if (item.master_document_id == 1) {
+                                documentcheck.one = true;
+                                details.name = "Adharcard Card";
+                                details.number = item.document_number;
+                                if (item.is_verified == 'approved') {
+                                    details.status = "Approved";
+                                }
+                                if (item.is_verified == 'reject') {
+                                    details.status = "Rejected";
+                                }
+                                if (item.is_verified == 'pending') {
+                                    details.status = "Pending";
+                                }
+
                             }
-                            if (item.is_verified == 'reject') {
-                                details.status = "Rejected";
-                            }
-                            if (item.is_verified == 'pending') {
-                                details.status = "Pending";
+                            if (item.master_document_id == 2) {
+                                documentcheck.two = true;
+                                details.name = "Pan Card";
+                                details.number = item.document_number;
+                                if (item.is_verified == 'approved') {
+                                    details.status = "Approved";
+                                }
+                                if (item.is_verified == 'reject') {
+                                    details.status = "Rejected";
+                                }
+                                if (item.is_verified == 'pending') {
+                                    details.status = "Pending";
+                                }
                             }
 
-                        }
-                        if (item.master_document_id == 2) {
-                            documentcheck.two = true;
-                            details.name = "Pan Card";
-                            details.number = item.document_number;
-                            if (item.is_verified == 'approved') {
-                                details.status = "Approved";
+                            let button =
+                                '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>reupload</button>';
+                            if (details.status == 'Rejected') {
+                                button =
+                                    '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                    item.master_document_id +
+                                    '\')">reupload</button>';
+                                // console.log(details);
                             }
-                            if (item.is_verified == 'reject') {
-                                details.status = "Rejected";
+                            statustr = '';
+                            if (details.status == "Approved") {
+                                statustr =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">' +
+                                    details.status + '</span>';
                             }
-                            if (item.is_verified == 'pending') {
-                                details.status = "Pending";
+                            if (details.status == "Rejected") {
+                                statustr =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">' +
+                                    details.status + '</span>';
                             }
-                        }
-
-                        let button =
-                            '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>reupload</button>';
-                        if (details.status == 'Rejected') {
-                            button =
-                                '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                                item + '\')">reupload</button>';
-                            // console.log(details);
-                        }
-                        statustr = '';
-                        if (details.status == "Approved") {
-                            statustr =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">' +
-                                details.status + '</span>';
-                        }
-                        if (details.status == "Rejected") {
-                            statustr =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">' +
-                                details.status + '</span>';
-                        }
-                        if (details.status == "Pending") {
-                            statustr =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">' +
-                                details.status + '</span>';
-                        }
-                        trHTML += '<tr style="color:white"><td>' +
-                            details.name + '</td><td> ' +
-                            details.number + '</td><td>' +
-                            statustr + '</td><td>' + button + '</td></tr>';
-                    });
-                    // console.log(documentcheck);
-                    var reupload =
-                        '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                        1 + '\'' + ',' + '\'' + 1 + '\')">reupload</button>';
-                    if (documentcheck.one == false) {
-                        trHTML +=
-                            '<tr style="color:white"><td>Aadhar Card</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    if (documentcheck.two == false) {
+                            if (details.status == "Pending") {
+                                statustr =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">' +
+                                    details.status + '</span>';
+                            }
+                            trHTML += '<tr style="color:white"><td>' +
+                                details.name + '</td><td> ' +
+                                details.number + '</td><td>' +
+                                statustr + '</td><td>' + button + '</td></tr>';
+                        });
+                        // console.log(documentcheck);
                         var reupload =
                             '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            2 + '\'' + ',' + '\'' + 2 + '\')">reupload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
+                            1 + '\'' + ',' + '\'' + 1 + '\')">reupload</button>';
+                        if (documentcheck.one == false) {
+                            trHTML +=
+                                '<tr style="color:white"><td>Aadhar Card</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        if (documentcheck.two == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                2 + '\'' + ',' + '\'' + 2 + '\')">reupload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        // if (documentcheck.threeone == false) {
+                        //     trHTML +=
+                        //         '<tr style="color:white"><td>Pay Slip-1</td><td>-</td><td>Not Uploaded</td><td>' +
+                        //         reupload + '</td></tr>';
+                        // }
+                        // if (documentcheck.threetwo == false) {
+                        //     trHTML +=
+                        //         '<tr style="color:white"><td>Pay Slip-2</td><td>-</td><td>Not Uploaded</td><td>' +
+                        //         reupload + '</td></tr>';
+                        // }
+                        // if (documentcheck.threethree == false) {
+                        //     trHTML +=
+                        //         '<tr style="color:white"><td>Pay Slip-3</td><td>-</td><td>Not Uploaded</td><td>' +
+                        //         reupload + '</td></tr>';
+                        // }
+                        // if (documentcheck.four == false) {
+                        //     trHTML +=
+                        //         '<tr style="color:white"><td>Bank Statement</td><td>-</td><td>Not Uploaded</td><td>' +
+                        //         reupload + '</td></tr>';
+                        // }
+                        $('#document_row').append(trHTML);
+                        // console.log(trHTML);
                     }
-                    // if (documentcheck.threeone == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Pay Slip-1</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    // if (documentcheck.threetwo == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Pay Slip-2</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    // if (documentcheck.threethree == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Pay Slip-3</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    // if (documentcheck.four == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Bank Statement</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    $('#document_row').append(trHTML);
-                    // console.log(trHTML);
-
                 }
             });
         });
@@ -915,6 +950,7 @@
                         $('#document_input_image').val('');
                         $('#document_input').val('');
                         $('#close').click();
+                        $('#documents').click();
                     } else {
                         $('#modalerror').append(result['message']);
                     }
@@ -987,7 +1023,64 @@
             });
         });
 
-        // query
+        // query div
+        $('#anyquery').click(function(event) {
+            console.log('hello');
+
+            $.ajax({
+                url: '/api/raise/show',
+                type: 'post',
+                data: {
+                    'user_id': 1
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response['status'] == 500) {
+                        alert('We are facing issue please try later');
+                    }
+                    if (response['status'] == 200) {
+                        $('#dashboard-div').hide();
+                        $("#loan-div").hide();
+                        $('#loanApply-div').hide();
+                        $("#request-div").hide();
+                        $("#profile-div").hide();
+                        $("#transaction-div").hide();
+                        $("#document-div").hide();
+                        $("#query-div").show();
+                        $('#query_row').empty();
+                        let trHTML = "";
+                        $.each(response['message'], function(i, item) {
+                            var updated = "-";
+                            let issueid = "SPINPAYOO12E" + item.id;
+                            if (item.reply_message != null) {
+                                let date2 = new Date(item.updated_at);
+                                updated = date2.getDate() + "/" + (date2
+                                        .getMonth() + 1) + "/" + date2
+                                    .getFullYear();
+                            }
+                            console.log('hello');
+                            var date = new Date(item.created_at);
+                            let created = date.getDate() + "/" + (date
+                                .getMonth() +
+                                1) + "/" + date.getFullYear();
+                            console.log('hi');
+                            trHTML += '<tr style="color:white"><td>' + issueid +
+                                '</td><td>$ ' + item
+                                .category + '</td><td>' +
+                                item.user_message + '</td><td>' + item
+                                .reply_message + ' month</td><td>' + created +
+                                '</td><td>' + updated + '</td></tr>';
+                        });
+                        $('#query_row').append(trHTML);
+                        console.log('asjghad');
+                    }
+
+                }
+            });
+
+        });
+
+        // submit querybfrom the user
         $('#submitquery').click(function(event) {
             $('#error').empty();
             event.preventDefault();
@@ -997,25 +1090,28 @@
                 $('#error').append("<p style='color:red'>*Fields Cannot Be Empty</p>");
             } else {
                 let raisequery = {
-                    'user_id':1,
-                    'category':category,
-                    'user_message':issue
+                    'user_id': 1,
+                    'category': category,
+                    'user_message': issue
                 }
                 $.ajax({
-                    url: 'api/raise/query',
+                    url: '/api/raise/query',
                     type: 'post',
                     data: raisequery,
                     success: function(response) {
-                        if(response['status']==401){
-                            let ptag = "<p style='color:red'>*" + response['Validation Failed'] + "</p>"
+                        if (response['status'] == 401) {
+                            console.log(response);
+                            let ptag = "<p style='color:red'>*" + response[
+                                'Validation Failed'] + "</p>"
                             $('#error').append(ptag);
-                        }
-                        else if (response['status'] != 200) {
-                            let ptag = "<p style='color:red'>*" + response['message'] + "</p>"
+                        } else if (response['status'] != 200) {
+                            let ptag = "<p style='color:red'>*" + response['message'] +
+                                "</p>"
                             $('#error').append(ptag);
 
                         } else {
                             $('#closequery').click();
+                            $('#anyquery').click();
                         }
                     }
                 });
@@ -1023,6 +1119,7 @@
             }
 
         });
+
 
 
     });
