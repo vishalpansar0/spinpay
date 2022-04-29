@@ -67,7 +67,7 @@ Route::get('request',[AgentDashboardController::class,'request']);
 Route::get('query',function(){
     return view('queries.userquery');
 });
-Auth::routes();
+// Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -80,3 +80,8 @@ Route::get('/test', function () {
 Route::get('/getTestData', [AgentDashboardController::class,'getTestData']);
 
 Route::get('userview/{id}',[AgentDashboardController::class,'ShowUsersDetails']);
+
+
+
+
+

@@ -269,44 +269,95 @@ class AgentDashboardController extends Controller
     }
 
     public function creditScoreAndLimit(Request $request){
-        $salary = round($request->salary/2);
-        $credit_score = round(300+($salary/84));
-        // $query = CreditMapping::where('credit_score_from' , '<=', $credit_score)
-        //                 ->where('credit_score_to', '>=', $credit_score)
-        //                 ->select('credit_limit')->first();
-
-
-        // return response()->json([
-        //     'query' => $query,
-        //     'score' => $credit_score
-        // ]);
-
+        try{
+            $salary = round($request->salary/2);
+            $credit_score = round(300+($salary/84));
+            // $query = CreditMapping::where('credit_score_from' , '<=', $credit_score)
+            //                 ->where('credit_score_to', '>=', $credit_score)
+            //                 ->select('credit_limit')->first();
+    
+    
+            // return response()->json([
+            //     'query' => $query,
+            //     'score' => $credit_score
+            // ]);
+    
+            
+            $credit_limit = 0;
+            if($credit_score >= 300 && $credit_score <= 400){
+                $credit_limit = 1000;
+            }
+            else if($credit_score >= 401 && $credit_score <= 500){
+                $credit_limit = 5000;
+            }
+            else if($credit_score >= 501 && $credit_score <= 600){
+                $credit_limit = 10000;
+            }
+            else if($credit_score >= 601 && $credit_score <= 700){
+                $credit_limit = 20000;
+            }
+            else if($credit_score >= 701 && $credit_score <= 800){
+                $credit_limit = 25000;
+            }
+            else if($credit_score >= 801 && $credit_score <= 900){
+                $credit_limit = 30000;
+            }
+            
+            DB::table('credit_details')
+            ->updateOrInsert(
+                ['user_id' => $request['user_id']],
+                ['credit_limit'=> $credit_limit, 'credit_score'=> $credit_score]
+            );
+        }
+        catch(QueryException $e){
+            return response()->json([
+                "code" => 500,
+                'message' => $e
+            ]);
+        }
         
-        $credit_limit = 0;
-        if($credit_score >= 300 && $credit_score <= 400){
-            $credit_limit = 1000;
+    }
+
+    public function profileApprove(Request $request){
+        try{
+            if(UserDocument::where('user_id',$request['user_id'])->where('master_document_id','1')->where('is_verified','approved')->exists() && 
+               UserDocument::where('user_id',$request['user_id'])->where('master_document_id','2')->where('is_verified','approved')->exists() &&
+               UserDocument::where('user_id',$request['user_id'])->where('document_number','31')->where('is_verified','approved')->exists() &&
+               UserDocument::where('user_id',$request['user_id'])->where('document_number','32')->where('is_verified','approved')->exists() &&
+               UserDocument::where('user_id',$request['user_id'])->where('document_number','33')->where('is_verified','approved')->exists() &&
+               UserDocument::where('user_id',$request['user_id'])->where('document_number','41')->where('is_verified','approved')->exists()){
+                UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
+                return response()->json([
+                    'code' => 200,
+                    'message' => "Profile Approved successfully"
+                ]);
+            }
+            return response()->json([
+                'code' => 204,
+                'message' => "Documents not approved or not uploaded by user"
+            ]);
         }
-        else if($credit_score >= 401 && $credit_score <= 500){
-            $credit_limit = 5000;
+        catch(QueryException $e){
+            return response()->json([
+                "code" => 500,
+                'message' => $e
+            ]);
         }
-        else if($credit_score >= 501 && $credit_score <= 600){
-            $credit_limit = 10000;
+    }
+
+    public function profileReject(Request $request){
+        try{
+            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject']);
+            return response()->json([
+                'code' => 200,
+                'message' => "Profile Rejected successfully"
+            ]);
         }
-        else if($credit_score >= 601 && $credit_score <= 700){
-            $credit_limit = 20000;
+        catch(QueryException $e){
+            return response()->json([
+                "code" => 500,
+                'message' => $e
+            ]);
         }
-        else if($credit_score >= 701 && $credit_score <= 800){
-            $credit_limit = 25000;
-        }
-        else if($credit_score >= 801 && $credit_score <= 900){
-            $credit_limit = 30000;
-        }
-        
-        DB::table('credit_details')
-        ->updateOrInsert(
-            ['user_id' => $request['user_id']],
-            ['credit_limit'=> $credit_limit, 'credit_score'=> $credit_score]
-        );
-        
     }
 }

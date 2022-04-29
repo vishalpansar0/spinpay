@@ -10,11 +10,13 @@
         <div class="ul"><button class="" id="transaction">TRANSACTION</button></div>
         <div class="ul"><button class="" id="profile">PROFILE</button></div>
         <div class="ul"><button class="" id="documents">DOCUMENTS</button></div>
+        <div class="ul"><button class="" id="anyquery">ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
-        <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white">hide</button>
-        <button id="showSideNavbar"
-            style="display: none;border: none;background-color:rgb(37, 37, 37);color:white">Show</button>
+        <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white"><i
+                class="fa-solid fa-eye-slash"></i></button>
+        <button id="showSideNavbar" style="display: none;border: none;background-color:rgb(37, 37, 37);color:white"><i
+                class="fa-solid fa-eye"></i></button>
         <span class="detailHeading" id="detailHeading"
             style="color:white;font-family: myFirstFont; margin-left:400px;font-size:30px;font-weight: bold;">
         </span>
@@ -143,6 +145,68 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- any query from the user --}}
+        <div class="anyquery" id="query-div" style="display: none;font-family: myFirstFont;margin-top:20px;">
+            <div id="querybtn" style="display: flex;">
+                {{-- <sapn style="color:white">If you have any concern raise a query</p> --}}
+                <h3 style="color:#0af7e8;margin-left:20px">If you have any concern raise a query</h3>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalquery"
+                    data-whatever="@mdo" id="borrowerquery" style="margin-left: auto">ASK QUERY</button>
+            </div>
+            <div class="allquery" id="allquery" style="margin-top: 50px">
+                <table class="table text-center table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">ISSUE ID</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">CONCERN</th>
+                            <th scope="col">REPLY</th>
+                            <th scope="col">RIASED TIME </th>
+                            <th scope="col">REPLY TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody id="query_row">
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal fade" id="exampleModalquery" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Raise A Query</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="error">
+
+                            </div>
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Category</label>
+                                    <input type="text" class="form-control" id="category-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Issue</label>
+                                    <textarea class="form-control" id="issue-text" required></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="closequery">Close</button>
+                            <button type="button" class="btn btn-primary" id="submitquery">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- Documents --}}
         <div class="document-div" id="document-div" style="display: none;font-family: myFirstFont;margin-top:20px">
             <span id="error" style="color:white"></span>
@@ -202,11 +266,11 @@
     <div class="profile-div" id="profile-div" style="color:white; display: none;font-family: myFirstFont;">
         <div class="row">
             <div class="col-4">
-                <div id="photo-container" style="margin-left:250px;margin-top:70px">
+                <div id="photo-container" style="margin-left:300px;margin-top:65px">
 
                 </div>
             </div>
-            <div class="col-8" style="color:white; padding-top: 5; padding:left:50px" id="details">
+            <div class="col-8" style="color:white; padding-top: 5x; " id="details">
 
             </div>
         </div>
@@ -224,12 +288,13 @@
         </div>
     </div>
 
+
 </div>
 </div>
 
 {{-- Script Code --}}
 
-<script>
+<script >
     $(document).ready(function() {
         $('#dashboard').click(function() {
             $("#transaction-div").hide();
@@ -237,6 +302,7 @@
             $('#loanApply-div').hide();
             $("#profile-div").hide();
             $("#document-div").hide();
+            $("#query-div").hide();
             $("#loan-div").hide();
             $('#dashboard-div').show();
             $('#dashboard').addClass('navbarBtn');
@@ -253,7 +319,7 @@
                 url: 'http://localhost:8000/api/request/loandetails',
                 type: 'POST',
                 data: {
-                    user_id: 1
+                    user_id: 4
                 },
                 beforeSend: function() {
                     $('#loan').addClass('navbarBtn');
@@ -272,6 +338,7 @@
                         $("#transaction-div").hide();
                         $("#request-div").hide();
                         $("#profile-div").hide();
+                        $("#query-div").hide();
                         $("#document-div").hide();
                         $("#loan-div").show();
                         $("#row").empty();
@@ -346,6 +413,7 @@
                         $("#request-div").hide();
                         $("#profile-div").hide();
                         $("#document-div").hide();
+                        $("#query-div").hide();
                         $("#transaction-div").show();
                         $("#transaction_row").empty();
                         $("#detailHeading").empty();
@@ -403,6 +471,7 @@
                         $("#transaction-div").hide();
                         $("#profile-div").hide();
                         $("#document-div").hide();
+                        $("#query-div").hide();
                         $("#request-div").show();
                         $("#request_row").empty();
                         $("#detailHeading").empty();
@@ -449,7 +518,7 @@
                 url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
                 data: {
-                    id: 2
+                    id: 47
                 },
                 beforeSend: function() {
                     $('#profile').addClass('navbarBtn');
@@ -460,7 +529,7 @@
                     $('#documents').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    console.log(response);
+                    console.log(response['status']);
                     if (response['status'] == 500) {
                         alert('We are facing some issue please try later');
                     } else {
@@ -471,6 +540,7 @@
                         $('#loanApply-div').hide();
                         $("#profile-div").show();
                         $("#document-div").hide();
+                        $("#query-div").hide();
                         $("#details").empty();
                         $("#age-div").empty();
                         $("#gender-div").empty();
@@ -480,19 +550,19 @@
                         var hd = 'Profile Details'
                         // $('#detailHeading').append(hd);
                         var details =
-                            '<h1 style = "color:goldenrod ">Personal Details</h1><h3 style = "padding-left:100px;color:#d267f0">' +
+                            '<h1 style = "color:goldenrod; margin-left:100px ">Personal Details</h1><h3 style = "padding-left:200px;color:#d267f0">' +
                             response[0].name +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px;color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
                             .email +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px; color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px; color:#d267f0">' + response[0]
                             .phone +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px;color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
                             .address_line +
                             '</h3>' +
-                            '<h3 style = "padding-left:100px;color:#d267f0">' + response[0]
+                            '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
                             .pincode +
                             '</h3>';
                         $('#details').append(details);
@@ -513,7 +583,7 @@
                         $('#location-div').append(location);
 
                         var pfeimage =
-                            '<img src="' + response[0].image +
+                            '<img src="' + '{{ asset('storage') }}/' + response[0].image +
                             '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
                         $('#photo-container').append(pfeimage);
                         var down = "";
@@ -524,22 +594,11 @@
         });
         $('#documents').click(function() {
             // console.log("hola");
-            $('#dashboard-div').hide();
-            $("#loan-div").hide();
-            $('#loanApply-div').hide();
-            $("#request-div").hide();
-            $("#profile-div").hide();
-            $("#transaction-div").hide();
-            $("#document-div").show();
-            $("#detailHeading").empty();
-            $("#document_row").empty();
-            var hd = 'Document Details';
-            $('#detailHeading').append(hd);
             $.ajax({
                 url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
-                data:{
-                      id: 46
+                data: {
+                    id: 46
                 },
                 beforeSend: function() {
                     $('#documents').addClass('navbarBtn');
@@ -550,67 +609,39 @@
                     $('#profile').removeClass('navbarBtn');
                 },
                 success: function(response) {
-                    console.log(response[1]);
-                    var details = {};
-                    var documentcheck = {
-                        one: false,
-                        two: false,
-                        threeone: false,
-                        threetwo: false,
-                        threethree: false,
-                        four: false
-                    }
-                    var trHTML = "";
-                    $.each(response[1], function(i, item) {
-                        if (item.master_document_id == 1) {
-                            documentcheck.one = true;
-                            details.name = "Adharcard Card";
-                            details.number = item.document_number;
-                            if (item.is_verified == 'approved') {
-                                details.status = "Approved";
-                            }
-                            if (item.is_verified == 'reject') {
-                                details.status = "Rejected";
-                            }
-                            if (item.is_verified == 'pending') {
-                                details.status = "Pending";
-                            }
 
+                    // console.log(response);
+                    if (response['status'] == 500) {
+                        alert('We are facing some issue please try later');
+                    } else {
+                        $('#dashboard-div').hide();
+                        $("#loan-div").hide();
+                        $('#loanApply-div').hide();
+                        $("#request-div").hide();
+                        $("#profile-div").hide();
+                        $("#query-div").hide();
+                        $("#transaction-div").hide();
+                        $("#detailHeading").empty();
+                        $("#document_row").empty();
+                        $("#document-div").show();
+                        var hd = 'Document Details';
+                        $('#detailHeading').append(hd);
+                        console.log(response[1]);
+                        var details = {};
+                        var documentcheck = {
+                            one: false,
+                            two: false,
+                            threeone: false,
+                            threetwo: false,
+                            threethree: false,
+                            four: false
                         }
-                        if (item.master_document_id == 2) {
-                            documentcheck.two = true;
-                            details.name = "Pan Card";
-                            details.number = item.document_number;
-                            if (item.is_verified == 'approved') {
-                                details.status = "Approved";
-                            }
-                            if (item.is_verified == 'reject') {
-                                details.status = "Rejected";
-                            }
-                            if (item.is_verified == 'pending') {
-                                details.status = "Pending";
-                            }
-                        }
-                        if (item.master_document_id == 4) {
-                            documentcheck.four = true;
-                            details.name = "Bank Statement";
-                            details.number = "SPINPAYOO12E" + item.document_number;
-                            if (item.is_verified == 'approved') {
-                                details.status = "Approved";
-                            }
-                            if (item.is_verified == 'reject') {
-                                details.status = "Rejected";
-                            }
-                            if (item.is_verified == 'pending') {
-                                details.status = "Pending";
-                            }
-                        }
-                        if (item.master_document_id == 3) {
-                            if (item.document_number == 31) {
-                                documentcheck.threeone = true;
-                                details.name = "Pay Slip-1";
-                                details.number = "SPINPAYOO12E" + item
-                                    .document_number;
+                        var trHTML = "";
+                        $.each(response[1], function(i, item) {
+                            if (item.master_document_id == 1) {
+                                documentcheck.one = true;
+                                details.name = "Adharcard Card";
+                                details.number = item.document_number;
                                 if (item.is_verified == 'approved') {
                                     details.status = "Approved";
                                 }
@@ -620,122 +651,170 @@
                                 if (item.is_verified == 'pending') {
                                     details.status = "Pending";
                                 }
-                            }
-                            if (item.document_number == 32) {
-                                documentcheck.threetwo = true;
-                                details.name = "Pay Slip-2";
-                                details.number = "SPINPAYOO12E" + item
-                                    .document_number;
-                                if (item.is_verified == 'approved') {
-                                    details.status = "Approved";
-                                }
-                                if (item.is_verified == 'reject') {
-                                    details.status = "Rejected";
-                                }
-                                if (item.is_verified == 'pending') {
-                                    details.status = "Pending";
-                                }
-                            }
-                            if (item.document_number == 33) {
-                                documentcheck.threethree = true;
-                                details.name = "Pay Slip-3";
-                                details.number = "SPINPAYOO12E" + item
-                                    .document_number;
-                                if (item.is_verified == 'approved') {
-                                    details.status = "Approved";
-                                }
-                                if (item.is_verified == 'reject') {
-                                    details.status = "Rejected";
-                                }
-                                if (item.is_verified == 'pending') {
-                                    details.status = "Pending";
-                                }
-                            }
-                        }
-                        // console.log(details);
 
-                        let button =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>Re-Upload</button>';
-                        if (details.status == 'Rejected') {
-                            button =
-                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                                item.master_document_id + '\'' + ',' + '\'' + item
-                                .document_number + '\')">Re-Upload</button>';
+                            }
+                            if (item.master_document_id == 2) {
+                                documentcheck.two = true;
+                                details.name = "Pan Card";
+                                details.number = item.document_number;
+                                if (item.is_verified == 'approved') {
+                                    details.status = "Approved";
+                                }
+                                if (item.is_verified == 'reject') {
+                                    details.status = "Rejected";
+                                }
+                                if (item.is_verified == 'pending') {
+                                    details.status = "Pending";
+                                }
+                            }
+                            if (item.master_document_id == 4) {
+                                documentcheck.four = true;
+                                details.name = "Bank Statement";
+                                details.number = "SPINPAYOO12E" + item
+                                    .document_number;
+                                if (item.is_verified == 'approved') {
+                                    details.status = "Approved";
+                                }
+                                if (item.is_verified == 'reject') {
+                                    details.status = "Rejected";
+                                }
+                                if (item.is_verified == 'pending') {
+                                    details.status = "Pending";
+                                }
+                            }
+                            if (item.master_document_id == 3) {
+                                if (item.document_number == 31) {
+                                    documentcheck.threeone = true;
+                                    details.name = "Pay Slip-1";
+                                    details.number = "SPINPAYOO12E" + item
+                                        .document_number;
+                                    if (item.is_verified == 'approved') {
+                                        details.status = "Approved";
+                                    }
+                                    if (item.is_verified == 'reject') {
+                                        details.status = "Rejected";
+                                    }
+                                    if (item.is_verified == 'pending') {
+                                        details.status = "Pending";
+                                    }
+                                }
+                                if (item.document_number == 32) {
+                                    documentcheck.threetwo = true;
+                                    details.name = "Pay Slip-2";
+                                    details.number = "SPINPAYOO12E" + item
+                                        .document_number;
+                                    if (item.is_verified == 'approved') {
+                                        details.status = "Approved";
+                                    }
+                                    if (item.is_verified == 'reject') {
+                                        details.status = "Rejected";
+                                    }
+                                    if (item.is_verified == 'pending') {
+                                        details.status = "Pending";
+                                    }
+                                }
+                                if (item.document_number == 33) {
+                                    documentcheck.threethree = true;
+                                    details.name = "Pay Slip-3";
+                                    details.number = "SPINPAYOO12E" + item
+                                        .document_number;
+                                    if (item.is_verified == 'approved') {
+                                        details.status = "Approved";
+                                    }
+                                    if (item.is_verified == 'reject') {
+                                        details.status = "Rejected";
+                                    }
+                                    if (item.is_verified == 'pending') {
+                                        details.status = "Pending";
+                                    }
+                                }
+                            }
                             // console.log(details);
-                        }
-                        statustr = '';
-                        if (details.status == "Approved") {
-                            statustr =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">' +
-                                details.status + '</span>';
-                        }
-                        if (details.status == "Rejected") {
-                            statustr =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">' +
-                                details.status + '</span>';
-                        }
-                        if (details.status == "Pending") {
-                            statustr =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">' +
-                                details.status + '</span>';
-                        }
-                        trHTML += '<tr style="color:white"><td>' +
-                            details.name + '</td><td> ' +
-                            details.number + '</td><td>' +
-                            statustr + '</td><td>' + button + '</td></tr>';
-                    });
-                    // console.log(documentcheck);
-                    if (documentcheck.one == false) {
-                        var reupload =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            1 + '\'' + ',' + '\'' + 1 + '\')">Re-Upload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Aadhar Card</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    if (documentcheck.two == false) {
-                        var reupload =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            2 + '\'' + ',' + '\'' + 2 + '\')">Re-Upload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    if (documentcheck.threeone == false) {
-                        var reupload =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            3 + '\'' + ',' + '\'' + 31 + '\')">Re-Upload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Pay Slip-1</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    if (documentcheck.threetwo == false) {
-                        var reupload =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            3 + '\'' + ',' + '\'' + 32 + '\')">Re-Upload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Pay Slip-2</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    if (documentcheck.threethree == false) {
-                        var reupload =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            3 + '\'' + ',' + '\'' + 33 + '\')">Re-Upload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Pay Slip-3</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    if (documentcheck.four == false) {
-                        var reupload =
-                            '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
-                            4 + '\'' + ',' + '\'' + 41 + '\')">Re-Upload</button>';
-                        trHTML +=
-                            '<tr style="color:white"><td>Bank Statement</td><td>-</td><td>Not Uploaded</td><td>' +
-                            reupload + '</td></tr>';
-                    }
-                    $('#document_row').append(trHTML);
-                    // console.log(trHTML);
 
+                            let button =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>Re-Upload</button>';
+                            if (details.status == 'Rejected') {
+                                button =
+                                    '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                    item.master_document_id + '\'' + ',' + '\'' +
+                                    item
+                                    .document_number + '\')">Re-Upload</button>';
+                                // console.log(details);
+                            }
+                            statustr = '';
+                            if (details.status == "Approved") {
+                                statustr =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">' +
+                                    details.status + '</span>';
+                            }
+                            if (details.status == "Rejected") {
+                                statustr =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">' +
+                                    details.status + '</span>';
+                            }
+                            if (details.status == "Pending") {
+                                statustr =
+                                    '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">' +
+                                    details.status + '</span>';
+                            }
+                            trHTML += '<tr style="color:white"><td>' +
+                                details.name + '</td><td> ' +
+                                details.number + '</td><td>' +
+                                statustr + '</td><td>' + button + '</td></tr>';
+                        });
+                        // console.log(documentcheck);
+                        if (documentcheck.one == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                1 + '\'' + ',' + '\'' + 1 + '\')">Re-Upload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Aadhar Card</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        if (documentcheck.two == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                2 + '\'' + ',' + '\'' + 2 + '\')">Re-Upload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        if (documentcheck.threeone == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                3 + '\'' + ',' + '\'' + 31 + '\')">Re-Upload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Pay Slip-1</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        if (documentcheck.threetwo == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                3 + '\'' + ',' + '\'' + 32 + '\')">Re-Upload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Pay Slip-2</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        if (documentcheck.threethree == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                3 + '\'' + ',' + '\'' + 33 + '\')">Re-Upload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Pay Slip-3</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        if (documentcheck.four == false) {
+                            var reupload =
+                                '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
+                                4 + '\'' + ',' + '\'' + 41 + '\')">Re-Upload</button>';
+                            trHTML +=
+                                '<tr style="color:white"><td>Bank Statement</td><td>-</td><td>Not Uploaded</td><td>' +
+                                reupload + '</td></tr>';
+                        }
+                        $('#document_row').append(trHTML);
+                        // console.log(trHTML);
+
+                    }
                 }
             });
         });
@@ -870,7 +949,98 @@
                 }
             });
         });
+        // query div
+        $('#anyquery').click(function(event) {
+            console.log('hello');
 
+            $.ajax({
+                url: '/api/raise/show',
+                type: 'post',
+                data: {
+                    'user_id': 1
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response['status'] == 500) {
+                        alert('We are facing issue please try later');
+                    }
+                    if (response['status'] == 200) {
+                        $('#dashboard-div').hide();
+                        $("#loan-div").hide();
+                        $('#loanApply-div').hide();
+                        $("#request-div").hide();
+                        $("#profile-div").hide();
+                        $("#transaction-div").hide();
+                        $("#document-div").hide();
+                        $('#query_row').empty();
+                        $("#query-div").show();
+                        let trHTML = "";
+                        $.each(response['message'], function(i, item) {
+                            var updated = "-";
+                            let issueid = "SPINPAYOO12E" + item.id;
+                            if (item.reply_message != null) {
+                                let date2 = new Date(item.updated_at);
+                                updated = date2.getDate() + "/" + (date2
+                                    .getMonth() + 1) + "/" + date2.getFullYear();
+                            }
+                            var date = new Date(item.created_at);
+                            let created = date.getDate() + "/" + (date.getMonth() +
+                                1) + "/" + date.getFullYear();
+                            trHTML += '<tr style="color:white"><td>' + issueid +
+                                '</td><td>$ ' + item
+                                .category + '</td><td>' +
+                                item.user_message + '</td><td>' + item
+                                .reply_message + ' month</td><td>' + created +
+                                '</td><td>' + updated + '</td></tr>';
+                        });
+                        $('#query_row').append(trHTML);
+                        // console.log('asjghad');
+                    }
+
+
+                }
+            });
+
+        });
+
+        // submit querybfrom the user
+        $('#submitquery').click(function(event) {
+            $('#error').empty();
+            event.preventDefault();
+            let category = $('#category-name').val();
+            let issue = $('#issue-text').val();
+            if (category == "" || issue == "") {
+                $('#error').append("<p style='color:red'>*Fields Cannot Be Empty</p>");
+            } else {
+                let raisequery = {
+                    'user_id': 1,
+                    'category': category,
+                    'user_message': issue
+                }
+                $.ajax({
+                    url: '/api/raise/query',
+                    type: 'post',
+                    data: raisequery,
+                    success: function(response) {
+                        if (response['status'] == 401) {
+                            console.log(response);
+                            let ptag = "<p style='color:red'>*" + response[
+                                'Validation Failed'] + "</p>"
+                            $('#error').append(ptag);
+                        } else if (response['status'] != 200) {
+                            let ptag = "<p style='color:red'>*" + response['message'] +
+                                "</p>"
+                            $('#error').append(ptag);
+
+                        } else {
+                            $('#closequery').click();
+                        }
+                    }
+                });
+
+            }
+
+        });
 
     });
 
@@ -886,6 +1056,8 @@
                 // console.log(btid, response)
                 $("#" + btid).attr("disabled", true);
                 console.log(response);
+                alert('<i class="fa-solid fa-badge-check"></i>');
+                $('#loan').click();
             }
         });
     }
@@ -939,4 +1111,4 @@
     function closeButton() {
         $('#documents').click();
     }
-</script>
+</script> 

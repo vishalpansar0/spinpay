@@ -13,7 +13,7 @@
       <h5>Sathwik</h5>
     </div> 
     <div class="logout" style="color:white">
-      <button class="btn btn-outline-primary" id="logoutBtn">Logout</button>
+      <button class="btn btn-outline-primary" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i></button>
     </div> 
   </div>
 </nav>
