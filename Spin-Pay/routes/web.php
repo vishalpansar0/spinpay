@@ -80,3 +80,8 @@ Route::get('/test', function () {
 Route::get('/getTestData', [AgentDashboardController::class,'getTestData']);
 
 Route::get('userview/{id}',[AgentDashboardController::class,'ShowUsersDetails']);
+
+
+
+
+
