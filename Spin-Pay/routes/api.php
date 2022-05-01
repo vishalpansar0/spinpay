@@ -4,7 +4,8 @@ use App\Http\Controllers\Mailes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\AgentAuthController;
 use App\Http\Controllers\Borrower;
 use App\Http\Controllers\RaiseIssue;
 use App\Http\Controllers\Lender;
@@ -27,7 +28,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //auth routes
-Route::post('login',[AuthController::class,'login']);
+Route::post('login',[UserAuthController::class,'login']);
+Route::get('logout',[UserAuthController::class,'logout']);
+
+//agent auth routes
+Route::post('agentLogin',[AgentAuthController::class,'login']);
+Route::get('agentLogout',[AgentAuthController::class,'logout']);
 
 // for send otp to users mail
 Route::post('sendotp',[Mailes::class,"sendotp"]);
@@ -46,7 +52,7 @@ Route::post('verifyotpforgotpassword',[Mailes::class,"verifyforgotpasswordotp"])
 
 
 //for to store basic user details
-Route::post("store_users",[UserController::class,"store_users"])->middleware('auth:api');
+Route::post("store_users",[UserController::class,"store_users"]);
 Route::post('/userdata', [UserController::class, 'userdata']);
 Route::post('/aadhar', [UserController::class, 'aadhar']);
 
@@ -107,6 +113,8 @@ Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest
 
 //transaction with filters 
 Route::post('transaction',[AgentDashboardController::class,'transaction']);
+
+
 
 //loan request with filters
 Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
@@ -176,4 +184,4 @@ Route::post('raise/show ',[RaiseIssue::class,'showissues']);
 
 
 
-Route::get('fetchUserDocs/{id}',[AgentDashboardController::class,'fetchUserDocs']);
+Route::get('fetchUserDocs/{id}/{docId}/{payNum?}',[AgentDashboardController::class,'fetchUserDocs']);
