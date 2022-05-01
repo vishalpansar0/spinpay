@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Validator;
 
 class Borrower extends Controller
 {
+     public function borrowerdashboard(){
+        return view('user.borrower.dashboard');
+     }
+
     // Loan Request
     public function loan_request(Request $request)
     {

@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Validator;
 
 class Lender extends Controller
 {
+     public function lenderdashboard(){
+        return view('user.lender.dashboard');
+     }
+
     public function ShowUsersDetails(Request $request)
     {
         try {
@@ -361,7 +365,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 401, x
+                'status' => 401
             ]);
         }
         $user = new Users();
