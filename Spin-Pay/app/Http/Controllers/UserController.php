@@ -141,29 +141,7 @@ class UserController extends Controller
 
         try {
             $user_doc = new UserDocument();
-            if($user_doc->where('user_id',$request['user_id'])->where('master_document_id',2)->get()->first()){
-                if($user_doc->where('is_verified','reject')->get()->first()){
-                    $user_doc->user_id = $request['user_id'];
-                    // $user_doc->master_document_id = $request['master_document_id'];
-                    $user_doc->document_number = $request['document_number'];
-                    $path = $request->file('document_image')->store('public/images/pan_images');
-                    $path = str_replace("public/","",$path);
-                    $user_doc->document_image = $path;
-                    $ifsaved = $user_doc->save();
-                    if ($ifsaved == 1) {
-                        return response()->json([
-                            'message' => 'success',
-                            "status" => 200,
-                        ]);
-                    } else {
-                        return response()->json([
-                            'message' => 'data not saved',
-                            "status" => 400,
-                        ]);
-                    }
-                }
-            }
-            if ($user_doc->where('document_number', $request['document_number'])) {
+            if ($user_doc->where('document_number', $request['document_number'])->get()->first()) {
                 return response()->json([
                     'message' => "this document number already exists",
                     'status' => 400,
@@ -173,13 +151,22 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request['master_document_id'];
                 $user_doc->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/pan_images');
-                $path = str_replace("public/", "", $path);
+                $path = str_replace("public/","",$path);
                 $user_doc->document_image = $path;
                 $ifsaved = $user_doc->save();
                 if ($ifsaved == 1) {
+                    $isLender = Users::where('id',$request['user_id'])->where('role_id',3)->first();
+                    if($isLender){
+                        return response()->json([
+                            'message' => 'success',
+                            "status" => 200,
+                            "isLender"=>'yes',
+                        ]);
+                    }
                     return response()->json([
                         'message' => 'success',
                         "status" => 200,
+                        "isLender"=>'no',
                     ]);
                 } else {
                     return response()->json([

@@ -50,8 +50,8 @@ Route::get('/register/userdocuments/{id}',function($id){
 
 
 //Users Routes
-Route::get('/user/borrower',[Borrower::class,'borrowerdashboard'])->middleware('isLoggedIn');
-Route::get('/user/lender',[Lender::class,'lenderdashboard'])->middleware('isLoggedIn');
+Route::get('/user/borrower',[Borrower::class,'borrowerdashboard'])->middleware('isLoggedIn','isBorrower');
+Route::get('/user/lender',[Lender::class,'lenderdashboard'])->middleware('isLoggedIn','isLender');
 
 
 //Agent Routes
