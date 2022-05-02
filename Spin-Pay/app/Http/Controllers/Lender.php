@@ -11,9 +11,29 @@ use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class Lender extends Controller
 {
+    public function lenderdashboard()
+    {
+        $user_id = Session::get('user_id');
+        try {
+            $data = Users::where('users.id',$user_id)->
+            leftjoin('wallets','wallets.user_id','=','users.id')->
+            leftjoin('loans','loans.lender_id','=','users.id')->
+            leftjoin('users as borrower','borrower.id','=','loans.borrower_id')->
+            select('users.name as name','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.start_date','loans.end_date','loans.status')->first()  ;
+            // return $data;
+            return view('user.lender.dashboard',['datas'=>$data]);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Internal Server Error',
+                "status" => 500
+            ]);
+        }
+    }
+
     public function ShowUsersDetails(Request $request)
     {
         try {
@@ -68,7 +88,7 @@ class Lender extends Controller
             ]);
         }
         $userr = new Users();
-        if (!$userr->where('id', $request['lender_id'])->get()->first()) {
+        if (!$userr->where('id', $request['user_id'])->get()->first()) {
             return response()->json([
                 'message' => 'user not present',
                 'status' => 400,
