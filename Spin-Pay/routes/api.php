@@ -133,6 +133,10 @@ Route::get('profileReject',[AgentDashboardController::class,'profileReject']);
 //add credit_limit and credit_score
 Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
 
+//requests for a particular user agent can see
+Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
+
+
 
 
 

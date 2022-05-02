@@ -21,6 +21,7 @@
     print_r($aadhar);
     echo '</pre>';
 @endphp --}}
+<input type="text" id="getUserId" value="{{$id}}" style="none">
 <div style="margin-top:70px">
     <div class="left-menu-div">
         <div class="menu-wrapper">
@@ -29,16 +30,16 @@
                 <a href="{{url('userview')}}/{{$id}}"><button class="m-btn"><i class="fas fa-user"></i><br>User</button></a>
             </div>
 
-            <div class="menu-item-div active">
-                <button class="m-btn"><i class="fas fa-glass-cheers"></i><br> Transactions</button>
+            <div class="menu-item-div">
+                <a href="{{url('userview/transaction')}}/{{$id}}"><button class="m-btn"><i class="fas fa-glass-cheers"></i><br> Transactions</button></a>
             </div>
 
             <div class="menu-item-div">
                 <a href="{{url('userview/loans')}}/{{$id}}"><button class="m-btn"><i class="fas fa-users"></i><br> Loans </button></a>
             </div>
 
-            <div class="menu-item-div">
-                <a href="{{url('userRequests')}}/{{$id}}"><button class="m-btn"><i class="fas fa-info-circle"></i><br> Requests </button></a>
+            <div class="menu-item-div active    ">
+                <button class="m-btn"><i class="fas fa-info-circle"></i><br> Requests </button>
             </div>
 
 
@@ -47,45 +48,18 @@
     </div>
     <div class="right-main-div">
         <div class="container-fluid">
-            <p>{{ request()->get('') }}</p>
             <table class="table text-center table-dark" >
                 <thead>
                     <tr>
-                        <th scope="col">Transaction Id</th>
-                        <th scope="col">From</th>
-                        <th scope="col">To</th>
-                        <th scope="col">Type</th>
+                        <th scope="col">Request Id</th>
                         <th scope="col">Amount</th>
+                        <th scope="col">Tenure</th>
+                        <th scope="col">Requested On</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
                     </tr>
                 </thead>
                 <tbody id="records_table">
-                    @foreach($transaction as $data)
-                    <tr>
-                        <td>{{ $data['id'] }}</td>
-                        <td>{{ $data['from'] }}</td>
-                        <td>{{ $data['to'] }}</td>
-                        <td>{{ $data['type'] }}</td>
-                        <td>{{ $data['amount'] }}</td>
-                        @if($data->status == 'successfull')
-                            <td style="padding:12px">
-                                <span style="background-color:#28a745;padding:10px;border-radius:100px">
-                                    {{ $data['status'] }}
-                                </span>
-                            </td>
-                        @else
-                            <td style="padding:12px">
-                                <span style="background-color:#dc3545;padding:10px;border-radius: 100px;">
-                                    {{ $data['status'] }}
-                                </span>
-                            </td>
-                        @endif
-                        <td>{{ Carbon\Carbon::parse($data->date)->format('h:i:s') }}</td>
-                        <td>{{ Carbon\Carbon::parse($data->time)->format('Y-m-d') }}</td>
-                    </tr>
-                @endforeach
+                    
                 </tbody>
             </table>
         </div>
@@ -118,7 +92,50 @@
         </div>
     </div>
 </div>
-
+<script>
+    $(document).ready(function() {
+        function errormsg(str) {
+            $('#errorDiv').html(str);
+            $('#errorDiv').css('display', 'block');
+        } 
+        userId = $('#getUserId').val();
+        const getData = {
+             'user_id' : userId,
+        };
+            $.ajax({
+                    url: "/api/agent/allRequestsForAUser",
+                    type: "post",
+                    dataType: "json",
+                    data: getData,
+                    beforeSend: function() {
+                        // $('#allUsers').css('display', 'none');   
+                        $('#page-links').css('display', 'none');
+                        // $('#loader-container').css('display', 'block'); 
+                        $("#records_table").empty();
+                    },
+                    success: function(response) {
+                        // console.log(response[0]['name']);
+                        var trHTML = '';
+                        $.each(response['message'], function(i, item) {
+                            // btnRow = '<a href="'+'{{url("userview/")}}/'+item.id+'"><button class="actionbtn" id="pendingUsersBtn"> view</button></a>';
+                            if(item.status == 'approved'){
+                                statusRow = '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Approved</span>';
+                            }
+                            else if(item.status == 'pending'){
+                                statusRow = '<span style="padding:5px 15px;border-radius:1000px;background-color:orange;">Pending</span>';
+                            }
+                            else{
+                                statusRow = '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Rejected</span>';
+                            }
+                            trHTML += '<tr><td>' + item.id + '</td><td>' + item.amount + '</td><td>' + item.tenure + '</td><td>' + item.created_at + '</td><td>' + statusRow + '</td></tr>';
+                        });
+                        $('#records_table').append(trHTML);
+                        // $('#filterDataTable').css('display', 'block');
+                    }
+                });
+            });
+  
+</script>
 
 @include('agent.agentLayouts.jsAgent')
 {{-- <script>
