@@ -9,6 +9,7 @@ Use App\Models\UserDocument;
 use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\CreditMapping;
+use App\Models\Loan;
 use App\Models\CreditDetail;
 use DB;
 use Illuminate\Database\QueryException;
@@ -196,6 +197,18 @@ class AgentDashboardController extends Controller
     } 
     }
 
+    public function userLoans($req){
+        try{
+        $loans = Loan::where('borrower_id',$req)->orwhere('lender_id',$req)->get();
+        return view('agent.userLoans', [ 'id'=>$req,
+            'loans' => $loans,
+        ]);
+    }
+    catch(QueryException $e){
+        return view('agent.userTransactions',['id'=>""]);
+    } 
+    }
+
     public function transaction(Request $request){
         $data = Transaction::select('transactions.id as id','s.name as from', 'ss.name as to', 'transactions.type as type', 'transactions.amount as amount',
                                      'transactions.status as status', 'transactions.created_at as time', 'transactions.created_at as date')
@@ -310,7 +323,7 @@ class AgentDashboardController extends Controller
                UserDocument::where('user_id',$request['user_id'])->where('document_number','32')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','33')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','41')->where('is_verified','approved')->exists()){
-                UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
+               UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
                 return response()->json([
                     'code' => 200,
                     'message' => "Profile Approved successfully"

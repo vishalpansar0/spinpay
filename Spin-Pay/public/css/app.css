@@ -213,6 +213,15 @@ body {
     outline: none;
 }
 
+.inputDiv1 input {
+    background-color: #101010;
+    color: white;
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+    min-width: 100%;
+}
+
 .inputFileDiv {
     border: 1px solid grey;
     cursor: pointer;
