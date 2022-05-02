@@ -16,13 +16,14 @@ $(document).ready(function() {
         $('#request').removeClass('navbarBtn');
         $("#detailHeading").empty();
     });
+    const user_id_from_session = $('#getuserid').val();
 
     $('#loan').click(function() {
         $.ajax({
             url: '/api/lenderloan',
             type: 'POST',
             data: {
-                lender_id: 4
+                lender_id: user_id_from_session
             },
             beforeSend: function() {
                 $('#loan').addClass('navbarBtn');
@@ -92,7 +93,7 @@ $(document).ready(function() {
             url: '/api/lendertransaction',
             type: 'POST',
             data: {
-                lender_id: 3
+                lender_id: user_id_from_session
             },
             beforeSend: function() {
                 $('#transaction').addClass('navbarBtn');
@@ -164,7 +165,7 @@ $(document).ready(function() {
             url: '/api/lenderrequest',
             type: 'POST',
             data: {
-                lender_id: 47
+                lender_id: user_id_from_session
             },
             beforeSend: function() {
                 $('#request').addClass('navbarBtn');
@@ -228,7 +229,7 @@ $(document).ready(function() {
             url: '/api/showuserdetails',
             type: 'GET',
             data: {
-                id: 47
+                id: user_id_from_session
             },
             beforeSend: function() {
                 $('#profile').addClass('navbarBtn');
@@ -307,7 +308,7 @@ $(document).ready(function() {
             url: '/api/showuserdetails',
             type: 'GET',
             data: {
-                id: 46
+                id: user_id_from_session
             },
             beforeSend: function() {
                 $('#documents').addClass('navbarBtn');
@@ -468,12 +469,13 @@ $(document).ready(function() {
         $('#errorMsg').hide();
         $('#successMsg').hide();
         console.log(amount);
+        console.log(user_id_from_session);
         $.ajax({
             url: '/api/addmoney',
             type: 'POST',
             data: {
                 'amount': amount,
-                'user_id': 3
+                'user_id': user_id_from_session
 
             },
             success: function(response) {
@@ -495,6 +497,7 @@ $(document).ready(function() {
                 if (response['status'] == 200) {
                     $('#successMsg').show();
                     $('#successMsg').html('Money added Successfully');
+                    $('#amount').val('');
 
                 }
             }
@@ -512,14 +515,6 @@ $(document).ready(function() {
         $('#showSideNavbar').hide();
         $('#closeSideNavbar').show();
     });
-    $('#logoutBtn').click(function() {
-
-        window.location.href = "/";
-        // window.location.replace("/");
-    });
-
-
-
 
     // ReUploading Documents
     $('#documentUploadlender').click(function(event) {
@@ -531,7 +526,7 @@ $(document).ready(function() {
         console.log(apiurl, '  ', MasterdocumentNumber);
 
         let upload = new FormData(document.getElementById('lenderdocuments'));
-        upload.append('user_id', 46);
+        upload.append('user_id', user_id_from_session);
         upload.append('master_document_id', MasterdocumentNumber);
 
         $.ajax({
@@ -546,6 +541,7 @@ $(document).ready(function() {
                 // console.log(result['status']);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
+                    $('lenderdocsuploadkre').empty();   
                     $('#document_input_image').val('');
                     $('#document_input').val('');
                     $('#close').click();
@@ -604,7 +600,7 @@ $(document).ready(function() {
             type: 'POST',
             dataType: 'json',
             data: {
-                'lender_id': 46,
+                'lender_id': user_id_from_session,
                 'request_id': userrequestids
             },
             success: function(result) {
@@ -630,7 +626,7 @@ $(document).ready(function() {
             url: '/api/raise/show',
             type: 'post',
             data: {
-                'user_id': 1
+                'user_id': user_id_from_session
             },
             success: function(response) {
                 console.log(response);
@@ -664,10 +660,10 @@ $(document).ready(function() {
                             1) + "/" + date.getFullYear();
                         console.log('hi');
                         trHTML += '<tr style="color:white"><td>' + issueid +
-                            '</td><td>$ ' + item
+                            '</td><td>' + item
                             .category + '</td><td>' +
                             item.user_message + '</td><td>' + item
-                            .reply_message + ' month</td><td>' + created +
+                            .reply_message + '</td><td>' + created +
                             '</td><td>' + updated + '</td></tr>';
                     });
                     $('#query_row').append(trHTML);
@@ -689,7 +685,7 @@ $(document).ready(function() {
             $('#error').append("<p style='color:red'>*Fields Cannot Be Empty</p>");
         } else {
             let raisequery = {
-                'user_id': 1,
+                'user_id': user_id_from_session,
                 'category': category,
                 'user_message': issue
             }
@@ -724,17 +720,11 @@ $(document).ready(function() {
 });
 
 function ViewDetails(details) {
-    // console.log(details);
-    // console.log('check');apiurl,'  ',MasterdocumentNumber
     $('#PassingRequestID').html(details);
     $('#borrowerdetails').click();
-    // $('#exampleModalLabel').html('for checking');
-    // let ptag = "<p>"+details+"</p>";
-    // $('#exampleModalLabel').append(ptag);
 }
 
 function repayment(id, btid) {
-    // console.log(id, btid);
     $.ajax({
         url: '/api/loanrepayment',
         type: 'POST',
@@ -750,25 +740,23 @@ function repayment(id, btid) {
 }
 
 function DocumentReupload(master_document_id, document_number) {
-    // console.log(master_document_id," // ",document_number);
+    console.log("id",master_document_id);
     $('#document_input').css('display', 'block')
     let heading = "";
     let url = "";
-    // exampleModalLabel
     if (master_document_id == 1) {
         heading = "Aadhar Card";
-        url = "http://localhost:8000/api/aadhar";
+        url = "/api/aadhar";
 
     }
     if (master_document_id == 2) {
         heading = "Pan Card";
-        url = "http://localhost:8000/api/pancard";
+        url = "/api/pancard";
     }
 
     let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
         '</p><p style="display:none" id="documentNumber"' + '>' + document_number +
         '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
-    // console.log(ptag);
     $('#exampleModalLabel').html(heading);
     $('#lenderdocsuploadkre').append(ptag)
     $('#modalid').click();
@@ -776,7 +764,6 @@ function DocumentReupload(master_document_id, document_number) {
 
 
 function GiveLoan(details) {
-    // console.log(details);
     $('#PassingRequestID').html(details);
     $('#giveloan').click();
 }

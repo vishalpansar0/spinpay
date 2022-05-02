@@ -2,6 +2,7 @@
 @extends('user.layout.header')
 @include('user.layout.header')
 
+
 <div class="main-container" style="" id="main-container">
     <div class="left-container" id="leftContainer" style="transition:all .4s ease">
         <div class="ul"><button class="navbarBtn" id="dashboard">DASHBOARD</button></div>
@@ -29,7 +30,7 @@
                 <div class="creditScore text-center" id="creditScore">
                     <h1 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;"><i style=""
                             class="fa-solid fa-wallet"></i></h1>
-                    <P style="color:white">700</P>
+                    <P style="color:white">{{$datas['wallet_amount']}}</P>
                 </div>
                 {{-- <div class="CreditPoint text-center" id="CreditPoint">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT POINT</h5>
@@ -63,6 +64,18 @@
                         </tr>
                     </thead>
                     <tbody id="lastLoan-row">
+                        <tr>
+                            @php
+                                $start = date_create($datas['start_date']);
+                                $end = date_create($datas['end_date']);
+                            @endphp
+                            <td>SPINPAYOO12E{{$datas['loan_id']}}</td>
+                            <td>{{$datas['amount']}}</td>
+                            <td>{{date_format($start,'d/m/y')}}</td>
+                            <td>{{date_format($end, 'd/m/y')}}</td>
+                            <td>{{$datas['status']}}</td>
+                            <td>{{$datas['bname']}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -392,7 +405,7 @@
         </div>
     </div>
 </div>
-
+<input type="text" value="{{ Session::get('user_id') }}" id="getuserid" style="display: none">
 
 
 {{-- Script Code --}}

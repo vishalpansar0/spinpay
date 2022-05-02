@@ -1,4 +1,7 @@
 $(document).ready(function() {
+   
+    const user_id_from_session = $('#getuserid').val();
+
         $('#dashboard').click(function() {
             $("#transaction-div").hide();
             $("#request-div").hide();
@@ -22,7 +25,7 @@ $(document).ready(function() {
                 url: 'http://localhost:8000/api/request/loandetails',
                 type: 'POST',
                 data: {
-                    user_id: 4
+                    user_id: user_id_from_session
                 },
                 beforeSend: function() {
                     $('#loan').addClass('navbarBtn');
@@ -95,7 +98,7 @@ $(document).ready(function() {
                 url: 'http://localhost:8000/api/request/transactiondetails',
                 type: 'POST',
                 data: {
-                    user_id: 3
+                    user_id: user_id_from_session
                 },
                 beforeSend: function() {
                     $('#transaction').addClass('navbarBtn');
@@ -153,7 +156,7 @@ $(document).ready(function() {
                 url: 'http://localhost:8000/api/request/allrequest',
                 type: 'POST',
                 data: {
-                    user_id: 4
+                    user_id: user_id_from_session
                 },
                 beforeSend: function() {
                     $('#request').addClass('navbarBtn');
@@ -222,7 +225,7 @@ $(document).ready(function() {
                 url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
                 data: {
-                    id: 47
+                    id: user_id_from_session
                 },
                 beforeSend: function() {
                     $('#profile').addClass('navbarBtn');
@@ -287,7 +290,7 @@ $(document).ready(function() {
                         $('#location-div').append(location);
 
                         var pfeimage =
-                            '<img src="' + '{{ asset("storage") }}/' + response[0].image +
+                            '<img src="' + '{{asset("storage")}}/' + response[0].image +
                             '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
                         $('#photo-container').append(pfeimage);
                         var down = "";
@@ -302,7 +305,7 @@ $(document).ready(function() {
                 url: 'http://localhost:8000/api/showuserdetails',
                 type: 'GET',
                 data: {
-                    id: 46
+                    id: user_id_from_session
                 },
                 beforeSend: function() {
                     $('#documents').addClass('navbarBtn');
@@ -551,7 +554,7 @@ $(document).ready(function() {
                 data: {
                     tenure: month,
                     amount_request: amount,
-                    user_id: 37
+                    user_id: user_id_from_session
 
                 },
                 success: function(response) {
@@ -605,14 +608,7 @@ $(document).ready(function() {
             $('#showSideNavbar').hide();
             $('#closeSideNavbar').show();
         });
-        $('#logoutBtn').click(function() {
-
-            window.location.href = "/";
-            // window.location.replace("/");
-        });
-
-
-
+     
 
         // ReUploading Documents
         $('#documentUpload').click(function(event) {
@@ -629,7 +625,7 @@ $(document).ready(function() {
                 $('#document_input').prop('value', documentNumber);
             }
             let upload = new FormData(document.getElementById('documentsReUploads'));
-            upload.append('user_id', 46);
+            upload.append('user_id', user_id_from_session);
             upload.append('master_document_id', MasterdocumentNumber);
 
             $.ajax({
@@ -661,7 +657,7 @@ $(document).ready(function() {
                 url: '/api/raise/show',
                 type: 'post',
                 data: {
-                    'user_id': 1
+                    'user_id': user_id_from_session
                 },
                 success: function(response) {
                     console.log(response);
@@ -691,10 +687,10 @@ $(document).ready(function() {
                             let created = date.getDate() + "/" + (date.getMonth() +
                                 1) + "/" + date.getFullYear();
                             trHTML += '<tr style="color:white"><td>' + issueid +
-                                '</td><td>$ ' + item
+                                '</td><td>' + item
                                 .category + '</td><td>' +
                                 item.user_message + '</td><td>' + item
-                                .reply_message + ' month</td><td>' + created +
+                                .reply_message + '</td><td>' + created +
                                 '</td><td>' + updated + '</td></tr>';
                         });
                         $('#query_row').append(trHTML);
@@ -717,7 +713,7 @@ $(document).ready(function() {
                 $('#error').append("<p style='color:red'>*Fields Cannot Be Empty</p>");
             } else {
                 let raisequery = {
-                    'user_id': 1,
+                    'user_id': user_id_from_session,
                     'category': category,
                     'user_message': issue
                 }
@@ -755,7 +751,7 @@ $(document).ready(function() {
             url: 'http://localhost:8000/api/loanrepayment',
             type: 'POST',
             data: {
-                loan_id: id
+                loan_id: user_id_from_session
             },
             success: function(response) {
                 // console.log(btid, response)

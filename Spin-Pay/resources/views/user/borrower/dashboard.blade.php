@@ -1,7 +1,6 @@
 @include('user.layout.navbar')
 @extends('user.layout.header')
 @include('user.layout.header')
-
 <div class="main-container" style="" id="main-container">
     <div class="left-container" id="leftContainer" style="transition:all .4s ease">
         <div class="ul"><button class="navbarBtn" id="dashboard">DASHBOARD</button></div>
@@ -58,10 +57,20 @@
                             <th scope="col">LOAN START DATE</th>
                             <th scope="col">LOAN DUE DATE</th>
                             <th scope="col">STATUS</th>
-                            <th scope="col">REPAY</th>
                         </tr>
                     </thead>
                     <tbody id="lastLoan-row">
+                        <tr>
+                            @php
+                                $start = date_create($datas['start_date']);
+                                $end = date_create($datas['end_date']);
+                            @endphp
+                            <td>SPINPAYOO12E{{$datas['loan_id']}}</td>
+                            <td>{{$datas['amount']}}</td>
+                            <td>{{date_format($start,'d/m/y')}}</td>
+                            <td>{{date_format($end, 'd/m/y')}}</td>
+                            <td>{{$datas['status']}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -150,7 +159,7 @@
         <div class="anyquery" id="query-div" style="display: none;font-family: myFirstFont;margin-top:20px;">
             <div id="querybtn" style="display: flex;">
                 {{-- <sapn style="color:white">If you have any concern raise a query</p> --}}
-                {{-- <h3 style="color:#0af7e8;margin-left:20px">If you have any concern raise a query</h3>   --}}
+                {{-- <h3 style="color:#0af7e8;margin-left:20px">If you have any concern raise a query</h3> --}}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalquery"
                     data-whatever="@mdo" id="borrowerquery" style="margin-left: auto">ASK QUERY</button>
             </div>
@@ -288,8 +297,8 @@
         </div>
     </div>
 
-
 </div>
+<input type="text" value="{{ Session::get('user_id') }}" id="getuserid" style="display: none">
 
 {{-- Script Code --}}
 <script src="{{ asset('js/borrower.js') }}"></script>
