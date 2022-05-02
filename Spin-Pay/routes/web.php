@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mailes;
 use App\Http\Controllers\AgentDashboardController;
+use App\Http\Controllers\Borrower;
+use App\Http\Controllers\Lender;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,13 +49,9 @@ Route::get('/register/userdocuments/{id}',function($id){
 
 
 
-// Borrower
-Route::get('/user/borrower', function(){
-    return view('user.borrower.dashboard');
-})->middleware('isLoggedIn');
-Route::get('/user/lender', function(){
-    return view('user.lender.dashboard');
-})->middleware('isLoggedIn');
+//Users Routes
+Route::get('/user/borrower',[Borrower::class,'borrowerdashboard'])->middleware('isLoggedIn');
+Route::get('/user/lender',[Lender::class,'lenderdashboard'])->middleware('isLoggedIn');
 
 
 //Agent Routes
