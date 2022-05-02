@@ -258,7 +258,7 @@ class Borrower extends Controller
             ]);
         }
         $loan = new Loan();
-        if ($loan->where('id', $request['loan_id'])->where('status', 'repaid')->get()->first()->status == 'repaid') {
+        if ($loan->where('id', $request['loan_id'])->get()->first()->status == 'repaid') {
             return response()->json([
                 'message' => 'loan Already Paid',
                 'status' => 200
