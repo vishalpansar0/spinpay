@@ -16,11 +16,16 @@
     </div>
 
     <div class="register-main-body">
-        <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;display:none"></div>
+        @if (Session::has('failed'))
+            <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;">
+                   {{Session::get('failed')}}
+            </div>
+        @endif
+        {{-- <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;display:none"></div> --}}
         <div class="container">
             <div class="login-main-div" style="height:100%;">
                 <div class="login-container">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ url('api/login') }}">
                         @csrf
                         <h3 id="login-heading">login</h3>
                         <div class="inputDiv mt-4">
