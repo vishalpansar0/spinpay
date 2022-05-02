@@ -151,13 +151,22 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request['master_document_id'];
                 $user_doc->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/pan_images');
-                $path = str_replace("public/", "", $path);
+                $path = str_replace("public/","",$path);
                 $user_doc->document_image = $path;
                 $ifsaved = $user_doc->save();
                 if ($ifsaved == 1) {
+                    $isLender = Users::where('id',$request['user_id'])->where('role_id',3)->first();
+                    if($isLender){
+                        return response()->json([
+                            'message' => 'success',
+                            "status" => 200,
+                            "isLender"=>'yes',
+                        ]);
+                    }
                     return response()->json([
                         'message' => 'success',
                         "status" => 200,
+                        "isLender"=>'no',
                     ]);
                 } else {
                     return response()->json([

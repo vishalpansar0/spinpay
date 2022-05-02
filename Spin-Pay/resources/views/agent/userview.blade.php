@@ -32,11 +32,11 @@
             </div>
 
             <div class="menu-item-div">
-                <button class="m-btn"><i class="fas fa-users"></i><br> Loans </button>
+                <a href="{{url('userview/loans')}}/{{$user->id}}"><button class="m-btn"><i class="fas fa-users"></i><br> Loans </button></a>
             </div>
 
             <div class="menu-item-div">
-                <button class="m-btn"><i class="fas fa-info-circle"></i><br> Requests </button>
+                <a href="{{url('userRequests')}}/{{$user->id}}"><button class="m-btn"><i class="fas fa-info-circle"></i><br> Requests </button></a>
             </div>
 
 
@@ -170,6 +170,19 @@
                         <span style="color:red;">due: 20 may 2022</span>
                     </div>
                 </div>
+                <div class="mt-1">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        action
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        @if ($user->status != 'approved')
+                            <button class="btn btn-success" id="profile_aprv_btn">Approve profile</button>
+                        @else
+                            <button class="btn btn-success" disabled>Approved Profile</button>
+                        @endif
+                        
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -212,9 +225,13 @@
                                 style="width:100%" onclick="viewImage('aadhar_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
                                 id="aadharAprBtn" onclick="AprvDoc({{ $user->id }},1,'approved','aadharAprBtn','aadhar_status')"
-                                style="width:100%">Approve</button></div>
+                                style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                id="aadharRejectBtn" onclick="AprvDoc({{ $user->id }},1,'reject','aadharRejectBtn','aadhar_status')" style="width:100%">Reject</button></div>
+                                id="aadharRejectBtn" onclick="AprvDoc({{ $user->id }},1,'reject','aadharRejectBtn','aadhar_status')" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Reject</button></div>
 
                     </div>
 
@@ -252,9 +269,13 @@
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
                                 style="width:100%" onclick="viewImage('pan_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                                id="panAprBtn" onclick="AprvDoc({{ $user->id }},2,'approved','panAprBtn','pan_status')" style="width:100%">Approve</button></div>
+                                id="panAprBtn" onclick="AprvDoc({{ $user->id }},2,'approved','panAprBtn','pan_status')" style="width:100%" @if ($user->status == 'approved')
+                                    {{'disabled'}}
+                                @endif>Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                id="panRejectBtn" onclick="AprvDoc({{ $user->id }},2,'reject','panRejectBtn','pan_status')" style="width:100%">Reject</button></div>
+                                id="panRejectBtn" onclick="AprvDoc({{ $user->id }},2,'reject','panRejectBtn','pan_status')" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Reject</button></div>
 
                     </div>
 
@@ -286,9 +307,13 @@
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-primary"
                                 style="width:100%" onclick="viewImage('bankslip_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
-                                id="bankSlipAprBtn" onclick="AprvDoc({{ $user->id }},4,'approved','bankSlipAprBtn','bankSlip_status')" style="width:100%">Approve</button></div>
+                                id="bankSlipAprBtn" onclick="AprvDoc({{ $user->id }},4,'approved','bankSlipAprBtn','bankSlip_status')" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                id="bankSlipRejectBtn" onclick="AprvDoc({{ $user->id }},4,'reject','bankSlipRejectBtn','bankSlip_status')" style="width:100%">Reject</button></div>
+                                id="bankSlipRejectBtn" onclick="AprvDoc({{ $user->id }},4,'reject','bankSlipRejectBtn','bankSlip_status')" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Reject</button></div>
                     </div>
 
                 </div>
@@ -330,9 +355,13 @@
                                 style="width:100%" onclick="viewImage('payslip1_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
                                 id="pay1AprBtn" onclick="AprvPaySlips({{ $user->id }},3,'approved','pay1AprBtn','payslip1_status',31)"
-                                style="width:100%">Approve</button></div>
+                                style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                id="pay1RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay1RejectBtn','payslip1_status',31)" style="width:100%">Reject</button></div>
+                                id="pay1RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay1RejectBtn','payslip1_status',31)" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Reject</button></div>
 
                     </div>
 
@@ -346,7 +375,7 @@
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            Aadhar
+                            Payslip 2
                         </div>
                     </div>
                     <div class="row">
@@ -366,9 +395,13 @@
                                 style="width:100%" onclick="viewImage('payslip2_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
                                 id="pay2AprBtn" onclick="AprvPaySlips({{ $user->id }},3,'approved','pay2AprBtn','payslip2_status',32)"
-                                style="width:100%">Approve</button></div>
+                                style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                id="pay2RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay2RejectBtn','payslip2_status',32)" style="width:100%">Reject</button></div>
+                                id="pay2RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay2RejectBtn','payslip2_status',32)" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Reject</button></div>
 
                     </div>
 
@@ -382,7 +415,7 @@
                     <div class="row">
                         <div class="col-4" style="color:white;font-size:24px">Type: </div>
                         <div class="col-6" style="color:aqua;font-size:24px">
-                            Aadhar
+                            Payslip 3
                         </div>
                     </div>
                     <div class="row">
@@ -402,9 +435,13 @@
                                 style="width:100%" onclick="viewImage('payslip3_image')">View</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-success"
                                 id="pay3AprBtn" onclick="AprvPaySlips({{ $user->id }},3,'approved','pay3AprBtn','payslip3_status',33)"
-                                style="width:100%">Approve</button></div>
+                                style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Approve</button></div>
                         <div class="col-4" style="color:white;font-size:18px"><button class="btn btn-warning"
-                                id="pay3RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay3RejectBtn','payslip3_status',33)" style="width:100%">Reject</button></div>
+                                id="pay3RejectBtn" onclick="AprvPaySlips({{ $user->id }},3,'reject','pay3RejectBtn','payslip3_status',33)" style="width:100%" @if ($user->status == 'approved')
+                                {{'disabled'}}
+                            @endif>Reject</button></div>
 
                     </div>
 
@@ -582,8 +619,8 @@
                         $('#payslip1_status').html(response['doc_verfy']);
                         $('#payslip1_status').css('color', 'orange');
                     } else if (response['doc_verfy'] == "approved") {
-                        $('#paysli1_status').html(response['doc_verfy']);
-                        $('#paysli1_status').css('color', 'green');
+                        $('#payslip1_status').html(response['doc_verfy']);
+                        $('#payslip1_status').css('color', 'green');
                         $('#paysli1AprBtn').prop('disabled', true);
                     } else if (response['doc_verfy'] == "reject") {
                         $('#payslip1_status').html(response['doc_verfy']);
@@ -620,9 +657,9 @@
                         $('#payslip2_status').html(response['doc_verfy']);
                         $('#payslip2_status').css('color', 'orange');
                     } else if (response['doc_verfy'] == "approved") {
-                        $('#paysli2_status').html(response['doc_verfy']);
-                        $('#paysli2_status').css('color', 'green');
-                        $('#paysli2AprBtn').prop('disabled', true);
+                        $('#payslip2_status').html(response['doc_verfy']);
+                        $('#payslip2_status').css('color', 'green');
+                        $('#payslip2AprBtn').prop('disabled', true);
                     } else if (response['doc_verfy'] == "reject") {
                         $('#payslip2_status').html(response['doc_verfy']);
                         $('#payslip2_status').css('color', 'red');
@@ -658,9 +695,9 @@
                         $('#payslip3_status').html(response['doc_verfy']);
                         $('#payslip3_status').css('color', 'orange');
                     } else if (response['doc_verfy'] == "approved") {
-                        $('#paysli3_status').html(response['doc_verfy']);
-                        $('#paysli3_status').css('color', 'green');
-                        $('#paysli3AprBtn').prop('disabled', true);
+                        $('#payslip3_status').html(response['doc_verfy']);
+                        $('#payslip3_status').css('color', 'green');
+                        $('#payslip3AprBtn').prop('disabled', true);
                     } else if (response['doc_verfy'] == "reject") {
                         $('#payslip3_status').html(response['doc_verfy']);
                         $('#payslip3_status').css('color', 'red');
@@ -677,6 +714,35 @@
                 }
                
             }
+        });
+        $('#profile_aprv_btn').on('click',function(){
+            const getId = {
+                'user_id':{{$user->id}}
+            }
+            $.ajax({
+                url: "/api/profileApprove/",
+                type: "post",
+                dataType: "json",
+                data: getId,
+                beforeSend: function() {
+                    $('#profile_aprv_btn').prop('disabled',true);
+                    $('#profile_aprv_btn').html('Approving...');
+                },
+                success: function(response) {
+                    // console.log('payslip'+i+'_image');
+                    
+                    if(response['code']==200){
+                        $('#profile_aprv_btn').html('Approved');
+                        // $('#profile_aprv_btn').html('Approved');
+                        location.reload();
+                    }else if(response['code']==204 || response['code']==500){
+                        alert(response['message']);
+                        $('#profile_aprv_btn').prop('disabled',false);
+                        $('#profile_aprv_btn').html('Approve profile');
+                    }
+                   
+                }
+            });
         });
         
  

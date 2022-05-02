@@ -29,12 +29,12 @@
                 <a href="{{url('userview')}}/{{$id}}"><button class="m-btn"><i class="fas fa-user"></i><br>User</button></a>
             </div>
 
-            <div class="menu-item-div active">
-                <button class="m-btn"><i class="fas fa-glass-cheers"></i><br> Transactions</button>
+            <div class="menu-item-div ">
+                <a href="{{url('userview/transaction')}}/{{$id}}"><button class="m-btn"><i class="fas fa-glass-cheers"></i><br> Transactions</button></a>
             </div>
 
-            <div class="menu-item-div">
-                <a href="{{url('userview/loans')}}/{{$id}}"><button class="m-btn"><i class="fas fa-users"></i><br> Loans </button></a>
+            <div class="menu-item-div active">
+                <button class="m-btn"><i class="fas fa-users"></i><br> Loans </button>
             </div>
 
             <div class="menu-item-div">
@@ -51,39 +51,55 @@
             <table class="table text-center table-dark" >
                 <thead>
                     <tr>
-                        <th scope="col">Transaction Id</th>
-                        <th scope="col">From</th>
-                        <th scope="col">To</th>
-                        <th scope="col">Type</th>
+                        <th scope="col">Loan Id</th>
+                        <th scope="col">Request Id</th>
+                        <th scope="col">Borrower Id</th>
+                        <th scope="col">Lender Id</th>
+                        <th scope="col">Interest</th>
+                        <th scope="col">Processing Fee</th>
+                        <th scope="col">Late fee</th>
                         <th scope="col">Amount</th>
+                        <th scope="col">Repayment Id</th>
+                        <th scope="col">Start date</th>
+                        <th scope="col">End date</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Date</th>
                     </tr>
                 </thead>
                 <tbody id="records_table">
-                    @foreach($transaction as $data)
+                    @foreach($loans as $data)
                     <tr>
                         <td>{{ $data['id'] }}</td>
-                        <td>{{ $data['from'] }}</td>
-                        <td>{{ $data['to'] }}</td>
-                        <td>{{ $data['type'] }}</td>
+                        <td>{{ $data['request_id'] }}</td>
+                        <td>{{ $data['borrower_id'] }}</td>
+                        <td>{{ $data['lender_id'] }}</td>
+                        <td>{{ $data['interest'] }}</td>
+                        <td>{{ $data['processing_fee'] }}</td>
+                        <td>{{ $data['late_fee'] }}</td>
                         <td>{{ $data['amount'] }}</td>
-                        @if($data->status == 'successfull')
+                        {{-- <td>{{ $data['sent_transaction_id'] }}</td> --}}
+                        <td>{{ $data['repayment_transaction_id'] }}</td>
+                        {{-- <td>{{  }}</td> --}}
+                        <td>{{ Carbon\Carbon::parse($data['start_date'])->format('h:i:s') }}</td>
+                        <<td>{{ Carbon\Carbon::parse($data['end_date'])->format('h:i:s') }}</td>
+                        @if($data->status == 'ongoing')
                             <td style="padding:12px">
-                                <span style="background-color:#28a745;padding:10px;border-radius:100px">
+                                <span style="background-color:orange;padding:10px;border-radius:100px">
                                     {{ $data['status'] }}
                                 </span>
                             </td>
-                        @else
+                        @elseif($data->status == 'repaid')
                             <td style="padding:12px">
-                                <span style="background-color:#dc3545;padding:10px;border-radius: 100px;">
+                                <span style="background-color:green;padding:10px;border-radius: 100px;">
+                                    {{ $data['status'] }}
+                                </span>
+                            </td>
+                            @else
+                            <td style="padding:12px">
+                                <span style="background-color:red;padding:10px;border-radius: 100px;">
                                     {{ $data['status'] }}
                                 </span>
                             </td>
                         @endif
-                        <td>{{ Carbon\Carbon::parse($data->date)->format('h:i:s') }}</td>
-                        <td>{{ Carbon\Carbon::parse($data->time)->format('Y-m-d') }}</td>
                     </tr>
                 @endforeach
                 </tbody>

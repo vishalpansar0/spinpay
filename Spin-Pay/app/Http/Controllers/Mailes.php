@@ -127,7 +127,7 @@ class Mailes extends Controller
                         "status" => 400,
                     ]);
                 }
-            } catch (Exception $e) {
+            } catch (QueryException $e) {
                 return response()->json([
                     'message' => 'Oops , something went wrong, try after sometime.',
                     "status" => 500,

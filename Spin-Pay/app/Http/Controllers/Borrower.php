@@ -170,10 +170,19 @@ class Borrower extends Controller
             } else {
                 $loanRequest = new Requests();
                 $details = $loanRequest->where('user_id', $request['user_id'])->get();
-                return response()->json([
-                    'message' => $details,
-                    "status" => 200,
-                ]);
+                if($details){
+                    return response()->json([
+                        'message' => $details,
+                        "status" => 200,
+                    ]);
+                }else{
+                    return response()->json([
+                        'message' => 'no requests',
+                        "status" => 400,
+                    ]);
+                }
+               
+
             }
         } catch (QueryException $e) {
             return response()->json([

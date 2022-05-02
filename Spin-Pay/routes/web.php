@@ -50,8 +50,8 @@ Route::get('/register/userdocuments/{id}',function($id){
 
 
 //Users Routes
-Route::get('/user/borrower',[Borrower::class,'borrowerdashboard'])->middleware('isLoggedIn');
-Route::get('/user/lender',[Lender::class,'lenderdashboard'])->middleware('isLoggedIn');
+Route::get('/user/borrower',[Borrower::class,'borrowerdashboard'])->middleware('isLoggedIn','isBorrower');
+Route::get('/user/lender',[Lender::class,'lenderdashboard'])->middleware('isLoggedIn','isLender');
 
 
 //Agent Routes
@@ -61,11 +61,18 @@ Route::get('agent/dashboard',[AgentDashboardController::class,'getAllUsers'])->m
 
 Route::get('transaction',[AgentDashboardController::class,'allTransaction'])->middleware('isAgentLoggedIn');
 
+Route::get('userRequests/{id}',function($id){
+    $i = compact('id');
+    return view('agent.userRequests')->with($i);
+})->middleware('isAgentLoggedIn');
+
 Route::get('request',[AgentDashboardController::class,'request'])->middleware('isAgentLoggedIn');
 
+//requests for a particular user agent can see
+Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
 
-//transaction for a particular user 
-Route::get('userview/transaction/{id}',[AgentDashboardController::class,'userTransaction'])->middleware('isAgentLoggedIn');
+
+
 
 
 // Queries Testing
@@ -81,6 +88,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::get('/getTestData', [AgentDashboardController::class,'getTestData']);
+
+Route::get('/userview/transaction/{id}', [AgentDashboardController::class,'userTransaction']);
+Route::get('/userview/loans/{id}', [AgentDashboardController::class,'userLoans']);
+
 
 Route::get('userview/{id}',[AgentDashboardController::class,'ShowUsersDetails'])->name('userview')->middleware('isAgentLoggedIn');
 
