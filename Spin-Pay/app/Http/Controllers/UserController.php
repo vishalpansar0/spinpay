@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function store_users($request){
-        $users=new Users();
-        try{
-            if($users->where('email',$request['email'])->get()->first()){
+    public function store_users($request)
+    {
+        $users = new Users();
+        try {
+            if ($users->where('email', $request['email'])->get()->first()) {
                 return response()->json([
                     'message' => 'this email is already registered with us, please login.',
                     'status' => 400,
@@ -28,9 +29,9 @@ class UserController extends Controller
                 $users->role_id = $request['role_id'];
                 $ifsaved = $users->save();
                 if ($ifsaved == 1) {
-                    $request->session()->put('user_id',$users->id);
-                    $request->session()->put('name',$users->name);
-                    $request->session()->put('role',$users->role_id);
+                    $request->session()->put('user_id', $users->id);
+                    $request->session()->put('name', $users->name);
+                    $request->session()->put('role', $users->role_id);
                     return response()->json([
                         'message' => 'success',
                         "status" => 200,
@@ -49,7 +50,6 @@ class UserController extends Controller
                 "status" => 500,
             ]);
         }
-
     }
 
     public function userdata(Request $request)
@@ -90,7 +90,7 @@ class UserController extends Controller
                 $user->gender = $request['gender'];
                 $user->dob = $request['dob'];
                 $path = $request->file('image')->store('public/images/profileImage');
-                $path = str_replace("public/","",$path);
+                $path = str_replace("public/", "", $path);
                 $user->image = $path;
                 $isSaved = $user->save();
                 if ($isSaved == 1) {
@@ -173,7 +173,7 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request['master_document_id'];
                 $user_doc->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/pan_images');
-                $path = str_replace("public/","",$path);
+                $path = str_replace("public/", "", $path);
                 $user_doc->document_image = $path;
                 $ifsaved = $user_doc->save();
                 if ($ifsaved == 1) {
@@ -216,7 +216,7 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request->master_document_id;
                 $user_doc->document_number = $request->document_number;
                 $path = $request->file('document_image')->store('public/images/documentImage');
-                $path = str_replace("public/","",$path);
+                $path = str_replace("public/", "", $path);
                 $user_doc->document_image = $path;
                 $ifSaved = $user_doc->save();
                 // return $ifSaved;
@@ -260,7 +260,7 @@ class UserController extends Controller
                 $user_doc->master_document_id = $request->master_document_id;
                 $user_doc->document_number = $request->document_number;
                 $path = $request->file('document_image')->store('public/images/documentImage');
-                $path = str_replace("public/","",$path);
+                $path = str_replace("public/", "", $path);
                 $user_doc->document_image = $path;
                 $ifSaved = $user_doc->save();
                 // return $ifSaved;
@@ -312,7 +312,7 @@ class UserController extends Controller
                 $user->master_document_id = $request['master_document_id'];
                 $user->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/documentImage');
-                $path = str_replace("public/","",$path);
+                $path = str_replace("public/", "", $path);
                 $user->document_image = $path;
                 $isSaved = $user->save();
                 if ($isSaved == 1) {
@@ -407,5 +407,4 @@ class UserController extends Controller
             ]);
         }
     }
-
 }
