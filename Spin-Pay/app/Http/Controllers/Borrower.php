@@ -10,12 +10,32 @@ use App\Models\SpinpayTransaction;
 use App\Models\Transaction;
 use App\Models\UserData;
 use App\Models\Users;
+// use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class Borrower extends Controller
 {
+    public function borrowerdashboard()
+    {
+        $user_id = Session::get('user_id');
+        try {
+            $data = Users::where('users.id', $user_id)->
+            leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->
+            leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->
+            select('users.name as name','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->first();
+            // return $data;
+            return view('user.borrower.dashboard', ['datas' => $data]);
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Internal Server Error',
+                "status" => 500
+            ]);
+        }
+    }
+
     // Loan Request
     public function loan_request(Request $request)
     {
@@ -121,11 +141,10 @@ class Borrower extends Controller
                         "status" => 400,
                     ]);
                 }
-
             }
         } catch (QueryException $e) {
             return response()->json([
-                
+
                 // 'message' => 'Internal Server Error',
                 'message' => $e,
                 "status" => 500,
@@ -155,7 +174,6 @@ class Borrower extends Controller
                     'message' => $details,
                     "status" => 200,
                 ]);
-
             }
         } catch (QueryException $e) {
             return response()->json([
@@ -187,7 +205,6 @@ class Borrower extends Controller
                 'message' => $loandetails,
                 'status' => 200,
             ]);
-
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
@@ -218,7 +235,6 @@ class Borrower extends Controller
                 'message' => $transactiondetails,
                 'status' => 200,
             ]);
-
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
@@ -242,10 +258,10 @@ class Borrower extends Controller
             ]);
         }
         $loan = new Loan();
-        if($loan->where('id',$request['loan_id'])->where('status','repaid')->get()->first()->status=='repaid'){
+        if ($loan->where('id', $request['loan_id'])->where('status', 'repaid')->get()->first()->status == 'repaid') {
             return response()->json([
-                'message'=>'loan Already Paid',
-                'status'=>200
+                'message' => 'loan Already Paid',
+                'status' => 200
             ]);
         }
         $userLoan = $loan->where('id', $request['loan_id'])->get()->first();
@@ -315,7 +331,6 @@ class Borrower extends Controller
                         // 'company profit'=>($amountToPay - $lendershare),
                         'status' => 200,
                     ]);
-
                 } else {
                     $transaction->status = "failed";
                     return response()->json([
@@ -332,5 +347,4 @@ class Borrower extends Controller
             ]);
         }
     }
-
 }
