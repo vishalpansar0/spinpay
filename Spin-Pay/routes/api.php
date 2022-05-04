@@ -190,3 +190,6 @@ Route::post('raise/show ',[RaiseIssue::class,'showissues']);
 
 Route::get('fetchUserDocs/{id}/{docId}/{payNum?}',[AgentDashboardController::class,'fetchUserDocs']);
     
+
+
+Route::post('agentreply',[AgentDashboardController::class,'agent_reply']);
