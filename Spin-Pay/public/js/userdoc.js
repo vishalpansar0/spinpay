@@ -77,7 +77,7 @@ $(document).ready(function() {
                 if (result['status'] == 200) {
                     hideDiv('#aadharUploadMainDiv', '#panUploadMainDiv');
                 } else {
-                    errormsg('#error', result['message'])
+                    errormsg('#errorDiv', result['message'])
                 }
             }
         });
@@ -108,7 +108,7 @@ $(document).ready(function() {
                 } else if (result['status'] == 200 && result['isLender'] == 'no') {
                     hideDiv('#panUploadMainDiv', '#payslipUploadMainDiv');
                 } else {
-                    errormsg('#error', result['message'])
+                    errormsg('#errorDiv', result['message'])
                 }
             }
         });
@@ -136,7 +136,7 @@ $(document).ready(function() {
                 if (result['status'] == 200) {
                     hideDiv('#payslip1', '#payslip2');
                 } else {
-                    errormsg('#error', result['message'])
+                    errormsg('#errorDiv', result['message'])
                 }
             }
         });
@@ -160,7 +160,7 @@ $(document).ready(function() {
                 if (result['status'] == 200) {
                     hideDiv('#payslip2', '#payslip3');
                 } else {
-                    errormsg('#error', result['message'])
+                    errormsg('#errorDiv', result['message'])
                 }
             }
         });
@@ -185,7 +185,7 @@ $(document).ready(function() {
                 if (result['status'] == 200) {
                     hideDiv('#payslipUploadMainDiv', '#bankstatementUploadMainDiv');
                 } else {
-                    errormsg('#error', result['message'])
+                    errormsg('#errorDiv', result['message'])
                 }
             }
         });
@@ -213,7 +213,7 @@ $(document).ready(function() {
                 if (result['status'] == 200) {
                     location.href = "http://localhost:8000/signin";
                 } else {
-                    errormsg('#error', result['message'])
+                    errormsg('#errorDiv', result['message'])
                 }
             }
         });
