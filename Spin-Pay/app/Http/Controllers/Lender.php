@@ -95,7 +95,7 @@ class Lender extends Controller
             ]);
         }
         $userdatatb = new UserData();
-        $userdata = $userdatatb->where('user_id', $request['lender_id'])->get()->first();
+        $userdata = $userdatatb->where('user_id', $request['user_id'])->get()->first();
         if ($userdata->status == 'pending' || $userdata->status == 'reject') {
             return response()->json([
                 'message' => 'Pending',
