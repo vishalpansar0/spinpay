@@ -3,13 +3,13 @@
 @include('user.layout.header')
 <div class="main-container" style="" id="main-container">
     <div class="left-container" id="leftContainer" style="transition:all .4s ease">
-        <div class="ul"><button class="navbarBtn" id="dashboard">DASHBOARD</button></div>
-        <div class="ul"><button class="" id="loan">LOAN</button></div>
-        <div class="ul"><button class="" id="request">REQUEST</button></div>
-        <div class="ul"><button class="" id="transaction">TRANSACTION</button></div>
-        <div class="ul"><button class="" id="profile">PROFILE</button></div>
-        <div class="ul"><button class="" id="documents">DOCUMENTS</button></div>
-        <div class="ul"><button class="" id="anyquery">ANY QUERY</button></div>
+        <div class="ul"><button class="navbarBtn" id="dashboard"><i class="fa-solid fa-money-check-dollar"></i> DASHBOARD</button></div>
+        <div class="ul"><button class="" id="loan"><i class="fa-solid fa-money-check-dollar"></i> LOAN</button></div>
+        <div class="ul"><button class="" id="request"><i class="fa-solid fa-money-check-dollar"></i> REQUEST</button></div>
+        <div class="ul"><button class="" id="transaction"><i class="fa-solid fa-money-check-dollar"></i> TRANSACTION</button></div>
+        <div class="ul"><button class="" id="profile"><i class="fa-solid fa-money-check-dollar"></i> PROFILE</button></div>
+        <div class="ul"><button class="" id="documents"><i class="fa-solid fa-money-check-dollar"></i> DOCUMENTS</button></div>
+        <div class="ul"><button class="" id="anyquery"><i class="fa-solid fa-money-check-dollar"></i> ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
         <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white"><i
@@ -27,11 +27,11 @@
                 </div> --}}
                 <div class="creditScore text-center" id="creditScore">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT SCORE</h5>
-                    <P style="color: white">700</P>
+                    <P style="color: white">{{$datas['limit']}}</P>
                 </div>
                 <div class="CreditPoint text-center" id="CreditPoint">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT LIMIT</h5>
-                    <P style="color: white">300</P>
+                    <P style="color: white">{{$datas['score']}}</P>
                 </div>
             </div>
             <div class="applyBtn-div" id="applyBtn-div">
@@ -62,14 +62,30 @@
                     <tbody id="lastLoan-row">
                         <tr>
                             @php
-                                $start = date_create($datas['start_date']);
-                                $end = date_create($datas['end_date']);
-                            @endphp
-                            <td>SPINPAYOO12E{{$datas['loan_id']}}</td>
-                            <td>{{$datas['amount']}}</td>
-                            <td>{{date_format($start,'d/m/y')}}</td>
-                            <td>{{date_format($end, 'd/m/y')}}</td>
-                            <td>{{$datas['status']}}</td>
+                                if($datas['loan_id']==""){
+                                    $loan='--';
+                                    $start='--';
+                                    $end='--';
+                                    $status='--';
+                                    $amount='--';
+
+                                }
+                                else{
+                                    $start = date_create($datas['start_date']);
+                                    $end = date_create($datas['end_date']);
+                                    $loan='SPINPAYOO12E'. $datas['loan_id'] ;
+                                    $start= date_format($start, 'd/m/y') ;
+                                    $end= date_format($end, 'd/m/y') ;
+                                    $status= $datas['status'] ;
+                                    $name= $datas['bname'] ;
+                                    $amount=$datas['amount'] ;
+                                }
+                                @endphp
+                                <td>{{$loan}}</td>
+                                <td>{{$amount}}</td>
+                                <td>{{$start}}</td>
+                                <td>{{$end}}</td>
+                                <td>{{$status}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -244,7 +260,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel"></h5>
+                            <h5 class="modal-title" id="exampleModalLabel1"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -276,7 +292,7 @@
         <div class="row">
             <div class="col-4">
                 <div id="photo-container" style="margin-left:300px;margin-top:65px">
-
+                    <img src="{{ asset('storage') }}/" id="profileImageTag"  alt="ProfileImage" width="225" height="225" style="border-radius:50%;">
                 </div>
             </div>
             <div class="col-8" style="color:white; padding-top: 5x; " id="details">

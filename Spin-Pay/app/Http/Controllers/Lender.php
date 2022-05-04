@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Loan;
 use App\Models\Requests;
 use App\Models\Transaction;
-use App\Models\Users;
 use App\Models\UserData;
+use App\Models\Users;
 use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -69,7 +69,7 @@ class Lender extends Controller
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
-                "status" => 500
+                "status" => 500,
             ]);
         }
     }
@@ -92,6 +92,14 @@ class Lender extends Controller
             return response()->json([
                 'message' => 'user not present',
                 'status' => 400,
+            ]);
+        }
+        $userdatatb = new UserData();
+        $userdata = $userdatatb->where('user_id', $request['user_id'])->get()->first();
+        if ($userdata->status == 'pending' || $userdata->status == 'reject') {
+            return response()->json([
+                'message' => 'Pending',
+                'status' => 300,
             ]);
         }
         if ($request['amount'] < 500) {
@@ -152,13 +160,13 @@ class Lender extends Controller
 
         $validator = Validator::make($request->all(), [
             'lender_id' => 'required',
-            'request_id' => 'required'
+            'request_id' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         $user = new Users();
@@ -166,6 +174,14 @@ class Lender extends Controller
             return response()->json([
                 'message' => 'user not present',
                 'status' => 400,
+            ]);
+        }
+        $userdatatb = new UserData();
+        $userdata = $userdatatb->where('user_id', $request['lender_id'])->get()->first();
+        if ($userdata->status == 'pending' || $userdata->status == 'reject') {
+            return response()->json([
+                'message' => "Profile Verification Pending, Can't Approved Loan",
+                'status' => 300,
             ]);
         }
         $requesttb = new Requests();
@@ -266,7 +282,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         $user = new Users();
@@ -302,7 +318,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         $user = new Users();
@@ -345,7 +361,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 400,
+                'status' => 401,
             ]);
         }
         $user = new Users();
@@ -381,7 +397,7 @@ class Lender extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'Validation Failed' => $validator->errors(),
-                'status' => 401
+                'status' => 401,
             ]);
         }
         $user = new Users();
@@ -421,7 +437,7 @@ class Lender extends Controller
                     'credit_details.credit_score'
                 )
                 ->first();
-            $data = compact('lenderloans', 'basicInfo',);
+            $data = compact('lenderloans', 'basicInfo', );
             return response()->json([
                 'message' => $data,
                 'status' => 200,
