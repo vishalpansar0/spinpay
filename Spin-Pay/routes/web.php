@@ -72,6 +72,9 @@ Route::get('request',[AgentDashboardController::class,'request'])->middleware('i
 //requests for a particular user agent can see
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
 
+//spinpay transactions
+Route::get('spinpayTransaction',[AgentDashboardController::class,'spinpayTransaction']);
+
 
 
 
