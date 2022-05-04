@@ -11,7 +11,11 @@ use App\Models\Transaction;
 use App\Models\CreditMapping;
 use App\Models\Loan;
 use App\Models\CreditDetail;
+<<<<<<< HEAD
+use App\Models\SpinpayTransaction;
+=======
 use App\Models\Query;
+>>>>>>> origin/main
 use DB;
 use Illuminate\Database\QueryException;
 
@@ -378,6 +382,15 @@ class AgentDashboardController extends Controller
         }
     }
 
+    public function spinpayTransaction(){
+        return view('agent.spinpayTransaction',[
+            'transaction' => SpinpayTransaction::select(
+                            'spinpay_transactions.id as id', 'l.id as lid', 'u.id as uid', 'u.name as uname', 'spinpay_transactions.amount as stamount', 
+                            'spinpay_transactions.created_at as sttime', 'spinpay_transactions.created_at as stdate')
+                            ->leftjoin('loans as l', 'l.id', 'spinpay_transactions.loan_id')
+                            ->leftjoin('users as u', 'u.id', 'spinpay_transactions.borrower_id')->get()
+        ]);
+    }
 
     public function query(){
         return view('agent.reply',[
