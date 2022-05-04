@@ -363,7 +363,7 @@ class AgentDashboardController extends Controller
 
     public function profileReject(Request $request){
         try{
-            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject']);
+            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject','reason'=>$request['reason']]);
             return response()->json([
                 'code' => 200,
                 'message' => "Profile Rejected successfully"

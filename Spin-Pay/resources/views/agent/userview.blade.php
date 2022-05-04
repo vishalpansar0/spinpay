@@ -180,7 +180,17 @@
                         @else
                             <button class="btn btn-success" disabled>Approved Profile</button>
                         @endif
-                        
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <div style="color:white;font-size:24px">
+                        @if ($user->status == 'approved')
+                           <button class="btn btn-danger" disabled>Reject Profile</button>
+                        @elseif ($user->status == 'reject')
+                           <button class="btn btn-danger" disabled>Rejected Profile</button>
+                        @else
+                           <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectInputModal">Reject profile</button>
+                        @endif
                     </div>
                 </div>
 
@@ -511,6 +521,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="rejectInputModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#17202A">
+            <div class="modal-header">
+                <h6 class="modal-title" id="staticBackdropLabel" style="color:white">enter reason to reject user's profile</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border:none;background:none;"><i
+                        class="fas fa-times" style="color:blue;"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger text-center" id="rejecterrorDiv" style="padding:0%;display:none"></div>
+                <div class="inputDiv">
+                    <textarea name="reason" id="reason" cols="30" rows="10" style="background-color:transparent;color:white;padding:10px;width:100%"></textarea>
+                    
+                </div>
+                <div class="inputDiv mt-2">
+                    <button class="capbtn" id="profile_reject_btn" style="background-color:red;float:right">Reject profile</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @include('agent.agentLayouts.jsAgent')
 <script>
@@ -518,6 +552,10 @@
         function errormsg(str) {
             $('#errorDiv').html(str);
             $('#errorDiv').css('display', 'block');
+        }
+        function errormsg1(str) {
+            $('#rejecterrorDiv').html(str);
+            $('#rejecterrorDiv').css('display', 'block');
         }
         function loadDocs(){
 
@@ -785,6 +823,43 @@
                         alert(response['message']);
                         $('#profile_aprv_btn').prop('disabled',false);
                         $('#profile_aprv_btn').html('Approve profile');
+                    }
+                   
+                }
+            });
+            }
+            
+        });
+        $('#profile_reject_btn').on('click',function(){ 
+            var reason = $("#reason").val();
+            userIdHidden = $("#userIdHidden").val();
+            if(reason == ""){
+                errormsg1('reason can not be empty!');
+            }else{
+                const getrejectId = {
+                'user_id':userIdHidden,
+                'reason': reason,
+                }
+            $.ajax({
+                url: "/api/profileReject/",
+                type: "post",
+                dataType: "json",
+                data: getrejectId,
+                beforeSend: function() {
+                    $('#profile_reject_btn').prop('disabled',true);
+                    $('#profile_reject_btn').html('Rejecting...');
+                },
+                success: function(response) {
+                    // console.log('payslip'+i+'_image');
+                    
+                    if(response['code']==200){
+                        $('#profile_reject_btn').html('Rejected');
+                        // $('#profile_aprv_btn').html('Approved');
+                        location.reload();
+                    }else if(response['code']==204 || response['code']==500){
+                        alert(response['message']);
+                        $('#profile_reject_btn').prop('disabled',false);
+                        $('#profile_reject_btn').html('Reject profile');
                     }
                    
                 }
