@@ -30,7 +30,7 @@
                 <div class="creditScore text-center" id="creditScore">
                     <h1 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;"><i style=""
                             class="fa-solid fa-wallet"></i></h1>
-                    <P style="color:white">{{ $datas['wallet_amount'] }}</P>
+                    <P style="color:white">&#8377;{{ $datas['wallet_amount'] }}</P>
                 </div>
                 {{-- <div class="CreditPoint text-center" id="CreditPoint">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT POINT</h5>
@@ -87,7 +87,7 @@
                                 }
                                 @endphp
                                 <td>{{$loan}}</td>
-                                <td>{{$amount}}</td>
+                                <td>&#8377;{{$amount}}</td>
                                 <td>{{$start}}</td>
                                 <td>{{$end}}</td>
                                 <td>{{$status}}</td>

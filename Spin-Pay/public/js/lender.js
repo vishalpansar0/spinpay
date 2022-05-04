@@ -82,7 +82,7 @@ $(document).ready(function () {
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
                         trHTML += '<tr style="color:white"><td>' +
-                            applicationid + '</td><td>$ ' + item
+                            applicationid + '</td><td>&#8377;' + item
                                 .amount + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
@@ -165,7 +165,7 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">Self</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' +
-                            transactionid + '</td><td>$ ' + item
+                            transactionid + '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
                             statustr + '</td><td>' + statustype + '</td><td>' +
                             created + '</td></tr>';
@@ -229,7 +229,7 @@ $(document).ready(function () {
                         let created = date.getDate() + "/" + (date.getMonth() +
                             1) + "/" + date.getFullYear();
                         trHTML += '<tr style="color:white"><td>' + requestid +
-                            '</td><td>$ ' + item
+                            '</td><td>&#8377;' + item
                                 .amount + '</td><td>' + item
                                 .tenure + ' month</td><td>' + created +
                             '</td><td>' +
@@ -544,6 +544,11 @@ $(document).ready(function () {
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
                 }
+                if (response['status'] == 300) {
+                    // console.log(response);
+                    $('#errorMsg').show();
+                    $('#errorMsg').html(response['message']);
+                }
                 if (response['status'] == 200) {
                     $('#successMsg').show();
                     $('#successMsg').html('Money added Successfully');
@@ -654,9 +659,9 @@ $(document).ready(function () {
                 'request_id': userrequestids
             },
             success: function (result) {
-                $('#low_amount_error_message').show();
+                // $('#low_amount_error_message').show();
                 console.log(result);
-                $('#low_amount_error_message').html(result['message']);
+                // $('#low_amount_error_message').html(result['message']);
                 // if(result['status']==500){
                 //     $('#low_amount_error_message').show();
                 //     $('#low_amount_e
@@ -700,6 +705,7 @@ $(document).ready(function () {
                     $("#document-div").hide();
                     $("#query-div").show();
                     $('#query_row').empty();
+                    $("#detailHeading").empty();
                     let trHTML = "";
                     $.each(response['message'], function (i, item) {
                         var updated = "-";
@@ -786,20 +792,20 @@ function ViewDetails(details) {
     $('#borrowerdetails').click();
 }
 
-function repayment(id, btid) {
-    $.ajax({
-        url: '/api/loanrepayment',
-        type: 'POST',
-        data: {
-            loan_id: id
-        },
-        success: function (response) {
-            console.log(btid, response)
-            $("#" + btid).attr("disabled", true);
-            console.log(response);
-        }
-    });
-}
+// function repayment(id, btid) {
+//     $.ajax({
+//         url: '/api/loanrepayment',
+//         type: 'POST',
+//         data: {
+//             loan_id: id
+//         },
+//         success: function (response) {
+//             console.log(btid, response)
+//             $("#" + btid).attr("disabled", true);
+//             console.log(response);
+//         }
+//     });
+// }
 
 function DocumentReupload(master_document_id, document_number) {
     // console.log("id", master_document_id);

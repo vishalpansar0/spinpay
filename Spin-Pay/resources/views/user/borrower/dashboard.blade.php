@@ -82,7 +82,7 @@
                                 }
                                 @endphp
                                 <td>{{$loan}}</td>
-                                <td>{{$amount}}</td>
+                                <td>&#8377;{{$amount}}</td>
                                 <td>{{$start}}</td>
                                 <td>{{$end}}</td>
                                 <td>{{$status}}</td>

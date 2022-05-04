@@ -83,7 +83,7 @@ $(document).ready(function () {
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
                         trHTML += '<tr style="color:white"><td>' +
-                            applicationid + '</td><td>$ ' + item
+                            applicationid + '</td><td>&#8377;' + item
                                 .amount + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
@@ -157,7 +157,7 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Success</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' +
-                            transactionid + '</td><td>$ ' + item
+                            transactionid + '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
                             statustr + '</td><td>' + created + '</td></tr>';
                     });
@@ -722,6 +722,7 @@ $(document).ready(function () {
                     $("#document-div").hide();
                     $('#query_row').empty();
                     $("#query-div").show();
+                    $("#detailHeading").empty();
                     let trHTML = "";
                     $.each(response['message'], function (i, item) {
                         var updated = "-";
