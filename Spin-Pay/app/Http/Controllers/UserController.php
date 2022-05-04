@@ -9,7 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 class UserController extends Controller
 {
     public function store_users($request)
@@ -147,16 +147,15 @@ class UserController extends Controller
                     'status' => 400,
                 ]);
             } else {
-                $user_doc->user_id = $request['user_id'];
-                $user_doc->master_document_id = $request['master_document_id'];
-                $user_doc->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/pan_images');
                 $path = str_replace("public/","",$path);
-                $user_doc->document_image = $path;
-                $ifsaved = $user_doc->save();
+                $ifsaved = DB::table('user_documents')->updateOrInsert(
+                    ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id']],
+                    [ 'document_number'=>$request['document_number'], 'document_image' => $path]
+                );
                 if ($ifsaved == 1) {
                     $isLender = Users::where('id',$request['user_id'])->where('role_id',3)->first();
-                    if($isLender){
+                     if($isLender){
                         return response()->json([
                             'message' => 'success',
                             "status" => 200,
@@ -198,15 +197,12 @@ class UserController extends Controller
             ]);
         } else {
             try {
-                $user_doc = new UserDocument();
-                $user_doc->user_id = $request->user_id;
-                $user_doc->master_document_id = $request->master_document_id;
-                $user_doc->document_number = $request->document_number;
                 $path = $request->file('document_image')->store('public/images/documentImage');
                 $path = str_replace("public/", "", $path);
-                $user_doc->document_image = $path;
-                $ifSaved = $user_doc->save();
-                // return $ifSaved;
+                $ifSaved = DB::table('user_documents')->updateOrInsert(
+                    ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id'], 'document_number'=>$request['document_number']],
+                    [ 'document_image' => $path]
+                );
                 if ($ifSaved == 1) {
                     return response()->json([
                         'message' => "Successfully saved",
@@ -242,15 +238,12 @@ class UserController extends Controller
             ]);
         } else {
             try {
-                $user_doc = new UserDocument();
-                $user_doc->user_id = $request->user_id;
-                $user_doc->master_document_id = $request->master_document_id;
-                $user_doc->document_number = $request->document_number;
                 $path = $request->file('document_image')->store('public/images/documentImage');
                 $path = str_replace("public/", "", $path);
-                $user_doc->document_image = $path;
-                $ifSaved = $user_doc->save();
-                // return $ifSaved;
+                $ifSaved = DB::table('user_documents')->updateOrInsert(
+                    ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id'], 'document_number'=>$request['document_number']],
+                    [ 'document_image' => $path]
+                );
                 if ($ifSaved == 1) {
                     return response()->json([
                         'message' => "Successfully saved",
@@ -294,14 +287,12 @@ class UserController extends Controller
                 ]);
             }
             try {
-                $user = new UserDocument();
-                $user->user_id = $request['user_id'];
-                $user->master_document_id = $request['master_document_id'];
-                $user->document_number = $request['document_number'];
                 $path = $request->file('document_image')->store('public/images/documentImage');
                 $path = str_replace("public/", "", $path);
-                $user->document_image = $path;
-                $isSaved = $user->save();
+                $isSaved = DB::table('user_documents')->updateOrInsert(
+                    ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id']],
+                    [ 'document_number'=>$request['document_number'], 'document_image' => $path]
+                );
                 if ($isSaved == 1) {
                     return response()->json([
                         'message' => 'success',
