@@ -79,9 +79,13 @@ Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middl
 
 
 // Admin Routes
-Route::view('/admin/signin', 'admin.adminsignin');
+Route::view('/admin/signin', 'admin.adminsignin')->middleware('checkAdminAuth');
 
-Route::get('/admin/dashboard', [Admin::class,'getAllUsers']);
+Route::get('/admin/dashboard', [Admin::class,'getAllUsers'])->middleware('isAdminLoggedIn');
+
+Route::get('/admin/transactions', [Admin::class,'getAllTransactions'])->middleware('isAdminLoggedIn');
+
+Route::get('/admin/loans', [Admin::class,'getAllLoans'])->middleware('isAdminLoggedIn');
 
 
 

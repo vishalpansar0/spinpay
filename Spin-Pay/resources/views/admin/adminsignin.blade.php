@@ -21,7 +21,7 @@
     <div class="container">
         <div class="login-main-div" style="height:100%;">
             <div class="login-container">
-                <form method="POST" action="{{ url('api/agentLogin') }}">
+                <form method="POST" action="{{ url('api/adminLogin') }}">
                     @csrf
                     <h3 id="login-heading">Admin login</h3>
                     <div class="inputDiv mt-4">

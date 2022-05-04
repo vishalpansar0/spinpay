@@ -106,7 +106,6 @@ $(document).ready(function() {
                 console.log(result);
                 if (result['status'] == 200 && result['isLender'] == 'yes') {
                     location.href = '/user/lender';
-                    // console.log(result['isLender']); 
                 } else if (result['status'] == 200 && result['isLender'] == 'no') {
                     hideDiv('#panUploadMainDiv', '#payslipUploadMainDiv');
                 } else {

@@ -60,7 +60,6 @@ class AgentDashboardController extends Controller
                 "status" => 500
             ]);
         }
-        
     }
 
     public function ShowUsersDetails($req){
@@ -266,9 +265,9 @@ class AgentDashboardController extends Controller
         }
     }
 
-    public function creditScoreAndLimit(Request $request){
+    public function creditScoreAndLimit($request){
         try{
-            $salary = round($request->salary/2);
+            $salary = round($request['salary']/2);
             $credit_score = round(300+($salary/84));
             // $query = CreditMapping::where('credit_score_from' , '<=', $credit_score)
             //                 ->where('credit_score_to', '>=', $credit_score)
@@ -301,11 +300,22 @@ class AgentDashboardController extends Controller
                 $credit_limit = 30000;
             }
             
-            DB::table('credit_details')
+            $setCreditDetails = DB::table('credit_details')
             ->updateOrInsert(
                 ['user_id' => $request['user_id']],
                 ['credit_limit'=> $credit_limit, 'credit_score'=> $credit_score]
             );
+            if($setCreditDetails){
+                return response()->json([
+                    'code' => 200,
+                    'message' => "Profile Approved successfully"
+                ]);
+            }else{
+                return response()->json([
+                    'code' => 400,
+                    'message' => "Profile not Approved"
+                ]);
+            }
         }
         catch(QueryException $e){
             return response()->json([
@@ -318,6 +328,16 @@ class AgentDashboardController extends Controller
 
     public function profileApprove(Request $request){
         try{
+            if(Users::where('id',$request['user_id'])->where('role_id',3)->get()->first()){
+                if(UserDocument::where('user_id',$request['user_id'])->where('master_document_id','1')->where('is_verified','approved')->exists() && 
+                UserDocument::where('user_id',$request['user_id'])->where('master_document_id','2')->where('is_verified','approved')->exists()){
+                    UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
+                    return response()->json([
+                    'code' => 200,
+                    'message' => "Profile Approved successfully"
+                    ]);
+                }
+            }
             if(UserDocument::where('user_id',$request['user_id'])->where('master_document_id','1')->where('is_verified','approved')->exists() && 
                UserDocument::where('user_id',$request['user_id'])->where('master_document_id','2')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','31')->where('is_verified','approved')->exists() &&
@@ -325,10 +345,9 @@ class AgentDashboardController extends Controller
                UserDocument::where('user_id',$request['user_id'])->where('document_number','33')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','41')->where('is_verified','approved')->exists()){
                UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
-                return response()->json([
-                    'code' => 200,
-                    'message' => "Profile Approved successfully"
-                ]);
+               $setCredit = $this->creditScoreAndLimit($request);   
+               return $setCredit;
+                
             }
             return response()->json([
                 'code' => 204,
@@ -345,7 +364,7 @@ class AgentDashboardController extends Controller
 
     public function profileReject(Request $request){
         try{
-            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject']);
+            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject','reason'=>$request['reason']]);
             return response()->json([
                 'code' => 200,
                 'message' => "Profile Rejected successfully"

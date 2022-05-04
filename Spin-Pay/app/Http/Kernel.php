@@ -62,6 +62,8 @@ class Kernel extends HttpKernel
         'agentAuthCheck' => \App\Http\Middleware\agentAuthCheck::class,
         'isLender' => \App\Http\Middleware\isLender::class,
         'isBorrower' => \App\Http\Middleware\isBorrower::class,
+        'checkAdminAuth' => \App\Http\Middleware\checkAdminAuth::class,
+        'isAdminLoggedIn' => \App\Http\Middleware\isAdminLoggedIn::class,
         'authCustom' => \App\Http\Middleware\CustomAuthMiddle::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
