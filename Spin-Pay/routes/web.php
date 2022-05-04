@@ -5,6 +5,7 @@ use App\Http\Controllers\Mailes;
 use App\Http\Controllers\AgentDashboardController;
 use App\Http\Controllers\Borrower;
 use App\Http\Controllers\Lender;
+use App\Http\Controllers\Admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,17 @@ Route::get('request',[AgentDashboardController::class,'request'])->middleware('i
 
 //requests for a particular user agent can see
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
+
+
+
+
+
+// Admin Routes
+Route::view('/admin/signin', 'admin.adminsignin');
+
+Route::get('/admin/dashboard', [Admin::class,'getAllUsers']);
+
+
 
 
 
