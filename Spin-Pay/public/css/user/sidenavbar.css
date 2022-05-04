@@ -15,7 +15,7 @@
     height: 100%;
     width: 164px;
     color: white;
-    transition: all .4 ease;
+    transition: all ease .4s;
 }
 
 .left-container .ul .navbarBtn {

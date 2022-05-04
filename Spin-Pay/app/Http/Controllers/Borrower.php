@@ -30,8 +30,7 @@ class Borrower extends Controller
             return view('user.borrower.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
-                "status" => 500
+                'message' => 'We are facing some issue, We are working on this'
             ]);
         }
     }

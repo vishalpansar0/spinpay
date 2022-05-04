@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('#dashboard').click(function() {
+$(document).ready(function () {
+    $('#dashboard').click(function () {
         $("#transaction-div").hide();
         $("#request-div").hide();
         $('#loanApply-div').hide();
@@ -14,30 +14,38 @@ $(document).ready(function() {
         $('#profile').removeClass('navbarBtn');
         $('#documents').removeClass('navbarBtn');
         $('#request').removeClass('navbarBtn');
+        $('#anyquery').removeClass('navbarBtn');
         $("#detailHeading").empty();
     });
     const user_id_from_session = $('#getuserid').val();
 
-    $('#loan').click(function() {
+    $('#loan').click(function () {
         $.ajax({
             url: '/api/lenderloan',
             type: 'POST',
             data: {
                 lender_id: user_id_from_session
             },
-            beforeSend: function() {
-                $('#loan').addClass('navbarBtn');
-                $('#dashboard').removeClass('navbarBtn');
-                $('#transaction').removeClass('navbarBtn');
-                $('#profile').removeClass('navbarBtn');
-                $('#documents').removeClass('navbarBtn');
-                $('#request').removeClass('navbarBtn');
-            },
-            success: function(response) {
-                console.log(response);
+            // beforeSend: function () {
+                // $('#loan').addClass('navbarBtn');
+                // $('#dashboard').removeClass('navbarBtn');
+                // $('#transaction').removeClass('navbarBtn');
+                // $('#profile').removeClass('navbarBtn');
+                // $('#documents').removeClass('navbarBtn');
+                // $('#request').removeClass('navbarBtn');
+            // },
+            success: function (response) {
+                console.log(response['message']);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
+                    $('#loan').addClass('navbarBtn');
+                    $('#dashboard').removeClass('navbarBtn');
+                    $('#transaction').removeClass('navbarBtn');
+                    $('#profile').removeClass('navbarBtn');
+                    $('#documents').removeClass('navbarBtn');
+                    $('#request').removeClass('navbarBtn');
+                    $('#anyquery').removeClass('navbarBtn');
                     $('#dashboard-div').hide();
                     $('#loanApply-div').hide();
                     $("#transaction-div").hide();
@@ -51,11 +59,11 @@ $(document).ready(function() {
                     var hd = 'Total Given Loans'
                     $('#detailHeading').append(hd);
                     var trHTML = '';
-                    $.each(response['message'], function(i, item) {
+                    $.each(response['message'], function (i, item) {
                         let status = "";
                         if (item.status == 'ongoing')
                             status =
-                            '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow; color:black">Ongoing</span>';
+                                '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow; color:black">Ongoing</span>';
                         let buttonDisbaled = "";
                         if (item.status == 'overdue') {
                             status =
@@ -75,11 +83,11 @@ $(document).ready(function() {
                             .getMonth() + 1) + "/" + date2.getFullYear();
                         trHTML += '<tr style="color:white"><td>' +
                             applicationid + '</td><td>$ ' + item
-                            .amount + '</td><td>' + starting_date +
+                                .amount + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
-                            '</td><td>' + "username" + '</td></tr>';
+                            '</td><td>' + 'SPINPAYBBI' + item.borrower_id + '</td></tr>';
                     });
                     $('#row').append(trHTML);
                 }
@@ -87,7 +95,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#transaction').click(function() {
+    $('#transaction').click(function () {
         $.ajax({
             // url: 'http://localhost:8000/api/request/transactiondetails',
             url: '/api/lendertransaction',
@@ -95,19 +103,26 @@ $(document).ready(function() {
             data: {
                 lender_id: user_id_from_session
             },
-            beforeSend: function() {
-                $('#transaction').addClass('navbarBtn');
-                $('#dashboard').removeClass('navbarBtn');
-                $('#loan').removeClass('navbarBtn');
-                $('#profile').removeClass('navbarBtn');
-                $('#documents').removeClass('navbarBtn');
-                $('#request').removeClass('navbarBtn');
-            },
-            success: function(response) {
+            // beforeSend: function () {
+            //     $('#transaction').addClass('navbarBtn');
+            //     $('#dashboard').removeClass('navbarBtn');
+            //     $('#loan').removeClass('navbarBtn');
+            //     $('#profile').removeClass('navbarBtn');
+            //     $('#documents').removeClass('navbarBtn');
+            //     $('#request').removeClass('navbarBtn');
+            // },
+            success: function (response) {
                 console.log(response['status']);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
+                    $('#transaction').addClass('navbarBtn');
+                    $('#dashboard').removeClass('navbarBtn');
+                    $('#loan').removeClass('navbarBtn');
+                    $('#profile').removeClass('navbarBtn');
+                    $('#documents').removeClass('navbarBtn');
+                    $('#request').removeClass('navbarBtn');
+                    $('#anyquery').removeClass('navbarBtn');
                     $('#dashboard-div').hide();
                     $("#loan-div").hide();
                     $('#loanApply-div').hide();
@@ -122,7 +137,7 @@ $(document).ready(function() {
                     $('#detailHeading').append(hd);
 
                     var trHTML = '';
-                    $.each(response['message'], function(i, item) {
+                    $.each(response['message'], function (i, item) {
                         let transactionid = "SPINPAYOO12E" + item.id;
                         var date = new Date(item.created_at);
                         created = date.getDate() + "/" + (date.getMonth() + 1) +
@@ -151,7 +166,7 @@ $(document).ready(function() {
                         }
                         trHTML += '<tr style="color:white"><td>' +
                             transactionid + '</td><td>$ ' + item
-                            .amount + '</td><td>' +
+                                .amount + '</td><td>' +
                             statustr + '</td><td>' + statustype + '</td><td>' +
                             created + '</td></tr>';
                     });
@@ -160,28 +175,35 @@ $(document).ready(function() {
             }
         });
     });
-    $('#request').click(function() {
+    $('#request').click(function () {
         $.ajax({
             url: '/api/lenderrequest',
             type: 'POST',
             data: {
                 lender_id: user_id_from_session
             },
-            beforeSend: function() {
-                $('#request').addClass('navbarBtn');
-                $('#dashboard').removeClass('navbarBtn');
-                $('#loan').removeClass('navbarBtn');
-                $('#transaction').removeClass('navbarBtn');
-                $('#profile').removeClass('navbarBtn');
-                $('#documents').removeClass('navbarBtn');
-            },
-            success: function(response) {
+            // beforeSend: function () {
+                // $('#request').addClass('navbarBtn');
+                // $('#dashboard').removeClass('navbarBtn');
+                // $('#loan').removeClass('navbarBtn');
+                // $('#transaction').removeClass('navbarBtn');
+                // $('#profile').removeClass('navbarBtn');
+                // $('#documents').removeClass('navbarBtn');
+            // },
+            success: function (response) {
                 if (response['status'] == 300) {
                     alert('Profile Verification Pending');
                     // console.log(response);
                 } else if (response['status'] != 200) {
                     alert('We Are Facing Tetcnical Issue')
                 } else {
+                    $('#request').addClass('navbarBtn');
+                    $('#dashboard').removeClass('navbarBtn');
+                    $('#loan').removeClass('navbarBtn');
+                    $('#transaction').removeClass('navbarBtn');
+                    $('#profile').removeClass('navbarBtn');
+                    $('#documents').removeClass('navbarBtn');
+                    $('#anyquery').removeClass('navbarBtn');
                     isapproved = "-";
                     $('#dashboard-div').hide();
                     $('#loanApply-div').hide();
@@ -196,7 +218,7 @@ $(document).ready(function() {
                     $('#detailHeading').append(hd);
                     var trHTML = '';
 
-                    $.each(response['message'], function(i, item) {
+                    $.each(response['message'], function (i, item) {
                         let requestid = "SPINPAYOO12E" + item.id;
                         if (item.status == 'approved') {
                             var date2 = new Date(item.updated_at);
@@ -208,8 +230,8 @@ $(document).ready(function() {
                             1) + "/" + date.getFullYear();
                         trHTML += '<tr style="color:white"><td>' + requestid +
                             '</td><td>$ ' + item
-                            .amount + '</td><td>' + item
-                            .tenure + ' month</td><td>' + created +
+                                .amount + '</td><td>' + item
+                                .tenure + ' month</td><td>' + created +
                             '</td><td>' +
                             '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "ViewDetails(\'' +
                             item.user_id + '\')">viewdetails</button>' +
@@ -224,26 +246,33 @@ $(document).ready(function() {
             }
         });
     });
-    $('#profile').click(function() {
+    $('#profile').click(function () {
         $.ajax({
             url: '/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
             },
-            beforeSend: function() {
-                $('#profile').addClass('navbarBtn');
-                $('#request').removeClass('navbarBtn');
-                $('#dashboard').removeClass('navbarBtn');
-                $('#loan').removeClass('navbarBtn');
-                $('#transaction').removeClass('navbarBtn');
-                $('#documents').removeClass('navbarBtn');
-            },
-            success: function(response) {
-                console.log(response);
+            // beforeSend: function () {
+                // $('#profile').addClass('navbarBtn');
+                // $('#request').removeClass('navbarBtn');
+                // $('#dashboard').removeClass('navbarBtn');
+                // $('#loan').removeClass('navbarBtn');
+                // $('#transaction').removeClass('navbarBtn');
+                // $('#documents').removeClass('navbarBtn');
+            // },
+            success: function (response) {
+                // console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
                 } else {
+                    $('#profile').addClass('navbarBtn');
+                    $('#request').removeClass('navbarBtn');
+                    $('#dashboard').removeClass('navbarBtn');
+                    $('#loan').removeClass('navbarBtn');
+                    $('#transaction').removeClass('navbarBtn');
+                    $('#documents').removeClass('navbarBtn');
+                    $('#anyquery').removeClass('navbarBtn');
                     $('#dashboard-div').hide();
                     $("#loan-div").hide();
                     $("#transaction-div").hide();
@@ -256,7 +285,7 @@ $(document).ready(function() {
                     $("#age-div").empty();
                     $("#gender-div").empty();
                     $("#location-div").empty();
-                    $("#photo-container").empty();
+                    // $("#photo-container").empty();
                     $("#detailHeading").empty();
                     var hd = 'Profile Details'
                     // $('#detailHeading').append(hd);
@@ -265,16 +294,16 @@ $(document).ready(function() {
                         response[0].name +
                         '</h3>' +
                         '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
-                        .email +
+                            .email +
                         '</h3>' +
                         '<h3 style = "padding-left:200px; color:#d267f0">' + response[0]
-                        .phone +
+                            .phone +
                         '</h3>' +
                         '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
-                        .address_line +
+                            .address_line +
                         '</h3>' +
                         '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
-                        .pincode +
+                            .pincode +
                         '</h3>';
                     $('#details').append(details);
                     var a = '<h1>AGE</h1>';
@@ -292,37 +321,58 @@ $(document).ready(function() {
                     var location = '<h3 style = "color:white">' + response[0].city +
                         '</h3>';
                     $('#location-div').append(location);
-
-                    var pfeimage =
-                        '<img src="' + '{{ asset("storage") }}/' + response[0].image +
-                        '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
-                    $('#photo-container').append(pfeimage);
-                    var down = "";
+                    console.log(response);
+                    console.log(response[0].image);
+                    // var pfeimage =
+                    //     '<img src="{{ asset("storage") }}' + '/' + response[0].image +
+                    //     '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
+                    // $('#photo-container').append(pfeimage);
+                    const flagForImg = "";
+                    // var images1 = $('#profileImageTag').attr('src');
+                    // if(flagForImg == "1"){
+                        
+                    //     flagForImg = "1";
+                    // }
+                    
+                    var obj = document.getElementById('profileImageTag');
+                        var images1 = obj.src;
+                        images1 = images1 + response[0].image;
+                        console.log(images1);
+                        $('#profileImageTag').prop('src', images1);
+                    
+                    // var down = "";
 
                 }
             }
         });
     });
-    $('#documents').click(function() {
+    $('#documents').click(function () {
         $.ajax({
             url: '/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
             },
-            beforeSend: function() {
-                $('#documents').addClass('navbarBtn');
-                $('#request').removeClass('navbarBtn');
-                $('#dashboard').removeClass('navbarBtn');
-                $('#loan').removeClass('navbarBtn');
-                $('#transaction').removeClass('navbarBtn');
-                $('#profile').removeClass('navbarBtn');
-            },
-            success: function(response) {
+            // beforeSend: function () {
+            //     $('#documents').addClass('navbarBtn');
+            //     $('#request').removeClass('navbarBtn');
+            //     $('#dashboard').removeClass('navbarBtn');
+            //     $('#loan').removeClass('navbarBtn');
+            //     $('#transaction').removeClass('navbarBtn');
+            //     $('#profile').removeClass('navbarBtn');
+            // // },
+            success: function (response) {
                 console.log('documnet');
                 if (response['status'] == 500) {
                     alert('We are facing issue please try')
                 } else {
+                    $('#documents').addClass('navbarBtn');
+                    $('#request').removeClass('navbarBtn');
+                    $('#dashboard').removeClass('navbarBtn');
+                    $('#loan').removeClass('navbarBtn');
+                    $('#transaction').removeClass('navbarBtn');
+                    $('#profile').removeClass('navbarBtn');
+                    $('#anyquery').removeClass('navbarBtn');
                     $('#dashboard-div').hide();
                     $("#loan-div").hide();
                     $('#loanApply-div').hide();
@@ -342,7 +392,7 @@ $(document).ready(function() {
                         two: false,
                     }
                     var trHTML = "";
-                    $.each(response[1], function(i, item) {
+                    $.each(response[1], function (i, item) {
                         if (item.master_document_id == 1) {
                             documentcheck.one = true;
                             details.name = "Adharcard Card";
@@ -446,7 +496,7 @@ $(document).ready(function() {
             }
         });
     });
-    $('#btn').click(function() {
+    $('#btn').click(function () {
         $("#transaction-div").hide();
         $("#request-div").hide();
         $("#profile-div").hide();
@@ -464,7 +514,7 @@ $(document).ready(function() {
         //     }
         // });
     });
-    $('#submitBtn').click(function() {
+    $('#submitBtn').click(function () {
         var amount = $("#amount").val()
         $('#errorMsg').hide();
         $('#successMsg').hide();
@@ -478,7 +528,7 @@ $(document).ready(function() {
                 'user_id': user_id_from_session
 
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response);
                 console.log(response['status']);
                 if (response['status'] == 500) {
@@ -503,13 +553,13 @@ $(document).ready(function() {
             }
         });
     });
-    $('#closeSideNavbar').click(function() {
+    $('#closeSideNavbar').click(function () {
         $("#leftContainer").hide();
         $('#rightContainer').removeClass('toggleContainerCSS');
         $('#closeSideNavbar').hide();
         $('#showSideNavbar').show();
     });
-    $('#showSideNavbar').click(function() {
+    $('#showSideNavbar').click(function () {
         $('#leftContainer').show();
         $('#rightContainer').addClass('toggleContainerCSS');
         $('#showSideNavbar').hide();
@@ -517,7 +567,7 @@ $(document).ready(function() {
     });
 
     // ReUploading Documents
-    $('#documentUploadlender').click(function(event) {
+    $('#documentUploadlender').click(function (event) {
         event.preventDefault();
         let apiurl = $('#apiurl').text();
         let documentNumber = $('#documentNumber').text();
@@ -536,12 +586,12 @@ $(document).ready(function() {
             data: upload,
             processData: false,
             contentType: false,
-            success: function(result) {
+            success: function (result) {
                 console.log(result);
                 // console.log(result['status']);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
-                    $('lenderdocsuploadkre').empty();   
+                    $('lenderdocsuploadkre').empty();
                     $('#document_input_image').val('');
                     $('#document_input').val('');
                     $('#close').click();
@@ -554,7 +604,7 @@ $(document).ready(function() {
     });
 
 
-    $('#borrowerdetails').click(function() {
+    $('#borrowerdetails').click(function () {
         // console.log('modal button clicked');
         let userids = $('#PassingRequestID').text();
         // console.log()
@@ -565,7 +615,7 @@ $(document).ready(function() {
             data: {
                 'user_id': userids
             },
-            success: function(result) {
+            success: function (result) {
                 // console.log(result.message);
                 let ids = {
                     name: "#ModalBname",
@@ -591,7 +641,7 @@ $(document).ready(function() {
 
 
 
-    $('#completePayment').click(function() {
+    $('#completePayment').click(function () {
         // console.log('modal button clicked');
         let userrequestids = $('#PassingRequestID').text();
         console.log(userrequestids)
@@ -603,7 +653,7 @@ $(document).ready(function() {
                 'lender_id': user_id_from_session,
                 'request_id': userrequestids
             },
-            success: function(result) {
+            success: function (result) {
                 $('#low_amount_error_message').show();
                 console.log(result);
                 $('#low_amount_error_message').html(result['message']);
@@ -619,7 +669,7 @@ $(document).ready(function() {
     });
 
     // query div
-    $('#anyquery').click(function(event) {
+    $('#anyquery').click(function (event) {
         console.log('hello');
 
         $.ajax({
@@ -628,12 +678,19 @@ $(document).ready(function() {
             data: {
                 'user_id': user_id_from_session
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing issue please try later');
                 }
-                if (response['status'] == 200) {
+                if (response['status'] == 200) {                $('#documents').addClass('navbarBtn');
+                $('#request').removeClass('navbarBtn');
+                $('#dashboard').removeClass('navbarBtn');
+                $('#loan').removeClass('navbarBtn');
+                $('#transaction').removeClass('navbarBtn');
+                $('#profile').removeClass('navbarBtn');
+                $('#documents').removeClass('navbarBtn');
+                $('#anyquery').addClass('navbarBtn');
                     $('#dashboard-div').hide();
                     $("#loan-div").hide();
                     $('#loanApply-div').hide();
@@ -644,16 +701,22 @@ $(document).ready(function() {
                     $("#query-div").show();
                     $('#query_row').empty();
                     let trHTML = "";
-                    $.each(response['message'], function(i, item) {
+                    $.each(response['message'], function (i, item) {
                         var updated = "-";
                         let issueid = "SPINPAYOO12E" + item.id;
                         if (item.reply_message != null) {
                             let date2 = new Date(item.updated_at);
                             updated = date2.getDate() + "/" + (date2
-                                    .getMonth() + 1) + "/" + date2
-                                .getFullYear();
+                                .getMonth() + 1) + "/" + date2
+                                    .getFullYear();
                         }
                         console.log('hello');
+                        var replymsg = '';
+                        if(item.reply_message == null){
+                            replymsg = '-';
+                        }else{
+                            replymsg = item.reply_message;
+                        }
                         var date = new Date(item.created_at);
                         let created = date.getDate() + "/" + (date
                             .getMonth() +
@@ -661,9 +724,8 @@ $(document).ready(function() {
                         console.log('hi');
                         trHTML += '<tr style="color:white"><td>' + issueid +
                             '</td><td>' + item
-                            .category + '</td><td>' +
-                            item.user_message + '</td><td>' + item
-                            .reply_message + '</td><td>' + created +
+                                .category + '</td><td>' +
+                            item.user_message + '</td><td>' + replymsg + '</td><td>' + created +
                             '</td><td>' + updated + '</td></tr>';
                     });
                     $('#query_row').append(trHTML);
@@ -676,7 +738,7 @@ $(document).ready(function() {
     });
 
     // submit querybfrom the user
-    $('#submitquery').click(function(event) {
+    $('#submitquery').click(function (event) {
         $('#error').empty();
         event.preventDefault();
         let category = $('#category-name').val();
@@ -693,7 +755,7 @@ $(document).ready(function() {
                 url: '/api/raise/query',
                 type: 'post',
                 data: raisequery,
-                success: function(response) {
+                success: function (response) {
                     if (response['status'] == 401) {
                         console.log(response);
                         let ptag = "<p style='color:red'>*" + response[
@@ -731,7 +793,7 @@ function repayment(id, btid) {
         data: {
             loan_id: id
         },
-        success: function(response) {
+        success: function (response) {
             console.log(btid, response)
             $("#" + btid).attr("disabled", true);
             console.log(response);
@@ -740,7 +802,7 @@ function repayment(id, btid) {
 }
 
 function DocumentReupload(master_document_id, document_number) {
-    console.log("id",master_document_id);
+    // console.log("id", master_document_id);
     $('#document_input').css('display', 'block')
     let heading = "";
     let url = "";
@@ -754,11 +816,11 @@ function DocumentReupload(master_document_id, document_number) {
         url = "/api/pancard";
     }
 
-    let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
-        '</p><p style="display:none" id="documentNumber"' + '>' + document_number +
-        '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
-    $('#exampleModalLabel').html(heading);
-    $('#lenderdocsuploadkre').append(ptag)
+    $("#apiurl").html(url);
+    $("#documentNumber").html(document_number);
+    $("#MasterdocumentNumber").html(master_document_id);
+    $('#exampleModalLabel1').html(heading);
+    // $('#lenderdocsuploadkre').append(ptag)
     $('#modalid').click();
 }
 
