@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\CreditMapping;
 use App\Models\Loan;
 use App\Models\CreditDetail;
+use App\Models\Query;
 use DB;
 use Illuminate\Database\QueryException;
 
@@ -373,6 +374,36 @@ class AgentDashboardController extends Controller
             return response()->json([
                 "code" => 500,
                 'message' => $e
+            ]);
+        }
+    }
+
+
+    public function query(){
+        return view('agent.reply',[
+            'query' => Query::all(),
+        ]);
+    }
+
+    public function agent_reply(Request $request){
+        try{
+            $querytb = new Query();
+            $ifsaved = DB::table('queries')->updateOrInsert(
+                ['id' => $request['id']],
+                [ 'repiled_id' => $request['repiled_id'],'reply_message'=>$request['reply_message'], 'updated_at' => \Carbon\Carbon::now()]
+            );
+            if($ifsaved){
+                return response()->json([
+                    'message'=>'Replied Successfully',
+                    'status'=>200
+                ]);
+            }
+        }
+        catch(QueryException $e){
+            return response()->json([
+                // 'message'=>'Internal Server Error',
+                'message'=>$e,
+                'status'=>500
             ]);
         }
     }
