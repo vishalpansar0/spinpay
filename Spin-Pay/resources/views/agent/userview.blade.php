@@ -11,7 +11,7 @@
     <div class="nav-menu">
         <a href="">Vishal Sharma </a>&nbsp;&nbsp;&nbsp;
         <a href="{{url('agent/dashboard')}}">Dashboard </a>&nbsp;&nbsp;&nbsp;
-        <a href=""> Logout</a>
+        <a href="{{url('api/agentLogout')}}"> Logout</a>
     </div>
 </div>
 {{-- @php
@@ -44,7 +44,7 @@
 
     </div>
     <div class="right-main-div">
-
+     <input type="text" id="userIdHidden" style="display:none" value="{{ $user->id }}">
         {{-- docs view modal --}}
         <!-- Button trigger modal -->
         {{-- <button style="float:right;margin-top:7px;text-decoration:none;"
@@ -124,7 +124,7 @@
                         role
                     </div>
                     <div style="color:white;font-size:24px">
-
+                        <input type="text" id="roleHiddenInput" value="{{$user->role_id}}" style="display:none">
                         @if ($user->role_id == 3)
                             <span style="color:green">Lender</span>
                         @else
@@ -176,7 +176,7 @@
                     </div>
                     <div style="color:white;font-size:24px">
                         @if ($user->status != 'approved')
-                            <button class="btn btn-success" id="profile_aprv_btn">Approve profile</button>
+                            <button class="btn btn-success" id="profile_aprv_btn1" data-bs-toggle="modal" data-bs-target="#salaryInputModal">Approve profile</button>
                         @else
                             <button class="btn btn-success" disabled>Approved Profile</button>
                         @endif
@@ -481,9 +481,44 @@
 </div>
 
 
+<div class="modal fade" id="salaryInputModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#17202A">
+            <div class="modal-header">
+                <h6 class="modal-title" id="staticBackdropLabel" style="color:white">enter user's salary to assign his credit details</h6>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" style="border:none;background:none;"><i
+                        class="fas fa-times" style="color:blue;"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;display:none"></div>
+                <div class="inputDiv">
+                    @if ($user->role_id == 3)
+                    <input type="number" id="userSalary" placeholder="no need to enter for lender" style="width:100%"
+                    disabled>
+                        @else
+                        <input type="number" id="userSalary" placeholder="enter salary" style="width:100%"
+                        required>
+                        @endif
+                    
+                </div>
+                <div class="inputDiv mt-2">
+                    <button class="capbtn" id="profile_aprv_btn" style="float:right">Approve profile</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @include('agent.agentLayouts.jsAgent')
 <script>
     $(document).ready(function() {
+        function errormsg(str) {
+            $('#errorDiv').html(str);
+            $('#errorDiv').css('display', 'block');
+        }
         function loadDocs(){
 
         }
@@ -716,9 +751,20 @@
             }
         });
         $('#profile_aprv_btn').on('click',function(){
-            const getId = {
-                'user_id':{{$user->id}}
-            }
+            var roleId = $('#roleHiddenInput').val();
+            if(roleId == 3){
+                salaryInput = 01;
+            }else{
+                $("#userSalary").val() == "" ? errormsg('salary can not be empty') : salaryInput = $("#userSalary").val();
+            }   
+            $("#userIdHidden").val() == "" ? errormsg('salary can not be empty') : userIdHidden = $("#userIdHidden").val();
+            if(salaryInput == "" || userIdHidden == ""){
+                errormsg('id or salary can not be empty');
+            }else{
+                const getId = {
+                'user_id':userIdHidden,
+                'salary': salaryInput,
+                }
             $.ajax({
                 url: "/api/profileApprove/",
                 type: "post",
@@ -743,6 +789,8 @@
                    
                 }
             });
+            }
+            
         });
         
  
