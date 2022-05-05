@@ -240,7 +240,7 @@ class Lender extends Controller
                 $loan->lender_id = $request['lender_id'];
                 $loan->interest = 0.09 * $requestdata->amount * (int)$requestdata->tenure ;
                 $loan->processing_fee = $processingFee;
-                $loan->late_fee = 10;
+                $loan->late_fee = 0;
                 $loan->amount = $requestdata->amount - $processingFee;
                 $loan->sent_transaction_id = $transaction->id;
                 $loan->repayment_transaction_id = null;
