@@ -28,7 +28,7 @@
             </div>
 
             {{-- Transactions --}}
-            <div class="menu-item-div active">
+            <div class="menu-item-div ">
                 <a href="#"><button class="m-btn"><i
                             class="fas fa-glass-cheers"></i><br> Transactions</button></a>
             </div>
@@ -41,8 +41,8 @@
 
 
             {{-- Company transactions --}}
-            <div class="menu-item-div">
-                <a href="{{ '/admin/companytransactions' }}"><button class="m-btn"><i
+            <div class="menu-item-div active">
+                <a href="#"><button class="m-btn"><i
                             class="fas fa-info-circle"></i><br> Company Transactions </button></a>
             </div>
 
@@ -54,58 +54,47 @@
 
         <div class="row text-center" style="color:white;background-color:#17202A;justify-content:center">
             <div class="col-4 mt-4">
-                <h3>All Transactions </h3>
+                <h3>Company's Transactions </h3>
             </div>
     
             {{-- <div class="col-4 mt-4">{{ $users->links('vendor.pagination.customLinks') }}</div> --}}
     
         </div>
-        <div class="table-container" id="allUsers">
+        <div class="container-fluid">
             <table class="table text-center table-dark" >
                 <thead>
                     <tr>
                         <th scope="col">Transaction Id</th>
-                        <th scope="col">From</th>
-                        <th scope="col">To</th>
-                        <th scope="col">Type</th>
+                        <th scope="col">Loan Id</th>
+                        <th scope="col">Borrower Id</th>
+                        <th scope="col">Borrower Name</th>
                         <th scope="col">Amount</th>
-                        <th scope="col">Status</th>
                         <th scope="col">Time</th>
+                        <th scope="col">Date</th>
                     </tr>
                 </thead>
                 <tbody id="records_table">
-                    @foreach($trans as $data)
+                    @foreach($transaction as $data)
                     <tr>
-                        <td>{{ $data->id}}</td>
-                        <td>{{ $data->from_id }}</td>
-                        <td>{{ $data->to_id }}</td>
-                        <td>{{ $data->type }}</td>
-                        <td>{{ $data->amount }}</td>
-                        @if($data->status == 'successfull')
-                            <td style="padding:12px">
-                                <span style="background-color:#28a745;padding:10px;border-radius:100px">
-                                    {{ $data->status }}
-                                </span>
-                            </td>
-                        @else
-                            <td style="padding:12px">
-                                <span style="background-color:#dc3545;padding:10px;border-radius: 100px;">
-                                    {{ $data->status }}
-                                </span>
-                            </td>
-                        @endif
-                        <td>{{ Carbon\Carbon::parse($data->created_at)->format('h:i:s') }}</td>
-                        {{-- <td>{{ Carbon\Carbon::parse($data->time)->format('Y-m-d') }}</td> --}}
+                        <td>SPINPAY00T{{ $data['id'] }}</td>
+                        <td>SPINPAY00L{{ $data['lid'] }}</td>
+                        <td>SPINPAY00U{{ $data['uid'] }}</td>
+                        <td>{{ $data['uname'] }}</td>
+                        <td>{{ $data['stamount'] }}</td>
+                        <td>{{ Carbon\Carbon::parse($data['stdate'])->format('h:i:s') }}</td>
+                        <td>{{ Carbon\Carbon::parse($data['sttime'])->format('Y-m-d') }}</td>
                     </tr>
-                @endforeach
+                    @endforeach
                 </tbody>
             </table>
-            
         </div>
+        
+          
+        
         <div id="page-links" style="background-color: #17202A;padding:10px">
             <div class="row">
                 <div class="offset-9 col-sm-3">
-                    {{ $trans->links('vendor.pagination.customLinks') }}
+                    {{ $transaction->links('vendor.pagination.customLinks') }}
                 </div>
             </div>
         </div>
