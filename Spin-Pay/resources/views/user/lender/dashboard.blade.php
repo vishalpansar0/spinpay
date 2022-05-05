@@ -45,7 +45,7 @@
                 <div class="creditScore text-center" id="creditScore">
                     <h1 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;"><i style=""
                             class="fa-solid fa-wallet"></i></h1>
-                    <P style="color:white">{{ $datas['wallet_amount'] }}</P>
+                    <P style="color:white">&#8377;{{ $datas['wallet_amount'] }}</P>
                 </div>
                 {{-- <div class="CreditPoint text-center" id="CreditPoint">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT POINT</h5>
@@ -98,13 +98,13 @@
                                     $name = $datas['bname'];
                                     $amount = $datas['amount'];
                                 }
-                            @endphp
-                            <td>{{ $loan }}</td>
-                            <td>{{ $amount }}</td>
-                            <td>{{ $start }}</td>
-                            <td>{{ $end }}</td>
-                            <td>{{ $status }}</td>
-                            <td>{{ $name }}</td>
+                                @endphp
+                                <td>{{$loan}}</td>
+                                <td>&#8377;{{$amount}}</td>
+                                <td>{{$start}}</td>
+                                <td>{{$end}}</td>
+                                <td>{{$status}}</td>
+                                <td>{{$name}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -179,6 +179,7 @@
                     <tr>
                         <th scope="col">APPLICATION ID</th>
                         <th scope="col">LOAN AMOUNT</th>
+                        <th scope="col">AMOUNT RECEIVING</th>
                         <th scope="col">LOAN START DATE</th>
                         <th scope="col">LOAN DUE DATE</th>
                         <th scope="col">STATUS</th>
@@ -233,7 +234,13 @@
                             <form>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Category</label>
-                                    <input type="text" class="form-control" id="category-name" required>
+                                    {{-- <input type="text" class="form-control" id="category-name" required> --}}
+                                    <select name="category-name" id="category-name" required>
+                                        <option value="profile">Profile</option>
+                                        <option value="loan">Loan</option>
+                                        <option value="transaction">Transaction</option>
+                                        <option value="documents">Documents</option>
+                                      </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Issue</label>
@@ -423,7 +430,7 @@
                 </div>
                 <div class="modal-body" style="height: 250px">
                     <div style="height:100px">
-                        <h1>This is temporaray payment gateway</h1>
+                        <h2>Are you sure you</h2>
                     </div>
                     <p style="display: none;" id="PassingRequestID"></p>
                     <div class="alert alert-danger" role="alert" id="low_amount_error_message" style="display: none">

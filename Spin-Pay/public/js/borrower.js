@@ -28,14 +28,6 @@ $(document).ready(function () {
             data: {
                 user_id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#loan').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
@@ -82,9 +74,12 @@ $(document).ready(function () {
                         var date2 = new Date(item.end_date);
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
+                        var requested_amount = '';    
+                        var payble_amount = '';
+                        requested_amount = item.amount +item.processing_fee;    
+                        payble_amount = item.amount +item.processing_fee + item.interest+item.late_fee;    
                         trHTML += '<tr style="color:white"><td>' +
-                            applicationid + '</td><td>$ ' + item
-                                .amount + '</td><td>' + starting_date +
+                            applicationid +'</td><td>&#8377;'+requested_amount+'</td><td>&#8377;' + payble_amount + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
@@ -108,19 +103,11 @@ $(document).ready(function () {
             data: {
                 user_id: user_id_from_session
             },
-            beforeSend: function () {
-                // $('#transaction').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-            },
             success: function (response) {
-                // console.log(response);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
+                    console.log(response);
                     $('#transaction').addClass('navbarBtn');
                     $('#dashboard').removeClass('navbarBtn');
                     $('#loan').removeClass('navbarBtn');
@@ -157,7 +144,7 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Success</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' +
-                            transactionid + '</td><td>$ ' + item
+                            transactionid + '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
                             statustr + '</td><td>' + created + '</td></tr>';
                     });
@@ -173,14 +160,6 @@ $(document).ready(function () {
             data: {
                 user_id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#request').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 console.log(response);
                 if (response['status'] != 200) {
@@ -231,7 +210,7 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Rejected</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' + requestid +
-                            '</td><td>$ ' + item
+                            '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
                             statusCSS + '</td><td>' + item
                                 .tenure + ' month</td><td>' + created +
@@ -249,14 +228,6 @@ $(document).ready(function () {
             data: {
                 id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#profile').addClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 console.log(response['status']);
                 if (response['status'] == 500) {
@@ -281,10 +252,7 @@ $(document).ready(function () {
                     $("#age-div").empty();
                     $("#gender-div").empty();
                     $("#location-div").empty();
-                    // $("#photo-container").empty();
                     $("#detailHeading").empty();
-                    var hd = 'Profile Details'
-                    // $('#detailHeading').append(hd);
                     var details =
                         '<h1 style = "color:goldenrod; margin-left:100px ">Personal Details</h1><h3 style = "padding-left:200px;color:#d267f0">' +
                         response[0].name +
@@ -334,24 +302,13 @@ $(document).ready(function () {
         });
     });
     $('#documents').click(function () {
-        // console.log("hola");
         $.ajax({
             url: 'http://localhost:8000/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
             },
-            beforeSend: function () {
-                // $('#documents').addClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-            },
             success: function (response) {
-
-                // console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -477,7 +434,6 @@ $(document).ready(function () {
                                 }
                             }
                         }
-                        // console.log(details);
 
                         let button =
                             '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>Re-Upload</button>';
@@ -487,7 +443,6 @@ $(document).ready(function () {
                                 item.master_document_id + '\'' + ',' + '\'' +
                                 item
                                     .document_number + '\')">Re-Upload</button>';
-                            // console.log(details);
                         }
                         statustr = '';
                         if (details.status == "Approved") {
@@ -510,7 +465,6 @@ $(document).ready(function () {
                             details.number + '</td><td>' +
                             statustr + '</td><td>' + button + '</td></tr>';
                     });
-                    // console.log(documentcheck);
                     if (documentcheck.one == false) {
                         var reupload =
                             '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
@@ -560,7 +514,6 @@ $(document).ready(function () {
                             reupload + '</td></tr>';
                     }
                     $('#document_row').append(trHTML);
-                    // console.log(trHTML);
 
                 }
             }
@@ -573,20 +526,10 @@ $(document).ready(function () {
         $("#loan-div").hide();
         $('#dashboard-div').hide();
         $('#loanApply-div').show();
-        // $.ajax({
-        //     url: '/api/ShowUsersDetails',
-        //     type: 'GET',
-        //     data: {
-        //         id: 46
-        //     },
-        //     success: function(response) {
-        //         console.log(response);
-        //     }
-        // });
     });
     $('#submitBtn').click(function () {
-        var month = $("#month").val()
-        var amount = $("#amount").val()
+        var month = $("#month").val();
+        var amount = $("#amount").val();
         $('#errorMsg').hide();
         $('#successMsg').hide();
         $.ajax({
@@ -599,7 +542,6 @@ $(document).ready(function () {
 
             },
             success: function (response) {
-                // console.log(response);
                 console.log(response['status']);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
@@ -613,12 +555,10 @@ $(document).ready(function () {
                     let t = 0;
                     $('#errorMsg').show();
                     if (response['Validation Failed']['amount_request']) {
-                        // console.log('amount error');
                         errors += response['Validation Failed']['amount_request'];
                         t += 1;
                     }
                     if (response['Validation Failed']['tenure']) {
-                        // console.log('tenure error');
                         errors += response['Validation Failed']['tenure'];
                         t += 1;
                     }
@@ -630,6 +570,17 @@ $(document).ready(function () {
 
                 }
                 if (response['status'] == 200) {
+                    $("#month").val('');
+                    $('#amount').val('');
+                    let amounts = parseInt(amount);
+                    let interest = (amount*parseInt(month)*0.09);
+                    let fee=amounts+interest;
+                    $('#raise_amount').html(amount);
+                    $('#late_fee').html(amount);
+                    $('#tenure').html(month+" months");
+                    $('#intrest').html(interest);
+                    $('#payble_amount').html("&#8377;"+fee);
+                    $('#loan_request_details').click();
                     $('#successMsg').show();
                     $('#successMsg').html(
                         'Your laon request is raised please waite till approvred');
@@ -678,7 +629,6 @@ $(document).ready(function () {
             contentType: false,
             success: function (result) {
                 console.log(result);
-                // console.log(result['status']);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
                     $('#document_input_image').val('');
@@ -722,6 +672,7 @@ $(document).ready(function () {
                     $("#document-div").hide();
                     $('#query_row').empty();
                     $("#query-div").show();
+                    $("#detailHeading").empty();
                     let trHTML = "";
                     $.each(response['message'], function (i, item) {
                         var updated = "-";
@@ -732,9 +683,9 @@ $(document).ready(function () {
                                 .getMonth() + 1) + "/" + date2.getFullYear();
                         }
                         var replymsg = '';
-                        if(item.reply_message == null){
+                        if (item.reply_message == null) {
                             replymsg = '-';
-                        }else{
+                        } else {
                             replymsg = item.reply_message;
                         }
                         var date = new Date(item.created_at);
@@ -747,7 +698,6 @@ $(document).ready(function () {
                             '</td><td>' + updated + '</td></tr>';
                     });
                     $('#query_row').append(trHTML);
-                    // console.log('asjghad');
                 }
 
 
@@ -807,7 +757,6 @@ function repayment(id, btid) {
             loan_id: id
         },
         success: function (response) {
-            // console.log(btid, response)
             $("#" + btid).attr("disabled", true);
             console.log(response);
             alert('Your repayment is successfull');
@@ -857,9 +806,8 @@ function DocumentReupload(master_document_id, document_number) {
     let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
         '</p><p style="display:none" id="documentNumber"' + '>' + document +
         '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
-       console.log(heading);
-        // $('#exampleModalLabel1').html('asd');
-        $('#exampleModalLabel1').html(heading);
+    console.log(heading);
+    $('#exampleModalLabel1').html(heading);
     $('#modalerror').append(ptag)
     $('#modalid').click();
 }

@@ -98,12 +98,12 @@
                                     $name = $datas['bname'];
                                     $amount = $datas['amount'];
                                 }
-                            @endphp
-                            <td>{{ $loan }}</td>
-                            <td>{{ $amount }}</td>
-                            <td>{{ $start }}</td>
-                            <td>{{ $end }}</td>
-                            <td>{{ $status }}</td>
+                                @endphp
+                                <td>{{$loan}}</td>
+                                <td>&#8377;{{$amount}}</td>
+                                <td>{{$start}}</td>
+                                <td>{{$end}}</td>
+                                <td>{{$status}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -124,12 +124,59 @@
                 </div>
                 <div class="inputDiv">
                     <label for="month" style="color:white">Please Enter Duration</label>
-                    <input type="number" id="month" name="month" placeholder="enter duration" required>
+                    {{-- <input type="number" id="month" name="month" placeholder="enter duration" required> --}}
+                    <select name="month" id="month" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
                     <small class="form-text text-muted">Duration should be in multiple of month.</small>
                 </div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
             </div>
         </div>
+         {{-- modal for view laon details during apply      --}}
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tempdata123" id="loan_request_details" style="display:none">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="tempdata123" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">View details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="amonut_requesting">
+              <h3>Amount Requesting : <span id = "raise_amount"  style="color:red"></span></h3>
+          </div>
+          <div class="late_fee">
+              <h3>Late fees/day  : <span id = "late_fees"  style="color:red">&#8377;10</span></h3>
+          </div>
+          <div class="tenure">
+              <h3>Tenure  : <span id = "tenure"  style="color:red"></span></h3>
+          </div>
+          <div class="intrest">
+              <h3>Total Intrest Including GST  : <span id = "intrest"  style="color:red"></span></h3>
+          </div>
+          <div class="Payble_amount">
+              <h3>Payble Amount  : <span id = "payble_amount"  style="color:red"></span></h3>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
 
         {{-- Trnsaction Div --}}
         <div class="transaction-div" id="transaction-div"
@@ -177,6 +224,7 @@
                     <tr>
                         <th scope="col">APPLICATION ID</th>
                         <th scope="col">LOAN AMOUNT</th>
+                        <th scope="col">PAYBLE AMOUNT</th>
                         <th scope="col">LOAN START DATE</th>
                         <th scope="col">LOAN DUE DATE</th>
                         <th scope="col">STATUS</th>
@@ -232,7 +280,13 @@
                             <form>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Category</label>
-                                    <input type="text" class="form-control" id="category-name" required>
+                                    {{-- <input type="text" class="form-control" id="category-name" required> --}}
+                                    <select name="category-name" id="category-name" required>
+                                        <option value="profile">Profile</option>
+                                        <option value="loan">Loan</option>
+                                        <option value="transaction">Transaction</option>
+                                        <option value="documents">Documents</option>
+                                      </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Issue</label>
