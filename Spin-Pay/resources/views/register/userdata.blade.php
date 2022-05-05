@@ -141,7 +141,7 @@
 
             // console.log(getData);
             $.ajax({
-                url: "http://localhost:8000/api/userdata/",
+                url: "/api/userdata/",
                 type: "post",
                 dataType: "json",
                 data: userdata,

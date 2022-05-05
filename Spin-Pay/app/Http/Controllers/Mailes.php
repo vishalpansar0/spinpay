@@ -53,7 +53,7 @@ class Mailes extends Controller
                             $otptable->save();
                         }
                         try {
-                            Mail::to($usermail)->send(new SendOtp($otp));
+                            Mail::to($usermail)->send(new SendOtp($otp,'layouts.sendOtp'));
                             return response()->json([
                                 'message' => 'otp sent.',
                                 'status' => 200,
@@ -183,7 +183,7 @@ class Mailes extends Controller
                             $otptable->save();
                         }
                         try {
-                            Mail::to($usermail)->send(new SendOtp($otp));
+                            Mail::to($usermail)->send(new SendOtp($otp,'layouts.forgotpassmail'));
                             return response()->json([
                                 'message' => 'otp sent.',
                                 'status' => 200,
