@@ -247,7 +247,7 @@ class Lender extends Controller
                 $loan->status = 'ongoing';
                 $loan->start_date = \Carbon\Carbon::now();
                 $loan->end_date = \Carbon\Carbon::now()->addMonths($requestdata->tenure);
-
+                $loan->save();
 
                 // Taking Company Profit to Admin Wallet
                 $admin = $wallet->where('user_id', 1)->get()->first();
