@@ -166,6 +166,7 @@
                     <tr>
                         <th scope="col">APPLICATION ID</th>
                         <th scope="col">LOAN AMOUNT</th>
+                        <th scope="col">AMOUNT RECEIVING</th>
                         <th scope="col">LOAN START DATE</th>
                         <th scope="col">LOAN DUE DATE</th>
                         <th scope="col">STATUS</th>
@@ -221,7 +222,7 @@
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Category</label>
                                     {{-- <input type="text" class="form-control" id="category-name" required> --}}
-                                    <select name="category" id="category">
+                                    <select name="category-name" id="category-name" required>
                                         <option value="profile">Profile</option>
                                         <option value="loan">Loan</option>
                                         <option value="transaction">Transaction</option>

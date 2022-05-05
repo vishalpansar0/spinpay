@@ -81,9 +81,12 @@ $(document).ready(function () {
                         var date2 = new Date(item.end_date);
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
+                        var laonamount = '';    
+                        var moneyreceiving = '';    
+                        laonamount =  item.amount +item.processing_fee;
+                        moneyreceiving = item.amount+item.processing_fee +(item.interest)*.8 + (item.late_fee)*.8 
                         trHTML += '<tr style="color:white"><td>' +
-                            applicationid + '</td><td>&#8377;' + item
-                                .amount + '</td><td>' + starting_date +
+                            applicationid + '</td><td>&#8377;'+ laonamount+'</td><td>&#8377;' + moneyreceiving + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
@@ -353,14 +356,6 @@ $(document).ready(function () {
             data: {
                 id: user_id_from_session
             },
-            // beforeSend: function () {
-            //     $('#documents').addClass('navbarBtn');
-            //     $('#request').removeClass('navbarBtn');
-            //     $('#dashboard').removeClass('navbarBtn');
-            //     $('#loan').removeClass('navbarBtn');
-            //     $('#transaction').removeClass('navbarBtn');
-            //     $('#profile').removeClass('navbarBtn');
-            // // },
             success: function (response) {
                 console.log('documnet');
                 if (response['status'] == 500) {

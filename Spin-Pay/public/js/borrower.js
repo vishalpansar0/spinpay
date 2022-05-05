@@ -74,9 +74,12 @@ $(document).ready(function () {
                         var date2 = new Date(item.end_date);
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
+                        var requested_amount = '';    
+                        var payble_amount = '';
+                        requested_amount = item.amount +item.processing_fee;    
+                        payble_amount = item.amount +item.processing_fee + item.interest+item.late_fee;    
                         trHTML += '<tr style="color:white"><td>' +
-                            applicationid + '</td><td>&#8377;' + item
-                                .amount + '</td><td>' + starting_date +
+                            applicationid +'</td><td>&#8377;'+requested_amount+'</td><td>&#8377;' + payble_amount + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
@@ -207,7 +210,7 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Rejected</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' + requestid +
-                            '</td><td>$ ' + item
+                            '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
                             statusCSS + '</td><td>' + item
                                 .tenure + ' month</td><td>' + created +
@@ -525,8 +528,8 @@ $(document).ready(function () {
         $('#loanApply-div').show();
     });
     $('#submitBtn').click(function () {
-        var month = $("#month").val()
-        var amount = $("#amount").val()
+        var month = $("#month").val();
+        var amount = $("#amount").val();
         $('#errorMsg').hide();
         $('#successMsg').hide();
         $.ajax({
@@ -567,8 +570,17 @@ $(document).ready(function () {
 
                 }
                 if (response['status'] == 200) {
-                    month = $("#month").val('');
+                    $("#month").val('');
                     $('#amount').val('');
+                    let amounts = parseInt(amount);
+                    let interest = (amount*parseInt(month)*0.09)+((amounts / 500) * 10);
+                    let fee=amounts+interest;
+                    $('#raise_amount').html(amount);
+                    $('#late_fee').html(amount);
+                    $('#tenure').html(month+" months");
+                    $('#intrest').html(interest);
+                    $('#payble_amount').html("&#8377;"+fee);
+                    $('#loan_request_details').click();
                     $('#successMsg').show();
                     $('#successMsg').html(
                         'Your laon request is raised please waite till approvred');
@@ -671,9 +683,9 @@ $(document).ready(function () {
                                 .getMonth() + 1) + "/" + date2.getFullYear();
                         }
                         var replymsg = '';
-                        if(item.reply_message == null){
+                        if (item.reply_message == null) {
                             replymsg = '-';
-                        }else{
+                        } else {
                             replymsg = item.reply_message;
                         }
                         var date = new Date(item.created_at);
@@ -794,8 +806,8 @@ function DocumentReupload(master_document_id, document_number) {
     let ptag = '<p style="display:none" id="apiurl"' + '>' + url +
         '</p><p style="display:none" id="documentNumber"' + '>' + document +
         '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
-       console.log(heading);
-        $('#exampleModalLabel1').html(heading);
+    console.log(heading);
+    $('#exampleModalLabel1').html(heading);
     $('#modalerror').append(ptag)
     $('#modalid').click();
 }
