@@ -30,7 +30,7 @@ class Lender extends Controller
             return view('user.lender.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
+                'message' => 'We are facing some issue, We are working on this',
                 "status" => 500,
             ]);
         }
