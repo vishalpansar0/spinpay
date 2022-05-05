@@ -43,6 +43,6 @@ class UserAuthController extends Controller
         Session::forget('user_id');
         Session::forget('name');
         Session::forget('role');
-        return redirect('/signin');
+        return redirect('/');
     }
 }

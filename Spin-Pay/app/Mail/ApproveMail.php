@@ -7,20 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendOtp extends Mailable
+class ApproveMail extends Mailable
 {
     use Queueable, SerializesModels;
-    private $otp;
     private $v;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($otp,$view)
+    public function __construct($v)
     {
-        $this->otp = $otp;
-        $this->v = $view;
+        $this->v = $v;
     }
 
     /**
@@ -31,6 +29,6 @@ class SendOtp extends Mailable
     public function build()
     {
         return $this->from('cppsecretstools@gmail.com', 'SpinPay')
-        ->view($this->v)->with(['otp'=> $this->otp]);
+        ->view($this->v);
     }
 }

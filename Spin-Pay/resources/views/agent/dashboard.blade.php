@@ -15,21 +15,14 @@
 </div>
 
 <div class="main-container">
-    {{-- <div class="row text-center p-4" style="background-color: #17202A">
-        <div class="col-sm-3">
-            <button class="capbtn" id="allUserBtn">All Users</button>
+    <div class="row text-center p-4" style="background-color: #17202A">
+        <div class="col-sm-6">
+            <a href="{{url('agent/dashboard')}}"><button class="capbtn" id="allUserBtn">All Users</button></a>
         </div>
-        <div class="col-sm-3">
-            <button class="capbtn" id="pendingUsersBtn">Pending Users</button>
+        <div class="col-sm-6">
+            <a href="{{url('agent/querys')}}"><button class="capbtn" id="userQs">Users Queries</button></a>
         </div>
-        <div class="col-sm-3">
-            <button class="capbtn" id="userQueriesBtn">Users Queries</button>
-        </div>
-        <div class="col-sm-3">
-            <button class="capbtn" id="Btn">Some Btn</button>
-        </div>
-
-    </div> --}}
+    </div>
 
     <div class="row text-center" id="filterDiv">
         <div class="col-sm-2 text-right" style="font-size:24px;">
@@ -39,12 +32,12 @@
             <div class="inputDiv">
                 <h5>
                     <small class="form-text"
-                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:65px;">choose
+                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:158px;">choose
                         role:</small>
                     <button class="register-role-btn-left reg-role-btn" id="lenderRole">lender</button><button
                         class="register-role-btn-right reg-role-btn" id="borrowerRole">borrower</button>&nbsp;&nbsp;
                     <small class="form-text"
-                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:65px;">status:</small>
+                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:158px;">status:</small>
                     <select class="selectStatus" id="status">
                         <option value="all">all</option>
                         <option value="approved">approved</option>
@@ -52,11 +45,11 @@
                         <option value="pending">pending</option>
                     </select>&nbsp;&nbsp;
                     <small class="form-text"
-                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:65px;">to
+                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:158px;">to
                         date:</small>
                         <input type="date" id="fromDate">&nbsp;&nbsp;
                     <small class="form-text"
-                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:65px;">to
+                        style="color:white;margin-left:15px;margin-top:10px;position:absolute;top:158px;">to
                         date:</small>
                     <input type="date" id="toDate" value="@php
                         echo date('Y-m-d');
