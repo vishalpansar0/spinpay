@@ -63,7 +63,7 @@
                 </thead>
                 <tbody id="records_table">
                     @foreach($transaction as $data)
-                    <tr>
+                    <tr>    
                         <td>{{ $data['id'] }}</td>
                         <td>{{ $data['from'] }}</td>
                         <td>{{ $data['to'] }}</td>
