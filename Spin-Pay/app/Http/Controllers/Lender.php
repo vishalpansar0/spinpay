@@ -10,8 +10,9 @@ use App\Models\Users;
 use App\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\SpinpayTransaction;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class Lender extends Controller
 {
@@ -19,17 +20,19 @@ class Lender extends Controller
     {
         $user_id = Session::get('user_id');
         try {
-            $data = Users::where('users.id',$user_id)->
-            leftjoin('wallets','wallets.user_id','=','users.id')->
-            leftjoin('loans','loans.lender_id','=','users.id')->
-            leftjoin('users as borrower','borrower.id','=','loans.borrower_id')->
-            select('users.name as name','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.start_date','loans.end_date','loans.status')->first()  ;
+            $data = Users::where('users.id', $user_id)->
+                leftjoin('wallets', 'wallets.user_id', '=', 'users.id')->
+                leftjoin('loans', 'loans.lender_id', '=', 'users.id')->
+                leftjoin('users as borrower', 'borrower.id', '=', 'loans.borrower_id')->
+                select('users.name as name', 'borrower.name as bname', 'wallets.amount as wallet_amount', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->
+                latest('loans.created_at')
+                ->first();
             // return $data;
-            return view('user.lender.dashboard',['datas'=>$data]);
+            return view('user.lender.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
             return response()->json([
                 'message' => 'Internal Server Error',
-                "status" => 500
+                "status" => 500,
             ]);
         }
     }
@@ -64,7 +67,7 @@ class Lender extends Controller
                 ->get();
             return response()->json([
                 $basicInfo,
-                $docs
+                $docs,
             ]);
         } catch (QueryException $e) {
             return response()->json([
@@ -235,15 +238,28 @@ class Lender extends Controller
                 $loan->request_id = $request['request_id'];
                 $loan->borrower_id = $userrequestID;
                 $loan->lender_id = $request['lender_id'];
-                $loan->interest = 0.05 * $requestdata->amount;
+                $loan->interest = 0.09 * $requestdata->amount * (int)$requestdata->tenure ;
                 $loan->processing_fee = $processingFee;
-                $loan->late_fee = 20;
+                $loan->late_fee = 10;
                 $loan->amount = $requestdata->amount - $processingFee;
                 $loan->sent_transaction_id = $transaction->id;
                 $loan->repayment_transaction_id = null;
                 $loan->status = 'ongoing';
                 $loan->start_date = \Carbon\Carbon::now();
                 $loan->end_date = \Carbon\Carbon::now()->addMonths($requestdata->tenure);
+
+
+                // Taking Company Profit to Admin Wallet
+                $admin = $wallet->where('user_id', 1)->get()->first();
+                $companyprofit = $admin->amount + $processingFee;
+                $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
+
+                // Adding Proccessing Fee in Company
+                $Companytransaction = new SpinpayTransaction();
+                $Companytransaction->loan_id = $loan->id;
+                $Companytransaction->borrower_id = $loan->borrower_id;
+                $Companytransaction->amount = $processingFee;
+                $isCompanyTrans = $Companytransaction->save();
 
                 if ($loan->save()) {
                     return response()->json([
@@ -265,6 +281,7 @@ class Lender extends Controller
                 ]);
             }
         } catch (QueryException $e) {
+
             return response()->json([
                 'message' => $e,
                 "status" => 500,

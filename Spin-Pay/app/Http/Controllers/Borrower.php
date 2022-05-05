@@ -25,7 +25,8 @@ class Borrower extends Controller
             $data = Users::where('users.id', $user_id)->
             leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->
             leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->
-            select('users.name as name','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->first();
+            select('users.name as name','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')
+            ->latest('loans.created_at')->first();
             // return $data;
             return view('user.borrower.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
@@ -276,14 +277,13 @@ class Borrower extends Controller
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
 
-        if ($currentDate > $end) {
-            $latefee = ($currentDate->diffInDays($userLoan->end_date) * $userLoan->late_fee);
+        if ($userLoan->status=='overdue') {
+            $latefee = ($currentDate->diffInDays($userLoan->end_date) * 10);
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
         } else {
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
             $latefee = 0;
         }
-
         try {
             if ($userLoan) {
                 $transaction = new Transaction();
@@ -297,6 +297,7 @@ class Borrower extends Controller
                     // Changing loan status and updating time
                     $userLoan->where('id', $request['loan_id'])->update(['status' => 'repaid', 'updated_at' => \Carbon\Carbon::now()]);
                     $userLoan->where('id', $request['loan_id'])->update(['repayment_transaction_id' => $transaction->id]);
+                    $userLoan->where('id', $request['loan_id'])->update(['late_fee' => $latefee]);
 
                     //Fetching original amout from request table
                     $requestTable = new Requests();
@@ -305,7 +306,8 @@ class Borrower extends Controller
 
                     //Giving lender his money back;
                     $wallet = new Wallet();
-                    $lendershare = (($latefee * 0.08) + ($originalamount) + ($userLoan->interest * 0.08));
+                    $lendershare = (($latefee * 0.8) + ($originalamount) + ($userLoan->interest * 0.8));
+                    
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
