@@ -20,13 +20,12 @@ class Lender extends Controller
     {
         $user_id = Session::get('user_id');
         try {
-            $data = Users::where('users.id', $user_id)->
-                leftjoin('wallets', 'wallets.user_id', '=', 'users.id')->
-                leftjoin('loans', 'loans.lender_id', '=', 'users.id')->
-                leftjoin('users as borrower', 'borrower.id', '=', 'loans.borrower_id')->
-                select('users.name as name', 'borrower.name as bname', 'wallets.amount as wallet_amount', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->
-                latest('loans.created_at')
-                ->first();
+            $data = Users::where('users.id',$user_id)->
+            leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')->
+            leftjoin('wallets','wallets.user_id','=','users.id')->
+            leftjoin('loans','loans.lender_id','=','users.id')->
+            leftjoin('users as borrower','borrower.id','=','loans.borrower_id')->
+            select('users.name as name','user_datas.reason','user_datas.status as statuss','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.start_date','loans.end_date','loans.status')->first()  ;
             // return $data;
             return view('user.lender.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
