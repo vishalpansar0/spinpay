@@ -69,7 +69,7 @@ Route::get('userRequests/{id}',function($id){
 
 Route::get('request',[AgentDashboardController::class,'request'])->middleware('isAgentLoggedIn');
 
-Route::get('querys',[AgentDashboardController::class,'query']);
+Route::get('agent/querys',[AgentDashboardController::class,'query']);
 
 //requests for a particular user agent can see
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');

@@ -13,6 +13,10 @@ use App\Models\Loan;
 use App\Models\CreditDetail;
 use App\Models\SpinpayTransaction;
 use App\Models\Query;
+use App\Mail\RejectMail;
+use App\Mail\ApproveMail;
+use App\Mail\QueryReply;
+use Illuminate\Support\Facades\Mail;
 use DB;
 use Illuminate\Database\QueryException;
 
@@ -73,14 +77,6 @@ class AgentDashboardController extends Controller
                     ,'user_datas.pincode','credit_details.credit_limit','credit_details.credit_score')
                     ->first();
 
-            // $docs = Users::where('users.id',$req)
-            //             ->leftjoin('user_documents', 'user_documents.user_id', '=', 'users.id')
-            //             ->select('user_documents.master_document_id','user_documents.document_number','user_documents.document_image','user_documents.is_verified')
-            //             ->get();
-
-           
-            // echo '<pre>';
-            // print_r($aadhar->document_image);
             return view('agent.userview', ['user' => $basicInfo]);
         }
         catch(QueryException $e){
@@ -329,10 +325,14 @@ class AgentDashboardController extends Controller
 
     public function profileApprove(Request $request){
         try{
+            $getmail = Users::where('id',$request['user_id'])->select('email')->get()->first();
             if(Users::where('id',$request['user_id'])->where('role_id',3)->get()->first()){
                 if(UserDocument::where('user_id',$request['user_id'])->where('master_document_id','1')->where('is_verified','approved')->exists() && 
                 UserDocument::where('user_id',$request['user_id'])->where('master_document_id','2')->where('is_verified','approved')->exists()){
                     UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
+                    if($getmail){
+                        Mail::to($getmail)->send(new ApproveMail('layouts.approveProfileMail'));
+                    }
                     return response()->json([
                     'code' => 200,
                     'message' => "Profile Approved successfully"
@@ -346,6 +346,9 @@ class AgentDashboardController extends Controller
                UserDocument::where('user_id',$request['user_id'])->where('document_number','33')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','41')->where('is_verified','approved')->exists()){
                UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
+               if($getmail){
+                Mail::to($getmail)->send(new ApproveMail('layouts.rejectProfileMail'));
+               }
                $setCredit = $this->creditScoreAndLimit($request);   
                return $setCredit;
                 
@@ -365,7 +368,11 @@ class AgentDashboardController extends Controller
 
     public function profileReject(Request $request){
         try{
-            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject','reason'=>$request['reason']]);
+            $isDone = UserData::where('user_id',$request['user_id'])->update(['status' => 'reject','reason'=>$request['reason']]);
+            $getmail = Users::where('id',$request['user_id'])->select('email')->get()->first();
+            if($isDone){
+                Mail::to($getmail)->send(new RejectMail($request['reason'],'layouts.rejectProfileMail'));
+            }
             return response()->json([
                 'code' => 200,
                 'message' => "Profile Rejected successfully"
@@ -391,7 +398,9 @@ class AgentDashboardController extends Controller
 
     public function query(){
         return view('agent.reply',[
-            'query' => Query::all(),
+            'query' => DB::table('queries')
+            ->orderBy('id', 'desc')
+            ->get()
         ]);
     }
 
