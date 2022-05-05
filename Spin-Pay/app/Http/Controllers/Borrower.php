@@ -277,14 +277,13 @@ class Borrower extends Controller
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
 
-        if ($currentDate > $end) {
-            $latefee = ($currentDate->diffInDays($userLoan->end_date) * $userLoan->late_fee);
+        if ($userLoan->status=='overdue') {
+            $latefee = ($currentDate->diffInDays($userLoan->end_date) * 10);
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
         } else {
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
             $latefee = 0;
         }
-
         try {
             if ($userLoan) {
                 $transaction = new Transaction();
@@ -298,6 +297,7 @@ class Borrower extends Controller
                     // Changing loan status and updating time
                     $userLoan->where('id', $request['loan_id'])->update(['status' => 'repaid', 'updated_at' => \Carbon\Carbon::now()]);
                     $userLoan->where('id', $request['loan_id'])->update(['repayment_transaction_id' => $transaction->id]);
+                    $userLoan->where('id', $request['loan_id'])->update(['late_fee' => $latefee]);
 
                     //Fetching original amout from request table
                     $requestTable = new Requests();
@@ -306,7 +306,8 @@ class Borrower extends Controller
 
                     //Giving lender his money back;
                     $wallet = new Wallet();
-                    $lendershare = (($latefee * 0.08) + ($originalamount) + ($userLoan->interest * 0.08));
+                    $lendershare = (($latefee * 0.8) + ($originalamount) + ($userLoan->interest * 0.8));
+                    
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
