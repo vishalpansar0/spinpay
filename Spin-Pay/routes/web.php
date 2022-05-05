@@ -69,17 +69,26 @@ Route::get('userRequests/{id}',function($id){
 
 Route::get('request',[AgentDashboardController::class,'request'])->middleware('isAgentLoggedIn');
 
+Route::get('querys',[AgentDashboardController::class,'query']);
+
 //requests for a particular user agent can see
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
+
+//spinpay transactions
+Route::get('spinpayTransaction',[AgentDashboardController::class,'spinpayTransaction']);
 
 
 
 
 
 // Admin Routes
-Route::view('/admin/signin', 'admin.adminsignin');
+Route::view('/admin/signin', 'admin.adminsignin')->middleware('checkAdminAuth');
 
-Route::get('/admin/dashboard', [Admin::class,'getAllUsers']);
+Route::get('/admin/dashboard', [Admin::class,'getAllUsers'])->middleware('isAdminLoggedIn');
+
+Route::get('/admin/transactions', [Admin::class,'getAllTransactions'])->middleware('isAdminLoggedIn');
+
+Route::get('/admin/loans', [Admin::class,'getAllLoans'])->middleware('isAdminLoggedIn');
 
 
 

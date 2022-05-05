@@ -10,7 +10,7 @@
                 SpinPay
             </div>
             <div class="menu-container">
-                <h4><a href="#">login</a></h4>
+                <h4><a href="{{url('signin')}}">login</a></h4>
             </div>
         </div>
     </div>

@@ -151,7 +151,7 @@ class UserController extends Controller
                 $path = str_replace("public/","",$path);
                 $ifsaved = DB::table('user_documents')->updateOrInsert(
                     ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id']],
-                    [ 'document_number'=>$request['document_number'], 'document_image' => $path]
+                    [ 'document_number'=>$request['document_number'], 'document_image' => $path, 'is_verified' => 'pending ']
                 );
                 if ($ifsaved == 1) {
                     $isLender = Users::where('id',$request['user_id'])->where('role_id',3)->first();
@@ -201,7 +201,7 @@ class UserController extends Controller
                 $path = str_replace("public/", "", $path);
                 $ifSaved = DB::table('user_documents')->updateOrInsert(
                     ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id'], 'document_number'=>$request['document_number']],
-                    [ 'document_image' => $path]
+                    [ 'document_image' => $path, 'is_verified' => 'pending ']
                 );
                 if ($ifSaved == 1) {
                     return response()->json([
@@ -242,7 +242,7 @@ class UserController extends Controller
                 $path = str_replace("public/", "", $path);
                 $ifSaved = DB::table('user_documents')->updateOrInsert(
                     ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id'], 'document_number'=>$request['document_number']],
-                    [ 'document_image' => $path]
+                    [ 'document_image' => $path , 'is_verified' => 'pending ']
                 );
                 if ($ifSaved == 1) {
                     return response()->json([
@@ -291,7 +291,7 @@ class UserController extends Controller
                 $path = str_replace("public/", "", $path);
                 $isSaved = DB::table('user_documents')->updateOrInsert(
                     ['user_id' => $request['user_id'], 'master_document_id' => $request['master_document_id']],
-                    [ 'document_number'=>$request['document_number'], 'document_image' => $path]
+                    [ 'document_number'=>$request['document_number'], 'document_image' => $path, 'is_verified' => 'pending']
                 );
                 if ($isSaved == 1) {
                     return response()->json([

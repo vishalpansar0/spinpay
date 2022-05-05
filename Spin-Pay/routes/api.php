@@ -10,7 +10,7 @@ use App\Http\Controllers\Borrower;
 use App\Http\Controllers\RaiseIssue;
 use App\Http\Controllers\Lender;
 use App\Http\Controllers\AgentDashboardController;
-
+use App\Http\Controllers\Admin;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,7 +126,7 @@ Route::post('creditScoreAndLimit',[AgentDashboardController::class,'creditScoreA
 Route::post('profileApprove',[AgentDashboardController::class,'profileApprove']);
 
 //reject profile
-Route::get('profileReject',[AgentDashboardController::class,'profileReject']);
+Route::post('profileReject',[AgentDashboardController::class,'profileReject']);
 
 
 
@@ -137,8 +137,13 @@ Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
 
 
+//admin routes
 
+Route::post('adminLogin',[Admin::class,'login']);
 
+Route::get('adminLogout',[Admin::class,'logout']);
+
+Route::post('addAgent',[Admin::class,'addAgent']);
 
 
 
@@ -190,3 +195,6 @@ Route::post('raise/show ',[RaiseIssue::class,'showissues']);
 
 Route::get('fetchUserDocs/{id}/{docId}/{payNum?}',[AgentDashboardController::class,'fetchUserDocs']);
     
+
+
+Route::post('agentreply',[AgentDashboardController::class,'agent_reply']);

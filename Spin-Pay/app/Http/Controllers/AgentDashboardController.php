@@ -11,6 +11,11 @@ use App\Models\Transaction;
 use App\Models\CreditMapping;
 use App\Models\Loan;
 use App\Models\CreditDetail;
+<<<<<<< HEAD
+use App\Models\SpinpayTransaction;
+=======
+use App\Models\Query;
+>>>>>>> origin/main
 use DB;
 use Illuminate\Database\QueryException;
 
@@ -59,7 +64,6 @@ class AgentDashboardController extends Controller
                 "status" => 500
             ]);
         }
-        
     }
 
     public function ShowUsersDetails($req){
@@ -265,9 +269,9 @@ class AgentDashboardController extends Controller
         }
     }
 
-    public function creditScoreAndLimit(Request $request){
+    public function creditScoreAndLimit($request){
         try{
-            $salary = round($request->salary/2);
+            $salary = round($request['salary']/2);
             $credit_score = round(300+($salary/84));
             // $query = CreditMapping::where('credit_score_from' , '<=', $credit_score)
             //                 ->where('credit_score_to', '>=', $credit_score)
@@ -300,11 +304,22 @@ class AgentDashboardController extends Controller
                 $credit_limit = 30000;
             }
             
-            DB::table('credit_details')
+            $setCreditDetails = DB::table('credit_details')
             ->updateOrInsert(
                 ['user_id' => $request['user_id']],
                 ['credit_limit'=> $credit_limit, 'credit_score'=> $credit_score]
             );
+            if($setCreditDetails){
+                return response()->json([
+                    'code' => 200,
+                    'message' => "Profile Approved successfully"
+                ]);
+            }else{
+                return response()->json([
+                    'code' => 400,
+                    'message' => "Profile not Approved"
+                ]);
+            }
         }
         catch(QueryException $e){
             return response()->json([
@@ -317,6 +332,16 @@ class AgentDashboardController extends Controller
 
     public function profileApprove(Request $request){
         try{
+            if(Users::where('id',$request['user_id'])->where('role_id',3)->get()->first()){
+                if(UserDocument::where('user_id',$request['user_id'])->where('master_document_id','1')->where('is_verified','approved')->exists() && 
+                UserDocument::where('user_id',$request['user_id'])->where('master_document_id','2')->where('is_verified','approved')->exists()){
+                    UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
+                    return response()->json([
+                    'code' => 200,
+                    'message' => "Profile Approved successfully"
+                    ]);
+                }
+            }
             if(UserDocument::where('user_id',$request['user_id'])->where('master_document_id','1')->where('is_verified','approved')->exists() && 
                UserDocument::where('user_id',$request['user_id'])->where('master_document_id','2')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','31')->where('is_verified','approved')->exists() &&
@@ -324,10 +349,9 @@ class AgentDashboardController extends Controller
                UserDocument::where('user_id',$request['user_id'])->where('document_number','33')->where('is_verified','approved')->exists() &&
                UserDocument::where('user_id',$request['user_id'])->where('document_number','41')->where('is_verified','approved')->exists()){
                UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
-                return response()->json([
-                    'code' => 200,
-                    'message' => "Profile Approved successfully"
-                ]);
+               $setCredit = $this->creditScoreAndLimit($request);   
+               return $setCredit;
+                
             }
             return response()->json([
                 'code' => 204,
@@ -344,7 +368,7 @@ class AgentDashboardController extends Controller
 
     public function profileReject(Request $request){
         try{
-            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject']);
+            UserData::where('user_id',$request['user_id'])->update(['status' => 'reject','reason'=>$request['reason']]);
             return response()->json([
                 'code' => 200,
                 'message' => "Profile Rejected successfully"
@@ -354,6 +378,45 @@ class AgentDashboardController extends Controller
             return response()->json([
                 "code" => 500,
                 'message' => $e
+            ]);
+        }
+    }
+
+    public function spinpayTransaction(){
+        return view('agent.spinpayTransaction',[
+            'transaction' => SpinpayTransaction::select(
+                            'spinpay_transactions.id as id', 'l.id as lid', 'u.id as uid', 'u.name as uname', 'spinpay_transactions.amount as stamount', 
+                            'spinpay_transactions.created_at as sttime', 'spinpay_transactions.created_at as stdate')
+                            ->leftjoin('loans as l', 'l.id', 'spinpay_transactions.loan_id')
+                            ->leftjoin('users as u', 'u.id', 'spinpay_transactions.borrower_id')->get()
+        ]);
+    }
+
+    public function query(){
+        return view('agent.reply',[
+            'query' => Query::all(),
+        ]);
+    }
+
+    public function agent_reply(Request $request){
+        try{
+            $querytb = new Query();
+            $ifsaved = DB::table('queries')->updateOrInsert(
+                ['id' => $request['id']],
+                [ 'repiled_id' => $request['repiled_id'],'reply_message'=>$request['reply_message'], 'updated_at' => \Carbon\Carbon::now()]
+            );
+            if($ifsaved){
+                return response()->json([
+                    'message'=>'Replied Successfully',
+                    'status'=>200
+                ]);
+            }
+        }
+        catch(QueryException $e){
+            return response()->json([
+                // 'message'=>'Internal Server Error',
+                'message'=>$e,
+                'status'=>500
             ]);
         }
     }
