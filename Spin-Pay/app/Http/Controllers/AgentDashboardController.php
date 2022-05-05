@@ -11,11 +11,8 @@ use App\Models\Transaction;
 use App\Models\CreditMapping;
 use App\Models\Loan;
 use App\Models\CreditDetail;
-<<<<<<< HEAD
 use App\Models\SpinpayTransaction;
-=======
 use App\Models\Query;
->>>>>>> origin/main
 use DB;
 use Illuminate\Database\QueryException;
 
