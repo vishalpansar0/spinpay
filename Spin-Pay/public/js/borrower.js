@@ -573,7 +573,7 @@ $(document).ready(function () {
                     $("#month").val('');
                     $('#amount').val('');
                     let amounts = parseInt(amount);
-                    let interest = (amount*parseInt(month)*0.09)+((amounts / 500) * 10);
+                    let interest = (amount*parseInt(month)*0.09);
                     let fee=amounts+interest;
                     $('#raise_amount').html(amount);
                     $('#late_fee').html(amount);

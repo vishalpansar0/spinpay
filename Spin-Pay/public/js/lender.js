@@ -84,7 +84,7 @@ $(document).ready(function () {
                         var laonamount = '';    
                         var moneyreceiving = '';    
                         laonamount =  item.amount +item.processing_fee;
-                        moneyreceiving = item.amount+item.processing_fee +(item.interest)*.8 + (item.late_fee)*.8 
+                        moneyreceiving = item.amount+item.processing_fee +(item.interest)*0.8 + (item.late_fee)*0.8 
                         trHTML += '<tr style="color:white"><td>' +
                             applicationid + '</td><td>&#8377;'+ laonamount+'</td><td>&#8377;' + moneyreceiving + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +

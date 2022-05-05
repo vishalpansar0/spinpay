@@ -279,7 +279,7 @@ class Borrower extends Controller
 
         if ($userLoan->status=='overdue') {
             $latefee = ($currentDate->diffInDays($userLoan->end_date) * 10);
-            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee;
+            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee+ $latefee;
         } else {
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
             $latefee = 0;
