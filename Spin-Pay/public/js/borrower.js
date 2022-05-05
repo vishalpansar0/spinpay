@@ -28,14 +28,6 @@ $(document).ready(function () {
             data: {
                 user_id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#loan').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
@@ -108,19 +100,11 @@ $(document).ready(function () {
             data: {
                 user_id: user_id_from_session
             },
-            beforeSend: function () {
-                // $('#transaction').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-            },
             success: function (response) {
-                // console.log(response);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
+                    console.log(response);
                     $('#transaction').addClass('navbarBtn');
                     $('#dashboard').removeClass('navbarBtn');
                     $('#loan').removeClass('navbarBtn');
@@ -173,14 +157,6 @@ $(document).ready(function () {
             data: {
                 user_id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#request').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 console.log(response);
                 if (response['status'] != 200) {
@@ -249,14 +225,6 @@ $(document).ready(function () {
             data: {
                 id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#profile').addClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 console.log(response['status']);
                 if (response['status'] == 500) {
@@ -281,10 +249,7 @@ $(document).ready(function () {
                     $("#age-div").empty();
                     $("#gender-div").empty();
                     $("#location-div").empty();
-                    // $("#photo-container").empty();
                     $("#detailHeading").empty();
-                    var hd = 'Profile Details'
-                    // $('#detailHeading').append(hd);
                     var details =
                         '<h1 style = "color:goldenrod; margin-left:100px ">Personal Details</h1><h3 style = "padding-left:200px;color:#d267f0">' +
                         response[0].name +
@@ -334,24 +299,13 @@ $(document).ready(function () {
         });
     });
     $('#documents').click(function () {
-        // console.log("hola");
         $.ajax({
             url: 'http://localhost:8000/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
             },
-            beforeSend: function () {
-                // $('#documents').addClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-            },
             success: function (response) {
-
-                // console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -477,7 +431,6 @@ $(document).ready(function () {
                                 }
                             }
                         }
-                        // console.log(details);
 
                         let button =
                             '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" disabled>Re-Upload</button>';
@@ -487,7 +440,6 @@ $(document).ready(function () {
                                 item.master_document_id + '\'' + ',' + '\'' +
                                 item
                                     .document_number + '\')">Re-Upload</button>';
-                            // console.log(details);
                         }
                         statustr = '';
                         if (details.status == "Approved") {
@@ -510,7 +462,6 @@ $(document).ready(function () {
                             details.number + '</td><td>' +
                             statustr + '</td><td>' + button + '</td></tr>';
                     });
-                    // console.log(documentcheck);
                     if (documentcheck.one == false) {
                         var reupload =
                             '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
@@ -560,7 +511,6 @@ $(document).ready(function () {
                             reupload + '</td></tr>';
                     }
                     $('#document_row').append(trHTML);
-                    // console.log(trHTML);
 
                 }
             }
@@ -573,16 +523,6 @@ $(document).ready(function () {
         $("#loan-div").hide();
         $('#dashboard-div').hide();
         $('#loanApply-div').show();
-        // $.ajax({
-        //     url: '/api/ShowUsersDetails',
-        //     type: 'GET',
-        //     data: {
-        //         id: 46
-        //     },
-        //     success: function(response) {
-        //         console.log(response);
-        //     }
-        // });
     });
     $('#submitBtn').click(function () {
         var month = $("#month").val()
@@ -599,7 +539,6 @@ $(document).ready(function () {
 
             },
             success: function (response) {
-                // console.log(response);
                 console.log(response['status']);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
@@ -613,12 +552,10 @@ $(document).ready(function () {
                     let t = 0;
                     $('#errorMsg').show();
                     if (response['Validation Failed']['amount_request']) {
-                        // console.log('amount error');
                         errors += response['Validation Failed']['amount_request'];
                         t += 1;
                     }
                     if (response['Validation Failed']['tenure']) {
-                        // console.log('tenure error');
                         errors += response['Validation Failed']['tenure'];
                         t += 1;
                     }
@@ -630,6 +567,8 @@ $(document).ready(function () {
 
                 }
                 if (response['status'] == 200) {
+                    month = $("#month").val('');
+                    $('#amount').val('');
                     $('#successMsg').show();
                     $('#successMsg').html(
                         'Your laon request is raised please waite till approvred');
@@ -678,7 +617,6 @@ $(document).ready(function () {
             contentType: false,
             success: function (result) {
                 console.log(result);
-                // console.log(result['status']);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
                     $('#document_input_image').val('');
@@ -748,7 +686,6 @@ $(document).ready(function () {
                             '</td><td>' + updated + '</td></tr>';
                     });
                     $('#query_row').append(trHTML);
-                    // console.log('asjghad');
                 }
 
 
@@ -808,7 +745,6 @@ function repayment(id, btid) {
             loan_id: id
         },
         success: function (response) {
-            // console.log(btid, response)
             $("#" + btid).attr("disabled", true);
             console.log(response);
             alert('Your repayment is successfull');
@@ -859,7 +795,6 @@ function DocumentReupload(master_document_id, document_number) {
         '</p><p style="display:none" id="documentNumber"' + '>' + document +
         '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
        console.log(heading);
-        // $('#exampleModalLabel1').html('asd');
         $('#exampleModalLabel1').html(heading);
     $('#modalerror').append(ptag)
     $('#modalid').click();

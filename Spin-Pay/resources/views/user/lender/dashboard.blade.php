@@ -220,7 +220,13 @@
                             <form>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Category</label>
-                                    <input type="text" class="form-control" id="category-name" required>
+                                    {{-- <input type="text" class="form-control" id="category-name" required> --}}
+                                    <select name="category" id="category">
+                                        <option value="profile">Profile</option>
+                                        <option value="loan">Loan</option>
+                                        <option value="transaction">Transaction</option>
+                                        <option value="documents">Documents</option>
+                                      </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="col-form-label">Issue</label>
@@ -410,7 +416,7 @@
                 </div>
                 <div class="modal-body" style="height: 250px">
                     <div style="height:100px">
-                        <h1>This is temporaray payment gateway</h1>
+                        <h2>Are you sure you</h2>
                     </div>
                     <p style="display: none;" id="PassingRequestID"></p>
                     <div class="alert alert-danger" role="alert" id="low_amount_error_message" style="display: none">

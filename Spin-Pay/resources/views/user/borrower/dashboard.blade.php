@@ -112,6 +112,8 @@
                 <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
             </div>
         </div>
+     
+
 
         {{-- Trnsaction Div --}}
         <div class="transaction-div" id="transaction-div"
