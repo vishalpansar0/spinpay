@@ -25,7 +25,8 @@ class Borrower extends Controller
             $data = Users::where('users.id', $user_id)->
             leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->
             leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->
-            select('users.name as name','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->first();
+            select('users.name as name','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')
+            ->latest('loans.created_at')->first();
             // return $data;
             return view('user.borrower.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
