@@ -44,7 +44,6 @@
 
 
         </div>
-
     </div>
     <div class="right-main-div">
         <div class="container-fluid">
