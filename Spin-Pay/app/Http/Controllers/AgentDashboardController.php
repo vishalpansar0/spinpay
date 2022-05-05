@@ -15,6 +15,7 @@ use App\Models\SpinpayTransaction;
 use App\Models\Query;
 use App\Mail\RejectMail;
 use App\Mail\ApproveMail;
+use App\Mail\QueryReply;
 use Illuminate\Support\Facades\Mail;
 use DB;
 use Illuminate\Database\QueryException;

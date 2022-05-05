@@ -5,19 +5,34 @@
 
 <div class="main-container" style="" id="main-container">
     <div class="left-container" id="leftContainer" style="transition:all .4s ease">
-        <div class="ul"><button class="navbarBtn" id="dashboard"><i class="fa-solid fa-money-check-dollar"></i> DASHBOARD</button></div>
-        <div class="ul"><button class="" id="loan"><i class="fa-solid fa-money-check-dollar"></i> LOAN</button></div>
-        <div class="ul"><button class="" id="request"><i class="fa-solid fa-money-check-dollar"></i> REQUEST</button></div>
-        <div class="ul"><button class="" id="transaction"><i class="fa-solid fa-money-check-dollar"></i> TRANSACTION</button></div>
-        <div class="ul"><button class="" id="profile"><i class="fa-solid fa-money-check-dollar"></i> PROFILE</button></div>
-        <div class="ul"><button class="" id="documents"><i class="fa-solid fa-money-check-dollar"></i> DOCUMENTS</button></div>
-        <div class="ul"><button class="" id="anyquery"><i class="fa-solid fa-money-check-dollar"></i> ANY QUERY</button></div>
+        <div class="ul"><button class="navbarBtn" id="dashboard"><i
+                    class="fa-solid fa-money-check-dollar"></i> DASHBOARD</button></div>
+        <div class="ul"><button class="" id="loan"><i class="fa-solid fa-money-check-dollar"></i>
+                LOAN</button></div>
+        <div class="ul"><button class="" id="request"><i
+                    class="fa-solid fa-money-check-dollar"></i> REQUEST</button></div>
+        <div class="ul"><button class="" id="transaction"><i
+                    class="fa-solid fa-money-check-dollar"></i> TRANSACTION</button></div>
+        <div class="ul"><button class="" id="profile"><i
+                    class="fa-solid fa-money-check-dollar"></i> PROFILE</button></div>
+        <div class="ul"><button class="" id="documents"><i
+                    class="fa-solid fa-money-check-dollar"></i> DOCUMENTS</button></div>
+        <div class="ul"><button class="" id="anyquery"><i
+                    class="fa-solid fa-money-check-dollar"></i> ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
         <button id="closeSideNavbar" style="border:none;background-color:rgb(37, 37, 37);color:white"><i
                 class="fa-solid fa-eye-slash"></i></button>
         <button id="showSideNavbar" style="display: none;border: none;background-color:rgb(37, 37, 37);color:white"><i
                 class="fa-solid fa-eye"></i></button>
+        @if ($datas['statuss'] == 'reject')
+            <div class="text-center" style="display:flex;justify-content:center">
+                <div class="alert alert-danger" style="width:90%;">
+                    <p style="color:black">Dear user, Your Profile got rejected, reason for same is mentioned below!</p>
+                    {{ $datas['reason'] }}
+                </div>
+            </div>
+        @endif
         <span class="detailHeading" id="detailHeading"
             style="color:white;font-family: myFirstFont; margin-left:400px;font-size:30px;font-weight: bold;">
         </span>
@@ -66,24 +81,22 @@
                     <tbody id="lastLoan-row">
                         <tr>
                             @php
-                                if($datas['loan_id']==""){
-                                    $loan='--';
-                                    $start='--';
-                                    $end='--';
-                                    $status='--';
-                                    $name='--';
-                                    $amount='--';
-
-                                }
-                                else{
+                                if ($datas['loan_id'] == '') {
+                                    $loan = '--';
+                                    $start = '--';
+                                    $end = '--';
+                                    $status = '--';
+                                    $name = '--';
+                                    $amount = '--';
+                                } else {
                                     $start = date_create($datas['start_date']);
                                     $end = date_create($datas['end_date']);
-                                    $loan='SPINPAYOO12E'. $datas['loan_id'] ;
-                                    $start= date_format($start, 'd/m/y') ;
-                                    $end= date_format($end, 'd/m/y') ;
-                                    $status= $datas['status'] ;
-                                    $name= $datas['bname'] ;
-                                    $amount=$datas['amount'] ;
+                                    $loan = 'SPINPAYOO12E' . $datas['loan_id'];
+                                    $start = date_format($start, 'd/m/y');
+                                    $end = date_format($end, 'd/m/y');
+                                    $status = $datas['status'];
+                                    $name = $datas['bname'];
+                                    $amount = $datas['amount'];
                                 }
                                 @endphp
                                 <td>{{$loan}}</td>
