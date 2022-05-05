@@ -310,7 +310,8 @@
         <div class="row">
             <div class="col-4">
                 <div id="photo-container" style="margin-left:300px;margin-top:65px">
-                    <img src="{{ asset('storage') }}/" id="profileImageTag" alt="ProfileImage" width="225"
+                    <input type="text" id="imageInitialPath1" value="{{ asset('storage') }}/" style="display:none">
+                    <img src="" id="profileImageTag" alt="ProfileImage" width="225"
                         height="225" style="border-radius:50%;">
                 </div>
             </div>
