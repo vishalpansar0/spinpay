@@ -371,6 +371,32 @@ body {
 /* signin page css ends */
 
 
+/* footer css starts */
+
+.footer {
+    background-color: var(--primary-color);
+    /* height: 100px; */
+}
+
+.spinpay-intro {
+    color: white;
+    font-family: myFirstFont;
+    font-size: 20px
+}
+
+.sub-heads-footer {
+    /* color: rgb(148, 144, 144); */
+    color: aqua
+}
+
+.bottom-line {
+    color: white;
+}
+
+
+/* footer css ends */
+
+
 /* media queries */
 
 @media only screen and (max-width: 500px) {
