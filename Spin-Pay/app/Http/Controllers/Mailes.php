@@ -27,7 +27,7 @@ class Mailes extends Controller
 
         if ($validate->fails()) {
             return response()->json([
-                'message' => $validate->errors(),
+                'message' => $validate->errors(),   
                 'status' => 406,
             ]);} else {
             try {
