@@ -26,14 +26,6 @@ $(document).ready(function () {
             data: {
                 lender_id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#loan').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 console.log(response['message']);
                 if (response['status'] != 200) {
@@ -100,20 +92,11 @@ $(document).ready(function () {
 
     $('#transaction').click(function () {
         $.ajax({
-            // url: 'http://localhost:8000/api/request/transactiondetails',
             url: '/api/lendertransaction',
             type: 'POST',
             data: {
                 lender_id: user_id_from_session
             },
-            // beforeSend: function () {
-            //     $('#transaction').addClass('navbarBtn');
-            //     $('#dashboard').removeClass('navbarBtn');
-            //     $('#loan').removeClass('navbarBtn');
-            //     $('#profile').removeClass('navbarBtn');
-            //     $('#documents').removeClass('navbarBtn');
-            //     $('#request').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 console.log(response['status']);
                 if (response['status'] != 200) {
@@ -185,18 +168,9 @@ $(document).ready(function () {
             data: {
                 lender_id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#request').addClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#profile').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-            // },
             success: function (response) {
                 if (response['status'] == 300) {
                     alert('Profile Verification Pending');
-                    // console.log(response);
                 } else if (response['status'] != 200) {
                     alert('We Are Facing Tetcnical Issue')
                 } else {
@@ -256,16 +230,7 @@ $(document).ready(function () {
             data: {
                 id: user_id_from_session
             },
-            // beforeSend: function () {
-                // $('#profile').addClass('navbarBtn');
-                // $('#request').removeClass('navbarBtn');
-                // $('#dashboard').removeClass('navbarBtn');
-                // $('#loan').removeClass('navbarBtn');
-                // $('#transaction').removeClass('navbarBtn');
-                // $('#documents').removeClass('navbarBtn');
-            // },
             success: function (response) {
-                // console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -326,25 +291,12 @@ $(document).ready(function () {
                     $('#location-div').append(location);
                     console.log(response);
                     console.log(response[0].image);
-                    // var pfeimage =
-                    //     '<img src="{{ asset("storage") }}' + '/' + response[0].image +
-                    //     '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
-                    // $('#photo-container').append(pfeimage);
                     const flagForImg = "";
-                    // var images1 = $('#profileImageTag').attr('src');
-                    // if(flagForImg == "1"){
-                        
-                    //     flagForImg = "1";
-                    // }
-                    
                     var obj = document.getElementById('profileImageTag');
                         var images1 = obj.src;
                         images1 = images1 + response[0].image;
                         console.log(images1);
                         $('#profileImageTag').prop('src', images1);
-                    
-                    // var down = "";
-
                 }
             }
         });
@@ -425,7 +377,6 @@ $(document).ready(function () {
                                 '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
                                 item.master_document_id +
                                 '\')">reupload</button>';
-                            // console.log(details);
                         }
                         statustr = '';
                         if (details.status == "Approved") {
@@ -448,7 +399,6 @@ $(document).ready(function () {
                             details.number + '</td><td>' +
                             statustr + '</td><td>' + button + '</td></tr>';
                     });
-                    // console.log(documentcheck);
                     var reupload =
                         '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
                         1 + '\'' + ',' + '\'' + 1 + '\')">reupload</button>';
@@ -465,28 +415,7 @@ $(document).ready(function () {
                             '<tr style="color:white"><td>Pan Card</td><td>-</td><td>Not Uploaded</td><td>' +
                             reupload + '</td></tr>';
                     }
-                    // if (documentcheck.threeone == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Pay Slip-1</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    // if (documentcheck.threetwo == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Pay Slip-2</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    // if (documentcheck.threethree == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Pay Slip-3</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
-                    // if (documentcheck.four == false) {
-                    //     trHTML +=
-                    //         '<tr style="color:white"><td>Bank Statement</td><td>-</td><td>Not Uploaded</td><td>' +
-                    //         reupload + '</td></tr>';
-                    // }
                     $('#document_row').append(trHTML);
-                    // console.log(trHTML);
                 }
             }
         });
@@ -498,16 +427,6 @@ $(document).ready(function () {
         $("#loan-div").hide();
         $('#dashboard-div').hide();
         $('#loanApply-div').show();
-        // $.ajax({
-        //     url: 'http://localhost:8000/api/ShowUsersDetails',
-        //     type: 'GET',
-        //     data: {
-        //         id: 1
-        //     },
-        //     success: function(response) {
-        //         console.log(response);
-        //     }
-        // });
     });
     $('#submitBtn').click(function () {
         var amount = $("#amount").val()
@@ -530,17 +449,14 @@ $(document).ready(function () {
                     alert('We are facing some issue please try later');
                 }
                 if (response['status'] == 401) {
-                    // console.log(response);
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['Validation Failed']['amount']);
                 }
                 if (response['status'] == 400) {
-                    // console.log(response);
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
                 }
                 if (response['status'] == 300) {
-                    // console.log(response);
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
                 }
@@ -588,7 +504,6 @@ $(document).ready(function () {
             contentType: false,
             success: function (result) {
                 console.log(result);
-                // console.log(result['status']);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
                     $('lenderdocsuploadkre').empty();
@@ -605,9 +520,7 @@ $(document).ready(function () {
 
 
     $('#borrowerdetails').click(function () {
-        // console.log('modal button clicked');
         let userids = $('#PassingRequestID').text();
-        // console.log()
         $.ajax({
             url: "/api/showborrower",
             type: 'POST',
@@ -616,7 +529,6 @@ $(document).ready(function () {
                 'user_id': userids
             },
             success: function (result) {
-                // console.log(result.message);
                 let ids = {
                     name: "#ModalBname",
                     gender: "#ModalBgender",
@@ -683,7 +595,8 @@ $(document).ready(function () {
                 if (response['status'] == 500) {
                     alert('We are facing issue please try later');
                 }
-                if (response['status'] == 200) {                $('#documents').addClass('navbarBtn');
+                if (response['status'] == 200) {
+                $('#documents').addClass('navbarBtn');
                 $('#request').removeClass('navbarBtn');
                 $('#dashboard').removeClass('navbarBtn');
                 $('#loan').removeClass('navbarBtn');

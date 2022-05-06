@@ -47,11 +47,11 @@
                 </div> --}}
                 <div class="creditScore text-center" id="creditScore">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT SCORE</h5>
-                    <P style="color: white">{{ $datas['limit'] }}</P>
+                    <P style="color: white">{{ $datas['score'] }}</P>
                 </div>
                 <div class="CreditPoint text-center" id="CreditPoint">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT LIMIT</h5>
-                    <P style="color: white">{{ $datas['score'] }}</P>
+                    <P style="color: white">{{ $datas['limit'] }}</P>
                 </div>
             </div>
             <div class="applyBtn-div" id="applyBtn-div">
@@ -134,7 +134,7 @@
                       </select>
                     <small class="form-text text-muted">Duration should be in multiple of month.</small>
                 </div>
-                <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                <button type="submit" class="btn btn-primary" id="openmodal">Submit</button>
             </div>
         </div>
          {{-- modal for view laon details during apply      --}}
@@ -156,22 +156,31 @@
           <div class="amonut_requesting">
               <h3>Amount Requesting : <span id = "raise_amount"  style="color:red"></span></h3>
           </div>
-          <div class="late_fee">
-              <h3>Late fees/day  : <span id = "late_fees"  style="color:red">&#8377;10</span></h3>
-          </div>
           <div class="tenure">
               <h3>Tenure  : <span id = "tenure"  style="color:red"></span></h3>
           </div>
+          <div class="processing_fee">
+              <h3>Processing fee  : <span id = "processing_fee"  style="color:red"></span></h3>
+            </div>
+          <div class="disbursal_amount">
+              <h3>Disbursal Amount  : <span id = "disbursal_amount"  style="color:red"></span></h3>
+            </div>
           <div class="intrest">
-              <h3>Total Intrest Including GST  : <span id = "intrest"  style="color:red"></span></h3>
-          </div>
-          <div class="Payble_amount">
-              <h3>Payble Amount  : <span id = "payble_amount"  style="color:red"></span></h3>
-          </div>
+              <h3>Total Interest : <span id = "intrest"  style="color:red"></span></h3>
+            </div>
+          <div class="gst">
+              <h3>GST : <span id = "gst"  style="color:red"></span></h3>
+            </div>
+            <div class="Payble_amount">
+                <h3>Payble Amount  : <span id = "payble_amount"  style="color:red"></span></h3>
+            </div>
+            <div class="late_fee">
+                <h3>Late fees/day  : <span id = "late_fees"  style="color:red">&#8377;10</span></h3>
+            </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closemodaldetails" style="display: none">Close</button>
+          <button type="button" class="btn btn-primary" id="submitBtn">Apply</button>
         </div>
       </div>
     </div>
