@@ -228,7 +228,23 @@
                                 $("#borrowerRole").prop("disabled", false);
                                 $('#joinBtnLoader').css('display', 'none');
                                 $('#joinSpinpayBtn').css('display', 'block');
-                                errormsg(result['message']['phone']);
+                                if(result['message']['phone']!=""){
+                                    errormsg(result['message']['phone']);
+                                }
+                                if(result['message']['name']!=""){
+                                    errormsg(result['message']['name']);
+                                }
+                                if(result['message']['email']!=""){
+                                    errormsg(result['message']['email']);
+                                }
+                                if(result['message']['password']!=""){
+                                    errormsg(result['message']['password']);
+                                }
+                                if(result['message']['password_confirmation']!=""){
+                                    errormsg(result['message']['password_confirmation']);
+                                }
+                                
+                                
                             }
                         }
                     });
@@ -336,4 +352,4 @@
     });
 </script>
 
-@include('layouts.footer')
+{{-- @include('layouts.footer') --}}

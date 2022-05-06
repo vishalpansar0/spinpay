@@ -114,8 +114,6 @@ Route::get('CheckLoanRequest',[AgentDashboardController::class,'CheckLoanRequest
 //transaction with filters 
 Route::post('transaction',[AgentDashboardController::class,'transaction']);
 
-
-
 //loan request with filters
 Route::post('filterRequest',[AgentDashboardController::class,'filterRequest']);
 
@@ -128,6 +126,7 @@ Route::post('profileApprove',[AgentDashboardController::class,'profileApprove'])
 //reject profile
 Route::post('profileReject',[AgentDashboardController::class,'profileReject']);
 
+Route::post('latestLoan',[AgentDashboardController::class,'latestLoan']);
 
 
 //add credit_limit and credit_score

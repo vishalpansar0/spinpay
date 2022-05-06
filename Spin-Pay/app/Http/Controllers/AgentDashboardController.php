@@ -393,6 +393,7 @@ class AgentDashboardController extends Controller
                             'spinpay_transactions.created_at as sttime', 'spinpay_transactions.created_at as stdate')
                             ->leftjoin('loans as l', 'l.id', 'spinpay_transactions.loan_id')
                             ->leftjoin('users as u', 'u.id', 'spinpay_transactions.borrower_id')->paginate(15),
+            'wallet' => DB::table('wallets')->where('user_id',1)->first(),
         ]);
     }
 
@@ -425,5 +426,9 @@ class AgentDashboardController extends Controller
                 'status'=>500
             ]);
         }
+    }
+
+    public function latestLoan(Request $request){
+        return Loan::where('borrower_id', $request->borrower_id)->latest()->first();
     }
 }

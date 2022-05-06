@@ -46,10 +46,15 @@
                 <a href="{{ '/admin/companytransactions' }}"><button class="m-btn"><i
                             class="fas fa-info-circle"></i><br> Company Transactions </button></a>
             </div>
-
-
+            
         </div>
 
+        {{-- wallet --}}
+        <div class="menu-item-div"><button class="m-btn"><h5><i
+                        class="fas fa-wallet"></i></h5> <h5>&#8377;{{ $wallet->amount }}</h5> </button>
+        </div>
+        
+    </div>
     </div>
     <div class="right-main-div">
         <div class="modal fade" id="addagentmodal" data-bs-backdrop="static" data-bs-keyboard="false"
