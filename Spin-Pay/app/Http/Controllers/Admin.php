@@ -10,6 +10,7 @@ use App\Models\Requests;
 use App\Models\Transaction;
 use App\Models\CreditMapping;
 use App\Models\Loan;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\Hash;
 use App\Models\CreditDetail;
 use Illuminate\Support\Facades\Session;
@@ -22,16 +23,19 @@ class Admin extends Controller
     public function getAllUsers(){
         return view('admin.adminview', [
             'users' => DB::table('users')->wherein('role_id',[3,4])->paginate(15),
+            'wallet' => DB::table('wallets')->where('user_id',1)->first(),
         ]);
     }
     public function getAllTransactions(){
         return view('admin.allTransactions', [
             'trans' => DB::table('transactions')->paginate(15),
+            'wallet' => DB::table('wallets')->where('user_id',1)->first(),
         ]);
     }
     public function getAllLoans(){
         return view('admin.allLoans', [
             'loans' => DB::table('loans')->paginate(15),
+            'wallet' => DB::table('wallets')->where('user_id',1)->first(),
         ]);
     }
 

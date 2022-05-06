@@ -46,7 +46,10 @@
                             class="fas fa-info-circle"></i><br> Company Transactions </button></a>
             </div>
 
-
+            {{-- wallet --}}
+            <div class="menu-item-div"><button class="m-btn"><h5><i
+                class="fas fa-wallet"></i></h5> <h5>&#8377;{{ $wallet->amount }}</h5> </button>
+            </div>
         </div>
 
     </div>
