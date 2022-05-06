@@ -75,7 +75,13 @@ Route::get('agent/querys',[AgentDashboardController::class,'query']);
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
 
 //spinpay transactions
-Route::get('spinpayTransaction',[AgentDashboardController::class,'spinpayTransaction']);
+Route::get('admin/companytransactions',[AgentDashboardController::class,'spinpayTransaction']);
+
+//about us page 
+Route::view('aboutUs','agent.aboutUs');
+
+//terms and conditions
+Route::view('termsAndConditions','agent.termsAndConditions');
 
 
 

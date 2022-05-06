@@ -42,7 +42,7 @@
 
             {{-- Company transactions --}}
             <div class="menu-item-div">
-                <a href="{{'/admin/dashboard'}}"><button class="m-btn"><i
+                <a href="{{ '/admin/companytransactions' }}"><button class="m-btn"><i
                             class="fas fa-info-circle"></i><br> Company Transactions </button></a>
             </div>
 
