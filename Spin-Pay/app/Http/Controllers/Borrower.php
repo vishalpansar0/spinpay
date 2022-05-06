@@ -272,10 +272,9 @@ class Borrower extends Controller
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
         $gst=($userLoan->amount+$userLoan->processing_fee)*0.18;
-        if ($userLoan->status == 'overdue') {
+        if ($userLoan->status=='overdue') {
             $latefee = ($currentDate->diffInDays($userLoan->end_date) * 10);
-    
-            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee + $latefee +$gst;
+            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee+ $latefee +$gst;
         } else {
             $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee+$gst;
             $latefee = 0;
@@ -319,7 +318,7 @@ class Borrower extends Controller
 
                     // Taking Company Profit to Admin Wallet
                     $admin = $wallet->where('user_id', 1)->get()->first();
-                    $companyprofit = $admin->amount + ($amountToPay - $lendershare +$gst);
+                    $companyprofit = $admin->amount + ($amountToPay - $lendershare + $gst);
                     $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
 
                     // Transaction Made See Admin Profit
