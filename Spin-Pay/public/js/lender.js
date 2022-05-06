@@ -347,7 +347,7 @@ $(document).ready(function() {
                     $("#document-div").show();
                     $("#detailHeading").empty();
                     $("#document_row").empty();
-                    var hd = 'All the Documnets';
+                    var hd = 'All the Documents';
                     $('#detailHeading').append(hd);
                     console.log(response[1]);
                     var details = {};
@@ -584,14 +584,12 @@ $(document).ready(function() {
             },
 
             success: function(result) {
-                $('#low_amount_error_message').show();
-
-                console.log(result);
-                // $('#low_amount_error_message').html(result['message']);
-                // if(result['status']==500){
-                //     $('#low_amount_error_message').show();
-                //     $('#low_amount_e
-                // }
+                if(result['status'] ==400){
+                    $('#low_amount_error_message').show();
+                    $('#low_amount_error_message').html(result['message'])
+                    console.log(result['status'] == 400);
+                }
+                if(result['status'] == 200)
                 $('#modalhiddenloanapprove').click();
                 $('#request').click();
 
