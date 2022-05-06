@@ -96,7 +96,7 @@
                                     $end = date_format($end, 'd/m/y');
                                     $status = $datas['status'];
                                     $name = $datas['bname'];
-                                    $amount = $datas['amount'];
+                                    $amount = $datas['amount']+$datas['loanp'];
                                 }
                                 @endphp
                                 <td>{{$loan}}</td>

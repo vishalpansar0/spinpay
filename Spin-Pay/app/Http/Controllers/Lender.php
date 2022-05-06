@@ -25,7 +25,7 @@ class Lender extends Controller
             leftjoin('wallets','wallets.user_id','=','users.id')->
             leftjoin('loans','loans.lender_id','=','users.id')->
             leftjoin('users as borrower','borrower.id','=','loans.borrower_id')->
-            select('users.name as name','user_datas.reason','user_datas.status as statuss','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.start_date','loans.end_date','loans.status')
+            select('users.name as name','user_datas.reason','user_datas.status as statuss','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.processing_fee as loanp','loans.start_date','loans.end_date','loans.status')
             ->latest('loans.updated_at','desc')->first()  ;
             // return $data;
             return view('user.lender.dashboard', ['datas' => $data]);
