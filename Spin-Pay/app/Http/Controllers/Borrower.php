@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\RepaymentMail;
+use App\Mail\LenderRepayedMail;
+use Illuminate\Support\Facades\Mail;
 
 class Borrower extends Controller
 {
@@ -22,11 +25,8 @@ class Borrower extends Controller
     {
         $user_id = Session::get('user_id');
         try {
-            $data = Users::where('users.id', $user_id)->
-            leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')->
-            leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->
-            leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->
-            select('users.name as name','user_datas.reason','user_datas.status as statuss','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->first();
+            $data = Users::where('users.id', $user_id)->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')->leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->select('users.name as name', 'user_datas.reason', 'user_datas.status as statuss', 'credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount','loans.processing_fee as loanp', 'loans.start_date', 'loans.end_date', 'loans.status')
+            ->latest('loans.updated_at','desc')->first();
             // return $data;
             return view('user.borrower.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
@@ -169,20 +169,18 @@ class Borrower extends Controller
                 ]);
             } else {
                 $loanRequest = new Requests();
-                $details = $loanRequest->where('user_id', $request['user_id'])->get();
-                if($details){
+                $details = $loanRequest->where('user_id', $request['user_id'])->orderBy('id', 'desc')->get();
+                if ($details) {
                     return response()->json([
                         'message' => $details,
                         "status" => 200,
                     ]);
-                }else{
+                } else {
                     return response()->json([
                         'message' => 'no requests',
                         "status" => 400,
                     ]);
                 }
-               
-
             }
         } catch (QueryException $e) {
             return response()->json([
@@ -209,7 +207,7 @@ class Borrower extends Controller
             }
 
             $loan = new Loan();
-            $loandetails = $loan->where('borrower_id', [$request['user_id']])->get();
+            $loandetails = $loan->where('borrower_id', [$request['user_id']])->orderBy('id', 'desc')->get();
             return response()->json([
                 'message' => $loandetails,
                 'status' => 200,
@@ -239,7 +237,7 @@ class Borrower extends Controller
             }
 
             $transaction = new Transaction();
-            $transactiondetails = $transaction->where('from_id', [$request['user_id']])->get();
+            $transactiondetails = $transaction->where('from_id', [$request['user_id']])->orderBy('id', 'desc')->get();
             return response()->json([
                 'message' => $transactiondetails,
                 'status' => 200,
@@ -276,12 +274,12 @@ class Borrower extends Controller
         $userLoan = $loan->where('id', $request['loan_id'])->get()->first();
         $end = \Carbon\Carbon::parse($userLoan->end_date)->format('d/m/y');
         $currentDate = \Carbon\Carbon::now();
-
+        $gst=($userLoan->amount+$userLoan->processing_fee)*0.18;
         if ($userLoan->status=='overdue') {
             $latefee = ($currentDate->diffInDays($userLoan->end_date) * 10);
-            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee+ $latefee;
+            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee+ $latefee +$gst;
         } else {
-            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee;
+            $amountToPay = $userLoan->interest + $userLoan->amount + $userLoan->processing_fee+$gst;
             $latefee = 0;
         }
         try {
@@ -307,7 +305,7 @@ class Borrower extends Controller
                     //Giving lender his money back;
                     $wallet = new Wallet();
                     $lendershare = (($latefee * 0.8) + ($originalamount) + ($userLoan->interest * 0.8));
-                    
+
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
@@ -323,7 +321,7 @@ class Borrower extends Controller
 
                     // Taking Company Profit to Admin Wallet
                     $admin = $wallet->where('user_id', 1)->get()->first();
-                    $companyprofit = $admin->amount + ($amountToPay - $lendershare);
+                    $companyprofit = $admin->amount + ($amountToPay - $lendershare + $gst);
                     $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
 
                     // Transaction Made See Admin Profit
@@ -332,6 +330,13 @@ class Borrower extends Controller
                     $Companytransaction->borrower_id = $userLoan->borrower_id;
                     $Companytransaction->amount = ($amountToPay - $lendershare);
                     $isCompanyTrans = $Companytransaction->save();
+
+
+                    // Sending Loan Mail TO Borrower
+                    $borrowermail = Users::where('id',$userLoan->borrower_id)->get()->first()->email;
+                    $lendermail = Users::where('id',$userLoan->lender_id)->get()->first()->email;
+                    Mail::to($borrowermail)->send(new RepaymentMail('layouts.repaymentmail',"Loan Paid Successfully",$transaction->id,$userLoan->id,$userLoan->amount,$userLoan->processing_fee,$userLoan->interest,$latefee,$gst,$transaction->amount));
+                    Mail::to($lendermail)->send(new LenderRepayedMail('layouts.lenderrepayedloan',"Loan Repayed",$Lendertransaction->id,$userLoan->id,$lendershare));
 
                     return response()->json([
                         'message' => 'Loan Repayed Successfully',

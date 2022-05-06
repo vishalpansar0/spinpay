@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     $('#loan').click(function() {
         $.ajax({
-            url: 'http://localhost:8000/api/request/loandetails',
+            url: '/api/request/loandetails',
             type: 'POST',
             data: {
                 user_id: user_id_from_session
@@ -76,17 +76,12 @@ $(document).ready(function() {
                         var date2 = new Date(item.end_date);
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
-                        var requested_amount = '';    
+                        var requested_amount = '';
                         var payble_amount = '';
-                        requested_amount = item.amount +item.processing_fee;    
-                        payble_amount = item.amount +item.processing_fee + item.interest+item.late_fee;    
+                        requested_amount = item.amount + item.processing_fee;
+                        payble_amount = item.amount + item.processing_fee + item.interest + item.late_fee+((item.amount+item.processing_fee)*0.18);
                         trHTML += '<tr style="color:white"><td>' +
-
-                            applicationid +'</td><td>&#8377;'+requested_amount+'</td><td>&#8377;' + payble_amount + '</td><td>' + starting_date +
-
-                            applicationid + '</td><td>$ ' + item
-                            .amount + '</td><td>' + starting_date +
-
+                            applicationid + '</td><td>&#8377;' + requested_amount + '</td><td>&#8377;' + payble_amount + '</td><td>' + starting_date +
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
@@ -105,7 +100,7 @@ $(document).ready(function() {
 
     $('#transaction').click(function() {
         $.ajax({
-            url: 'http://localhost:8000/api/request/transactiondetails',
+            url: '/api/request/transactiondetails',
             type: 'POST',
             data: {
                 user_id: user_id_from_session
@@ -168,7 +163,7 @@ $(document).ready(function() {
     });
     $('#request').click(function() {
         $.ajax({
-            url: 'http://localhost:8000/api/request/allrequest',
+            url: '/api/request/allrequest',
             type: 'POST',
             data: {
                 user_id: user_id_from_session
@@ -240,7 +235,7 @@ $(document).ready(function() {
     });
     $('#profile').click(function() {
         $.ajax({
-            url: 'http://localhost:8000/api/showuserdetails',
+            url: '/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
@@ -330,7 +325,7 @@ $(document).ready(function() {
         // console.log("hola");
 
         $.ajax({
-            url: 'http://localhost:8000/api/showuserdetails',
+            url: '/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
@@ -563,14 +558,53 @@ $(document).ready(function() {
         $('#loanApply-div').show();
     });
 
-    $('#submitBtn').click(function() {
-        var month = $("#month").val()
-        var amount = $("#amount").val()
+    $('#openmodal').click(function () {
+        $('#errorMsg').hide();
+        var month = $("#month").val();
+        var amount = $("#amount").val();
+        // console.log(month," ",amount);
+        if (amount === '') {
+            // console.log("testing");
+            $('#errorMsg').show();
+            $('#errorMsg').html('Amount Cannot Be Empty');
+        }
+        else if (month === null) {
+            $('#errorMsg').show();
+            $('#errorMsg').html('Tenure Field Cannot be Empty');
+        }
+        else if (amount < 500) {
+            $('#errorMsg').show();
+            $('#errorMsg').html('Minimum Loan Amount Should be Greater than 500');
+        }
+        else {
+            // $("#month").val('');
+            // $('#amount').val('');
+            let amounts = parseInt(amount);
+            let interest = (amounts * parseInt(month) * 0.06);
+            let processing_fee = (amounts / 500) * 10;
+            let gst = (amounts*0.18);
+            let fee = amounts + interest;
+            let payable = fee+gst;
+            let disbursal_amount = amounts - processing_fee;
+            $('#raise_amount').html(amount);
+            $('#tenure').html(month + " months");
+            $('#intrest').html("&#8377;" + interest);
+            $('#gst').html("&#8377;" + gst);
+            $('#payble_amount').html("&#8377;" + payable);
+            $('#disbursal_amount').html("&#8377;" + disbursal_amount);
+            $('#processing_fee').html("&#8377;" + processing_fee);
+            $('#loan_request_details').click();
 
+        }
+    });
+    $('#submitBtn').click(function () {
+        var month = $("#month").val();
+        var amount = $("#amount").val();
+        console.log(month, " ", amount);
         $('#errorMsg').hide();
         $('#successMsg').hide();
         $.ajax({
-            url: 'http://localhost:8000/api/request/loan',
+            url: '/api/request/loan',
             type: 'POST',
             data: {
                 tenure: month,
@@ -584,11 +618,16 @@ $(document).ready(function() {
 
                 console.log(response['status']);
                 if (response['status'] == 500) {
+                    $("#month").val('');
+                    $('#amount').val('');
                     alert('We are facing some issue please try later');
                 }
                 if (response['status'] == 400) {
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
+                    $("#month").val('');
+                    $('#amount').val('');
+                    $('#closemodaldetails').click();
                 }
                 if (response['status'] == 401) {
                     let errors = "";
@@ -607,23 +646,16 @@ $(document).ready(function() {
                     } else {
                         $('#errorMsg').html(errors);
                     }
-
-                }
-                if (response['status'] == 200) {
                     $("#month").val('');
                     $('#amount').val('');
-                    let amounts = parseInt(amount);
-                    let interest = (amount*parseInt(month)*0.09);
-                    let fee=amounts+interest;
-                    $('#raise_amount').html(amount);
-                    $('#late_fee').html(amount);
-                    $('#tenure').html(month+" months");
-                    $('#intrest').html(interest);
-                    $('#payble_amount').html("&#8377;"+fee);
-                    $('#loan_request_details').click();
+                    $('#closemodaldetails').click();
+                }
+                if (response['status'] == 200) {
                     $('#successMsg').show();
                     $('#successMsg').html(
                         'Your laon request is raised please waite till approvred');
+                    $('#closemodaldetails').click();
+
                 }
             }
         });
@@ -791,7 +823,7 @@ $(document).ready(function() {
 function repayment(id, btid) {
     console.log(id, btid);
     $.ajax({
-        url: 'http://localhost:8000/api/loanrepayment',
+        url: '/api/loanrepayment',
         type: 'POST',
         data: {
             loan_id: id
@@ -818,12 +850,12 @@ function DocumentReupload(master_document_id, document_number) {
     // exampleModalLabel
     if (master_document_id == 1) {
         heading = "Aadhar Card";
-        url = "http://localhost:8000/api/aadhar";
+        url = "/api/aadhar";
 
     }
     if (master_document_id == 2) {
         heading = "Pan Card";
-        url = "http://localhost:8000/api/pancard";
+        url = "/api/pancard";
     }
     if (master_document_id == 3) {
         if (document_number == 31) {
@@ -838,12 +870,12 @@ function DocumentReupload(master_document_id, document_number) {
             heading = "Pan Slip 3";
             document = 33;
         }
-        url = "http://localhost:8000/api/payslip";
+        url = "/api/payslip";
         $('#document_input').css('display', 'none')
     }
     if (master_document_id == 4) {
         heading = "Bank Statement";
-        url = "http://localhost:8000/api/bankstatement";
+        url = "/api/bankstatement";
         $('#document_input').css('display', 'none');
         document = 41;
     }

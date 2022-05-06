@@ -347,7 +347,7 @@ class AgentDashboardController extends Controller
                UserDocument::where('user_id',$request['user_id'])->where('document_number','41')->where('is_verified','approved')->exists()){
                UserData::where('user_id',$request['user_id'])->update(['status' => 'approved']);
                if($getmail){
-                Mail::to($getmail)->send(new ApproveMail('layouts.rejectProfileMail'));
+                Mail::to($getmail)->send(new ApproveMail('layouts.approveProfileMail'));
                }
                $setCredit = $this->creditScoreAndLimit($request);   
                return $setCredit;
