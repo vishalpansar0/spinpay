@@ -80,6 +80,9 @@ Route::get('admin/companytransactions',[AgentDashboardController::class,'spinpay
 //about us page 
 Route::view('aboutUs','agent.aboutUs');
 
+//terms and conditions
+Route::view('termsAndConditions','agent.termsAndConditions');
+
 
 
 
