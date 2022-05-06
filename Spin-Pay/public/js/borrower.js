@@ -828,8 +828,6 @@ function repayment(id, btid) {
         data: {
             loan_id: id
         },
-
-
         success: function(response) {
             // console.log(btid, response)
 
