@@ -237,7 +237,7 @@ class Lender extends Controller
                 $loan->request_id = $request['request_id'];
                 $loan->borrower_id = $userrequestID;
                 $loan->lender_id = $request['lender_id'];
-                $loan->interest = 0.09 * $requestdata->amount * (int)$requestdata->tenure ;
+                $loan->interest = 0.06 * $requestdata->amount * (int)$requestdata->tenure ;
                 $loan->processing_fee = $processingFee;
                 $loan->late_fee = 0;
                 $loan->amount = $requestdata->amount - $processingFee;
