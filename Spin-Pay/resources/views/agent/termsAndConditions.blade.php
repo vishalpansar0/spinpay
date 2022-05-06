@@ -1,5 +1,8 @@
+{{-- @extends('layouts.header') --}}
 @include('layouts.header')
-<div class="container">
+@include('layouts.navbar')
+<div class="container" style="margin-top:120px">
+    <h1>Terms & Conditions:</h1>
 <p>Data from the RBI reveals an increase in takers of personal loans in India in the last decade. This can be credited to the fact that it is bothacollateral-
 free loan that doesn't risk your assets, and is offered instantly online by lenders who often disburse funds the same or next day.</p>
 <p>While personal loan rules and regulations in India are usually governed by the RBI and almost identical amongst lenders, it is important you know the

@@ -20,7 +20,7 @@
               <a href="{{url('aboutUs')}}" style="text-decoration:none;color:aqua">About us</a>
            </div>
            <div class="sub-heads-footer mt-2">
-            <a href="#" style="text-decoration:none;color:aqua">Contact us
+            <a href="{{url('termsAndConditions')}}" style="text-decoration:none;color:aqua">Contact us
         </div>
         <div class="sub-heads-footer mt-2">
             Terms & Conditions
