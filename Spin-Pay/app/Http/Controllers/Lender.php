@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use App\Models\SpinpayTransaction;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\AddMoneyWallet;
+use Illuminate\Support\Facades\Mail;
 
 class Lender extends Controller
 {
@@ -131,6 +133,8 @@ class Lender extends Controller
                     $isMoneyAdd = $wallet->save();
                 }
                 if ($isMoneyAdd) {
+                    $u = Users::where('id',$request['user_id'])->select('email')->get()->first();
+                    Mail::to($u->email)->send(new AddMoneyWallet('layouts.addMoneyMain',$request['amount'],$newamount));
                     return response()->json([
                         'message' => 'Amount Successfully added',
                         'status' => 200,
