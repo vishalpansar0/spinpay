@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\RepaymentMail;
+use App\Mail\LenderRepayedMail;
+use Illuminate\Support\Facades\Mail;
 
 class Borrower extends Controller
 {
@@ -327,6 +330,13 @@ class Borrower extends Controller
                     $Companytransaction->borrower_id = $userLoan->borrower_id;
                     $Companytransaction->amount = ($amountToPay - $lendershare);
                     $isCompanyTrans = $Companytransaction->save();
+
+
+                    // Sending Loan Mail TO Borrower
+                    $borrowermail = Users::where('id',$userLoan->borrower_id)->get()->first()->email;
+                    $lendermail = Users::where('id',$userLoan->lender_id)->get()->first()->email;
+                    Mail::to($borrowermail)->send(new RepaymentMail('layouts.repaymentmail',"Loan Paid Successfully",$transaction->id,$userLoan->id,$userLoan->amount,$userLoan->processing_fee,$userLoan->interest,$latefee,$gst,$transaction->amount));
+                    Mail::to($lendermail)->send(new LenderRepayedMail('layouts.lenderrepayedloan',"Loan Repayed",$Lendertransaction->id,$userLoan->id,$lendershare));
 
                     return response()->json([
                         'message' => 'Loan Repayed Successfully',
