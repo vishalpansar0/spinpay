@@ -30,7 +30,7 @@ class Lender extends Controller
             return view('user.lender.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
+                'message' => 'We are facing some issue, We are working on this',
                 "status" => 500,
             ]);
         }
@@ -100,7 +100,7 @@ class Lender extends Controller
         $userdata = $userdatatb->where('user_id', $request['user_id'])->get()->first();
         if ($userdata->status == 'pending' || $userdata->status == 'reject') {
             return response()->json([
-                'message' => 'Pending',
+                'message' => 'Profile Pending',
                 'status' => 300,
             ]);
         }

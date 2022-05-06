@@ -81,9 +81,14 @@ $(document).ready(function() {
                         var date2 = new Date(item.end_date);
                         ending_date = date2.getDate() + "/" + (date2
                             .getMonth() + 1) + "/" + date2.getFullYear();
+                        var laonamount = '';    
+                        var moneyreceiving = '';    
+                        laonamount =  item.amount +item.processing_fee;
+                        moneyreceiving = item.amount+item.processing_fee +(item.interest)*0.8 + (item.late_fee)*0.8 
                         trHTML += '<tr style="color:white"><td>' +
-                            applicationid + '</td><td>$ ' + item
-                            .amount + '</td><td>' + starting_date +
+
+                            applicationid + '</td><td>&#8377;'+ laonamount+'</td><td>&#8377;' + moneyreceiving + '</td><td>' + starting_date +
+
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
@@ -165,8 +170,10 @@ $(document).ready(function() {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">Self</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' +
-                            transactionid + '</td><td>$ ' + item
-                            .amount + '</td><td>' +
+
+                            transactionid + '</td><td>&#8377;' + item
+                                .amount + '</td><td>' +
+
                             statustr + '</td><td>' + statustype + '</td><td>' +
                             created + '</td></tr>';
                     });
@@ -229,9 +236,11 @@ $(document).ready(function() {
                         let created = date.getDate() + "/" + (date.getMonth() +
                             1) + "/" + date.getFullYear();
                         trHTML += '<tr style="color:white"><td>' + requestid +
-                            '</td><td>$ ' + item
-                            .amount + '</td><td>' + item
-                            .tenure + ' month</td><td>' + created +
+
+                            '</td><td>&#8377;' + item
+                                .amount + '</td><td>' + item
+                                .tenure + ' month</td><td>' + created +
+
                             '</td><td>' +
                             '<button style="border-radius:15px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "ViewDetails(\'' +
                             item.user_id + '\')">viewdetails</button>' +
@@ -353,15 +362,9 @@ $(document).ready(function() {
             data: {
                 id: user_id_from_session
             },
-            // beforeSend: function () {
-            //     $('#documents').addClass('navbarBtn');
-            //     $('#request').removeClass('navbarBtn');
-            //     $('#dashboard').removeClass('navbarBtn');
-            //     $('#loan').removeClass('navbarBtn');
-            //     $('#transaction').removeClass('navbarBtn');
-            //     $('#profile').removeClass('navbarBtn');
-            // // },
-            success: function(response) {
+
+            success: function (response) {
+
                 console.log('documnet');
                 if (response['status'] == 500) {
                     alert('We are facing issue please try')
@@ -544,6 +547,11 @@ $(document).ready(function() {
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
                 }
+                if (response['status'] == 300) {
+                    // console.log(response);
+                    $('#errorMsg').show();
+                    $('#errorMsg').html(response['message']);
+                }
                 if (response['status'] == 200) {
                     $('#successMsg').show();
                     $('#successMsg').html('Money added Successfully');
@@ -653,10 +661,12 @@ $(document).ready(function() {
                 'lender_id': user_id_from_session,
                 'request_id': userrequestids
             },
+
             success: function(result) {
                 $('#low_amount_error_message').show();
+
                 console.log(result);
-                $('#low_amount_error_message').html(result['message']);
+                // $('#low_amount_error_message').html(result['message']);
                 // if(result['status']==500){
                 //     $('#low_amount_error_message').show();
                 //     $('#low_amount_e
@@ -701,6 +711,7 @@ $(document).ready(function() {
                     $("#document-div").hide();
                     $("#query-div").show();
                     $('#query_row').empty();
+                    $("#detailHeading").empty();
                     let trHTML = "";
                     $.each(response['message'], function(i, item) {
                         var updated = "-";
@@ -786,6 +797,7 @@ function ViewDetails(details) {
     $('#PassingRequestID').html(details);
     $('#borrowerdetails').click();
 }
+
 
 function repayment(id, btid) {
     $.ajax({
