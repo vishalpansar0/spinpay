@@ -1,8 +1,8 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
     const user_id_from_session = $('#getuserid').val();
 
-    $('#dashboard').click(function () {
+    $('#dashboard').click(function() {
         $("#transaction-div").hide();
         $("#request-div").hide();
         $('#loanApply-div').hide();
@@ -21,14 +21,16 @@ $(document).ready(function () {
         $("#detailHeading").empty();
     });
 
-    $('#loan').click(function () {
+    $('#loan').click(function() {
         $.ajax({
             url: 'http://localhost:8000/api/request/loandetails',
             type: 'POST',
             data: {
                 user_id: user_id_from_session
             },
-            success: function (response) {
+
+            success: function(response) {
+
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -52,11 +54,11 @@ $(document).ready(function () {
                     var hd = 'Status of all the taken loan';
                     $('#detailHeading').append(hd);
                     var trHTML = '';
-                    $.each(response['message'], function (i, item) {
+                    $.each(response['message'], function(i, item) {
                         let status = "";
                         if (item.status == 'ongoing')
                             status =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow; color:black">Ongoing</span>';
+                            '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow; color:black">Ongoing</span>';
                         let buttonDisbaled = "";
                         if (item.status == 'overdue') {
                             status =
@@ -79,7 +81,12 @@ $(document).ready(function () {
                         requested_amount = item.amount +item.processing_fee;    
                         payble_amount = item.amount +item.processing_fee + item.interest+item.late_fee;    
                         trHTML += '<tr style="color:white"><td>' +
+
                             applicationid +'</td><td>&#8377;'+requested_amount+'</td><td>&#8377;' + payble_amount + '</td><td>' + starting_date +
+
+                            applicationid + '</td><td>$ ' + item
+                            .amount + '</td><td>' + starting_date +
+
                             '</td><td>' + ending_date +
                             '</td><td>' +
                             status +
@@ -96,14 +103,17 @@ $(document).ready(function () {
         });
     });
 
-    $('#transaction').click(function () {
+    $('#transaction').click(function() {
         $.ajax({
             url: 'http://localhost:8000/api/request/transactiondetails',
             type: 'POST',
             data: {
                 user_id: user_id_from_session
             },
-            success: function (response) {
+
+            success: function(response) {
+                // console.log(response);
+
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -129,7 +139,7 @@ $(document).ready(function () {
                     $('#detailHeading').append(hd);
 
                     var trHTML = '';
-                    $.each(response['message'], function (i, item) {
+                    $.each(response['message'], function(i, item) {
                         let transactionid = "SPINPAYOO12E" + item.id;
                         var date = new Date(item.created_at);
                         created = date.getDate() + "/" + (date.getMonth() + 1) +
@@ -144,8 +154,11 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Success</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' +
+
                             transactionid + '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
+
+
                             statustr + '</td><td>' + created + '</td></tr>';
                     });
                     $('#transaction_row').append(trHTML);
@@ -153,14 +166,15 @@ $(document).ready(function () {
             }
         });
     });
-    $('#request').click(function () {
+    $('#request').click(function() {
         $.ajax({
             url: 'http://localhost:8000/api/request/allrequest',
             type: 'POST',
             data: {
                 user_id: user_id_from_session
             },
-            success: function (response) {
+
+            success: function(response) {
                 console.log(response);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
@@ -187,7 +201,7 @@ $(document).ready(function () {
                     $('#detailHeading').append(hd);
                     var trHTML = '';
 
-                    $.each(response['message'], function (i, item) {
+                    $.each(response['message'], function(i, item) {
                         let requestid = "SPINPAYOO12E" + item.id;
                         if (item.status == 'approved') {
                             var date2 = new Date(item.updated_at);
@@ -200,7 +214,7 @@ $(document).ready(function () {
                         let statusCSS = "";
                         if (item.status == 'pending')
                             statusCSS =
-                                '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">Peding</span>';
+                            '<span style="padding:5px 15px;border-radius:1000px;background-color:yellow;color:black">Peding</span>';
                         if (item.status == 'approved') {
                             statusCSS =
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:green;">Approved</span>';
@@ -210,10 +224,13 @@ $(document).ready(function () {
                                 '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Rejected</span>';
                         }
                         trHTML += '<tr style="color:white"><td>' + requestid +
+
                             '</td><td>&#8377;' + item
                                 .amount + '</td><td>' +
+
+
                             statusCSS + '</td><td>' + item
-                                .tenure + ' month</td><td>' + created +
+                            .tenure + ' month</td><td>' + created +
                             '</td><td>' + isapproved + '</td></tr>';
                     });
                     $('#request_row').append(trHTML);
@@ -221,14 +238,18 @@ $(document).ready(function () {
             }
         });
     });
-    $('#profile').click(function () {
+    $('#profile').click(function() {
         $.ajax({
             url: 'http://localhost:8000/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
             },
-            success: function (response) {
+
+        
+
+            success: function(response) {
+
                 console.log(response['status']);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
@@ -253,21 +274,25 @@ $(document).ready(function () {
                     $("#gender-div").empty();
                     $("#location-div").empty();
                     $("#detailHeading").empty();
+
+                    var hd = 'Profile Details'
+                        // $('#detailHeading').append(hd);
+
                     var details =
                         '<h1 style = "color:goldenrod; margin-left:100px ">Personal Details</h1><h3 style = "padding-left:200px;color:#d267f0">' +
                         response[0].name +
                         '</h3>' +
                         '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
-                            .email +
+                        .email +
                         '</h3>' +
                         '<h3 style = "padding-left:200px; color:#d267f0">' + response[0]
-                            .phone +
+                        .phone +
                         '</h3>' +
                         '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
-                            .address_line +
+                        .address_line +
                         '</h3>' +
                         '<h3 style = "padding-left:200px;color:#d267f0">' + response[0]
-                            .pincode +
+                        .pincode +
                         '</h3>';
                     $('#details').append(details);
                     var a = '<h1>AGE</h1>';
@@ -291,8 +316,7 @@ $(document).ready(function () {
                     //     '" alt="Profile Image" width="225" height="225" style="border-radius:50%;">';
                     // $('#photo-container').append(pfeimage);
                     // var down = "";
-                    var obj = document.getElementById('profileImageTag');
-                    var images1 = obj.src;
+                    var images1 = $('#imageInitialPath1').val();
                     images1 = images1 + response[0].image;
                     console.log(images1);
                     $('#profileImageTag').prop('src', images1);
@@ -301,14 +325,22 @@ $(document).ready(function () {
             }
         });
     });
-    $('#documents').click(function () {
+
+    $('#documents').click(function() {
+        // console.log("hola");
+
         $.ajax({
             url: 'http://localhost:8000/api/showuserdetails',
             type: 'GET',
             data: {
                 id: user_id_from_session
             },
-            success: function (response) {
+
+
+            success: function(response) {
+
+                // console.log(response);
+
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -342,7 +374,7 @@ $(document).ready(function () {
                         four: false
                     }
                     var trHTML = "";
-                    $.each(response[1], function (i, item) {
+                    $.each(response[1], function(i, item) {
                         if (item.master_document_id == 1) {
                             documentcheck.one = true;
                             details.name = "Adharcard Card";
@@ -442,7 +474,10 @@ $(document).ready(function () {
                                 '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
                                 item.master_document_id + '\'' + ',' + '\'' +
                                 item
-                                    .document_number + '\')">Re-Upload</button>';
+
+                                .document_number + '\')">Re-Upload</button>';
+                            // console.log(details);
+
                         }
                         statustr = '';
                         if (details.status == "Approved") {
@@ -519,7 +554,7 @@ $(document).ready(function () {
             }
         });
     });
-    $('#btn').click(function () {
+    $('#btn').click(function() {
         $("#transaction-div").hide();
         $("#request-div").hide();
         $("#profile-div").hide();
@@ -527,9 +562,11 @@ $(document).ready(function () {
         $('#dashboard-div').hide();
         $('#loanApply-div').show();
     });
-    $('#submitBtn').click(function () {
-        var month = $("#month").val();
-        var amount = $("#amount").val();
+
+    $('#submitBtn').click(function() {
+        var month = $("#month").val()
+        var amount = $("#amount").val()
+
         $('#errorMsg').hide();
         $('#successMsg').hide();
         $.ajax({
@@ -541,7 +578,10 @@ $(document).ready(function () {
                 user_id: user_id_from_session
 
             },
-            success: function (response) {
+
+            success: function(response) {
+                // console.log(response);
+
                 console.log(response['status']);
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
@@ -588,13 +628,13 @@ $(document).ready(function () {
             }
         });
     });
-    $('#closeSideNavbar').click(function () {
+    $('#closeSideNavbar').click(function() {
         $("#leftContainer").hide();
         $('#rightContainer').removeClass('toggleContainerCSS');
         $('#closeSideNavbar').hide();
         $('#showSideNavbar').show();
     });
-    $('#showSideNavbar').click(function () {
+    $('#showSideNavbar').click(function() {
         $('#leftContainer').show();
         $('#rightContainer').addClass('toggleContainerCSS');
         $('#showSideNavbar').hide();
@@ -603,7 +643,7 @@ $(document).ready(function () {
 
 
     // ReUploading Documents
-    $('#documentUpload').click(function (event) {
+    $('#documentUpload').click(function(event) {
         event.preventDefault();
         let apiurl = $('#apiurl').text();
         let documentNumber = $('#documentNumber').text();
@@ -627,7 +667,7 @@ $(document).ready(function () {
             data: upload,
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function(result) {
                 console.log(result);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
@@ -641,7 +681,7 @@ $(document).ready(function () {
         });
     });
     // query div
-    $('#anyquery').click(function (event) {
+    $('#anyquery').click(function(event) {
         console.log('hello');
 
         $.ajax({
@@ -650,7 +690,7 @@ $(document).ready(function () {
             data: {
                 'user_id': user_id_from_session
             },
-            success: function (response) {
+            success: function(response) {
                 console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing issue please try later');
@@ -674,7 +714,7 @@ $(document).ready(function () {
                     $("#query-div").show();
                     $("#detailHeading").empty();
                     let trHTML = "";
-                    $.each(response['message'], function (i, item) {
+                    $.each(response['message'], function(i, item) {
                         var updated = "-";
                         let issueid = "SPINPAYOO12E" + item.id;
                         if (item.reply_message != null) {
@@ -693,7 +733,7 @@ $(document).ready(function () {
                             1) + "/" + date.getFullYear();
                         trHTML += '<tr style="color:white"><td>' + issueid +
                             '</td><td>' + item
-                                .category + '</td><td>' +
+                            .category + '</td><td>' +
                             item.user_message + '</td><td>' + replymsg + '</td><td>' + created +
                             '</td><td>' + updated + '</td></tr>';
                     });
@@ -707,7 +747,7 @@ $(document).ready(function () {
     });
 
     // submit querybfrom the user
-    $('#submitquery').click(function (event) {
+    $('#submitquery').click(function(event) {
         $('#error').empty();
         event.preventDefault();
         let category = $('#category-name').val();
@@ -724,7 +764,7 @@ $(document).ready(function () {
                 url: '/api/raise/query',
                 type: 'post',
                 data: raisequery,
-                success: function (response) {
+                success: function(response) {
                     if (response['status'] == 401) {
                         console.log(response);
                         let ptag = "<p style='color:red'>*" + response[
@@ -756,7 +796,11 @@ function repayment(id, btid) {
         data: {
             loan_id: id
         },
-        success: function (response) {
+
+
+        success: function(response) {
+            // console.log(btid, response)
+
             $("#" + btid).attr("disabled", true);
             console.log(response);
             alert('Your repayment is successfull');
@@ -767,7 +811,7 @@ function repayment(id, btid) {
 
 function DocumentReupload(master_document_id, document_number) {
     $('#document_input').css('display', 'block')
-    // console.log(master_document_id, " ", document_number);
+        // console.log(master_document_id, " ", document_number);
     let heading = "";
     let url = "";
     let document;
@@ -807,6 +851,7 @@ function DocumentReupload(master_document_id, document_number) {
         '</p><p style="display:none" id="documentNumber"' + '>' + document +
         '</p><p style="display:none" id="MasterdocumentNumber"' + '>' + master_document_id + '</p>';
     console.log(heading);
+
     $('#exampleModalLabel1').html(heading);
     $('#modalerror').append(ptag)
     $('#modalid').click();
