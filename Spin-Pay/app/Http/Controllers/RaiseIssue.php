@@ -65,7 +65,7 @@ class RaiseIssue extends Controller
         }
         try{
             $raiseaissue = new Query();
-            $userissues=$raiseaissue->where('user_id',$request['user_id'])->get();
+            $userissues=$raiseaissue->where('user_id',$request['user_id'])->orderBy('reply_message', 'desc')->get();
             return response()->json([
                 'message'=>$userissues,
                 'status'=>200

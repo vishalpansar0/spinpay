@@ -25,7 +25,8 @@ class Lender extends Controller
             leftjoin('wallets','wallets.user_id','=','users.id')->
             leftjoin('loans','loans.lender_id','=','users.id')->
             leftjoin('users as borrower','borrower.id','=','loans.borrower_id')->
-            select('users.name as name','user_datas.reason','user_datas.status as statuss','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.start_date','loans.end_date','loans.status')->first()  ;
+            select('users.name as name','user_datas.reason','user_datas.status as statuss','borrower.name as bname','wallets.amount as wallet_amount','loans.id as loan_id','loans.amount','loans.processing_fee as loanp','loans.start_date','loans.end_date','loans.status')
+            ->latest('loans.updated_at','desc')->first()  ;
             // return $data;
             return view('user.lender.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
@@ -311,7 +312,7 @@ class Lender extends Controller
 
         try {
             $transaction = new Transaction();
-            $lenderTfrom = $transaction->where('from_id', $request['lender_id'])->orwhere('to_id', $request['lender_id'])->get();
+            $lenderTfrom = $transaction->where('from_id', $request['lender_id'])->orwhere('to_id', $request['lender_id'])->orderBy('id', 'desc')->get();
             return response()->json([
                 'message' => $lenderTfrom,
                 'status' => 200,
@@ -354,7 +355,7 @@ class Lender extends Controller
         }
         try {
             $allrequest = new Requests();
-            $lenderRequest = $allrequest->where('status', 'pending')->get();
+            $lenderRequest = $allrequest->where('status', 'pending')->orderBy('id', 'desc')->get();
             return response()->json([
                 'message' => $lenderRequest,
                 'status' => 200,
@@ -389,7 +390,7 @@ class Lender extends Controller
         }
         try {
             $allloan = new Loan();
-            $lenderloans = $allloan->where('lender_id', $request['lender_id'])->get();
+            $lenderloans = $allloan->where('lender_id', $request['lender_id'])->orderBy('id', 'desc')->get();
 
             return response()->json([
                 'message' => $lenderloans,

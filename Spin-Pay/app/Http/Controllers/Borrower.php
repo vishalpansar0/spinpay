@@ -22,11 +22,8 @@ class Borrower extends Controller
     {
         $user_id = Session::get('user_id');
         try {
-            $data = Users::where('users.id', $user_id)->
-            leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')->
-            leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->
-            leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->
-            select('users.name as name','user_datas.reason','user_datas.status as statuss','credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount', 'loans.start_date', 'loans.end_date', 'loans.status')->first();
+            $data = Users::where('users.id', $user_id)->leftjoin('user_datas', 'user_datas.user_id', '=', 'users.id')->leftjoin('credit_details as credit', 'credit.user_id', '=', 'users.id')->leftjoin('loans', 'loans.borrower_id', '=', 'users.id')->select('users.name as name', 'user_datas.reason', 'user_datas.status as statuss', 'credit.credit_limit as limit', 'credit.credit_score as score', 'loans.id as loan_id', 'loans.amount','loans.processing_fee as loanp', 'loans.start_date', 'loans.end_date', 'loans.status')
+            ->latest('loans.updated_at','desc')->first();
             // return $data;
             return view('user.borrower.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
@@ -169,20 +166,18 @@ class Borrower extends Controller
                 ]);
             } else {
                 $loanRequest = new Requests();
-                $details = $loanRequest->where('user_id', $request['user_id'])->get();
-                if($details){
+                $details = $loanRequest->where('user_id', $request['user_id'])->orderBy('id', 'desc')->get();
+                if ($details) {
                     return response()->json([
                         'message' => $details,
                         "status" => 200,
                     ]);
-                }else{
+                } else {
                     return response()->json([
                         'message' => 'no requests',
                         "status" => 400,
                     ]);
                 }
-               
-
             }
         } catch (QueryException $e) {
             return response()->json([
@@ -209,7 +204,7 @@ class Borrower extends Controller
             }
 
             $loan = new Loan();
-            $loandetails = $loan->where('borrower_id', [$request['user_id']])->get();
+            $loandetails = $loan->where('borrower_id', [$request['user_id']])->orderBy('id', 'desc')->get();
             return response()->json([
                 'message' => $loandetails,
                 'status' => 200,
@@ -239,7 +234,7 @@ class Borrower extends Controller
             }
 
             $transaction = new Transaction();
-            $transactiondetails = $transaction->where('from_id', [$request['user_id']])->get();
+            $transactiondetails = $transaction->where('from_id', [$request['user_id']])->orderBy('id', 'desc')->get();
             return response()->json([
                 'message' => $transactiondetails,
                 'status' => 200,
@@ -307,7 +302,7 @@ class Borrower extends Controller
                     //Giving lender his money back;
                     $wallet = new Wallet();
                     $lendershare = (($latefee * 0.8) + ($originalamount) + ($userLoan->interest * 0.8));
-                    
+
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
                     $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
