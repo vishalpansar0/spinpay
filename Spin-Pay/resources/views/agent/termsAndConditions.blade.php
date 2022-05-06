@@ -1,4 +1,5 @@
 @include('layouts.header')
+<div class="container">
 <p>Data from the RBI reveals an increase in takers of personal loans in India in the last decade. This can be credited to the fact that it is bothacollateral-
 free loan that doesn't risk your assets, and is offered instantly online by lenders who often disburse funds the same or next day.</p>
 <p>While personal loan rules and regulations in India are usually governed by the RBI and almost identical amongst lenders, it is important you know the
@@ -45,5 +46,6 @@ respective product/service document shall prevail in case of any inconsistency. 
 Please take an informed decision with respect to any product or service after going through the relevant product/service document and applicable terms and conditions. In case any inconsistencies
 observed, please click on reach us.</p>
 <h5>*Terms and conditions apply</h5>
+</div>
 
 
