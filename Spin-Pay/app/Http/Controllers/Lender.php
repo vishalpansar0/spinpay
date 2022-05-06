@@ -30,7 +30,7 @@ class Lender extends Controller
             return view('user.lender.dashboard', ['datas' => $data]);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Internal Server Error',
+                'message' => 'We are facing some issue, We are working on this',
                 "status" => 500,
             ]);
         }
@@ -100,7 +100,7 @@ class Lender extends Controller
         $userdata = $userdatatb->where('user_id', $request['user_id'])->get()->first();
         if ($userdata->status == 'pending' || $userdata->status == 'reject') {
             return response()->json([
-                'message' => 'Pending',
+                'message' => 'Profile Pending',
                 'status' => 300,
             ]);
         }
@@ -239,14 +239,14 @@ class Lender extends Controller
                 $loan->lender_id = $request['lender_id'];
                 $loan->interest = 0.09 * $requestdata->amount * (int)$requestdata->tenure ;
                 $loan->processing_fee = $processingFee;
-                $loan->late_fee = 10;
+                $loan->late_fee = 0;
                 $loan->amount = $requestdata->amount - $processingFee;
                 $loan->sent_transaction_id = $transaction->id;
                 $loan->repayment_transaction_id = null;
                 $loan->status = 'ongoing';
                 $loan->start_date = \Carbon\Carbon::now();
                 $loan->end_date = \Carbon\Carbon::now()->addMonths($requestdata->tenure);
-
+                $loan->save();
 
                 // Taking Company Profit to Admin Wallet
                 $admin = $wallet->where('user_id', 1)->get()->first();

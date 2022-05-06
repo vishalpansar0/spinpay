@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Model\Loan;
 
 class LoanCheck extends Command
 {
@@ -37,6 +38,6 @@ class LoanCheck extends Command
      */
     public function handle()
     {
-        $this->info('Testing Schedule');
+        $laonstb = new Loans();
     }
 }

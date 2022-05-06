@@ -81,7 +81,7 @@
                     <div class="modal-body register-main-body">
                         <div class="container reg-div-1">
                             {{-- Error Div --}}
-                            <div class="alert alert-danger text-center" id="errorDiv" style="padding:0%;display:none"></div>
+                            <div class="alert alert-danger text-center" id="errorDiv1" style="padding:0%;display:none"></div>
                             <div id="passworddetails">
                                 <div class="row mt-4">
                                     
@@ -191,8 +191,8 @@ integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCm
     }
     $(document).ready(function() {
         function errormsg(str) {
-            $('#errorDiv').html(str);
-            $('#errorDiv').css('display', 'block');
+            $('#errorDiv1').html(str);
+            $('#errorDiv1').css('display', 'block');
         }
         $('#joinSpinpayBtn').click(function() {
             $("#userpasswordcnf").val() == "" ? errormsg('confirm password can not be empty') :

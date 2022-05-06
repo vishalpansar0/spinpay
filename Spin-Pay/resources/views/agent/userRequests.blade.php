@@ -22,7 +22,7 @@
     echo '</pre>';
 @endphp --}}
 <input type="text" id="getUserId" value="{{$id}}" style="none">
-<div style="margin-top:70px">
+<div style="margin-top:55px">
     <div class="left-menu-div">
         <div class="menu-wrapper">
 
