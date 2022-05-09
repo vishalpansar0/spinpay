@@ -236,9 +236,6 @@ $(document).ready(function () {
             data: {
                 id: user_id_from_session
             },
-
-
-
             success: function (response) {
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
@@ -445,7 +442,8 @@ $(document).ready(function () {
                             button =
                                 '<button style="border-radius:10px;border:none; width:100px;height:27px;background-color:rgb(67, 181, 216)" onclick = "DocumentReupload(\'' +
                                 item.master_document_id + '\'' + ',' + '\'' +
-                                item
+                                item.document_number+
+                                '\')">Re-Upload</button>';
                         }
                         statustr = '';
                         if (details.status == "Approved") {
