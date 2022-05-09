@@ -15,32 +15,32 @@
                 <tr>
                     <th scope="row">*</th>
                     <td>Loan Amount </td>
-                    <td><span style="color:red">{{ $loanamount }}</span></td>
+                    <td><span style="color:red">&#8377;{{ $loanamount }}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">*</th>
                     <td>Processing Fee</td>
-                    <td><span style="color:red">{{ $processing_fee }}</span></td>
+                    <td><span style="color:red">&#8377;{{ $processing_fee }}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">*</th>
                     <td>Interest</td>
-                    <td><span style="color:red">{{ $interest }}</span></td>
+                    <td><span style="color:red">&#8377;{{ $interest }}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">*</th>
                     <td>Late Fee </td>
-                    <td><span style="color:red">{{ $late_fee }}</span></td>
+                    <td><span style="color:red">&#8377;{{ $late_fee }}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">*</th>
                     <td>GST</td>
-                    <td><span style="color:red">{{ $gst }}</span></td>
+                    <td><span style="color:red">&#8377;{{ $gst }}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">*</th>
                     <td>Total Amount </td>
-                    <td><span style="color:red">{{ $total }}</span></td>
+                    <td><span style="color:red">&#8377;{{ $total }}</span></td>
                 </tr>
             </tbody>
         </table>

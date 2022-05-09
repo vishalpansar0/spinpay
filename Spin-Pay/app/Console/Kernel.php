@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('loan:check')->everyMinute();
+        $schedule->command('loan:check')->everyTenMinute();
     }
 
     /**
