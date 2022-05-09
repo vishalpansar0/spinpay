@@ -151,7 +151,7 @@
                     if (result['status'] == 200) {
                         location.href = "/register/userdocuments/"+result['id'];
                     } else {
-                        errormsg('errorDiv', result['message']);
+                        errormsg('#errorImage', result['message']);
                     }
                 }
             });
