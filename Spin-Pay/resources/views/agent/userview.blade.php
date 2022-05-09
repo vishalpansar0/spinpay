@@ -262,14 +262,23 @@
                 </div>
                 <div class="col-3">
                     <div class="sub-headings" style="color:grey;font-size:18px">
+                        disbursed amount
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_disburse_amt" style="color:red;">not available</span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row mt-3 mb-4" style="margin-left:20px">
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
                         payeble amount
                     </div>
                     <div style="color:white;font-size:24px">
                         <span id="last_loan_total_pay" style="color:green;">not available</span>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-3 mb-4" style="margin-left:20px">
                 <div class="col-3">
                     <div class="sub-headings" style="color:grey;font-size:18px">
                         send email
@@ -699,6 +708,7 @@
                     $('#last_loan_interest').html(response['result']['interest']);
                     $('#last_loan_late_fee').html(response['result']['late_fee']);
                     $('#last_loan_total_pay').html(total_pay);
+                    $('#last_loan_disburse_amt').html(response['result']['amount']);
                     if(response['result']['status']=='repaid'){
                         $('#sendWarMailModalBtn').prop('disabled',true);
                     }
