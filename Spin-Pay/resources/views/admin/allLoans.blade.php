@@ -23,7 +23,11 @@
         <div class="menu-wrapper">
 
             <div class="menu-item-div ">
-                <a href="{{'/admin/dashboard'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Users</button></a>
+                <a href="{{'/admin/dashboard'}}"><button class="m-btn"><i class="fas fa-user"></i><br>Dashboard</button></a>
+            </div>
+
+            <div class="menu-item-div ">
+                <a href="{{'/admin/allusers'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Users</button></a>
             </div>
             <div class="menu-item-div">
                 <a href="{{'/admin/agents'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button></a>
@@ -48,10 +52,7 @@
                             class="fas fa-info-circle"></i><br> Company Transactions </button></a>
             </div>
 
-            {{-- wallet --}}
-            <div class="menu-item-div"><button class="m-btn"><h5><i
-                class="fas fa-wallet"></i></h5> <h5>&#8377;{{ $wallet->amount }}</h5> </button>
-            </div>
+           
         </div>
 
     </div>

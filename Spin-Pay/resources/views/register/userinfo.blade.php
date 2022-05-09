@@ -65,6 +65,7 @@
                             <button class="btn capbtn" id="joinSpinpayBtn" style="float:right">join</button>
                             <div class="loader mt-2" id="joinBtnLoader"
                                 style="display:none;float:right;margin-right:10%;"></div>
+                                <p style="color:white">By joining, you are aggree to our <a target="blank" href="{{url('termsAndConditions')}}">terms & conditions</a> </p>
                         </div>
                     </div>
 
@@ -105,6 +106,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="row mt-3">
+                    
+                    
+                </div>
+               
 
             </div>
 

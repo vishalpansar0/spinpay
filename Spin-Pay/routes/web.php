@@ -90,7 +90,9 @@ Route::view('termsAndConditions','agent.termsAndConditions');
 // Admin Routes
 Route::view('/admin/signin', 'admin.adminsignin')->middleware('checkAdminAuth');
 
-Route::get('/admin/dashboard', [Admin::class,'getAllUsers'])->middleware('isAdminLoggedIn');
+Route::get('/admin/allusers', [Admin::class,'getAllUsers'])->middleware('isAdminLoggedIn');
+
+Route::view('/admin/dashboard','admin.adminDash');
 
 Route::get('/admin/transactions', [Admin::class,'getAllTransactions'])->middleware('isAdminLoggedIn');
 

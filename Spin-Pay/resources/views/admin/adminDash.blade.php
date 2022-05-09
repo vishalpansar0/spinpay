@@ -23,16 +23,16 @@
     <div class="left-menu-div">
         <div class="menu-wrapper">
 
-            <div class="menu-item-div ">
-                <a href="{{'/admin/dashboard'}}"><button class="m-btn"><i class="fas fa-user"></i><br>Dashboard</button></a>
+            <div class="menu-item-div active">
+                <button class="m-btn"><i class="fas fa-user"></i><br>Dashboard</button>
             </div>
 
             <div class="menu-item-div ">
                 <a href="{{'/admin/allusers'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Users</button></a>
             </div>
 
-            <div class="menu-item-div active">
-             <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button>
+            <div class="menu-item-div">
+                <a href="{{'/admin/agents'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button></a>
             </div>
 
             {{-- Transactions --}}
@@ -92,56 +92,63 @@
     </div>
 </div>
 </div>
-        <div class="row text-center" style="color:white;background-color:#17202A;justify-content:center">
-            <div class="col-4 mt-4">
-                <h3>Agents Details </h3>
-            </div>
-            @if (Session::has('msg'))
-            <div class="container"><div class="alert alert-danger">{{Session::get('msg')}}</div></div>  
-            @endif
-            {{-- <div class="col-4 mt-4">{{ $users->links('vendor.pagination.customLinks') }}</div> --}}
+<br><br>
+<div style="padding:2%;display: flex;justify-content:center;align-items:center">
+  <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+      <p style="color:white">Wallet Amount</p>
+      <h1 style="color:green">2000</h1>
+  </div>
+  <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+    <p style="color:white">Total Loan Amount Disbursed</p>
+    <h1 style="color:orange">2000</h1>
+</div>
+<div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+    <p style="color:white">Total Amount Repayed</p>
+    <h1 style="color:skyblue">2000</h1>
+</div>
+</div>
+<div style="padding:2%;display: flex;justify-content:center;align-items:center">
+    <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+        <p style="color:white">Total GST Amount</p>
+        <h1 style="color:red">2000</h1>
+    </div>
+    <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+      <p style="color:white">Total Earnings</p>
+      <h1 style="color:green">2000</h1>
+  </div>
+  <div class="text-center" style="margin-left:1%;width:30%;padding:10px">
+
+</div>
+  </div>
+  <div style="padding:2%;display: flex;justify-content:center;align-items:center">
+    <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+        <p style="color:white">Total Requests Raised</p>
+        <h1 style="color:green">2000</h1>
+    </div>
+    <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+        <p style="color:white">Total Loans Taken Count</p>
+        <h1 style="color:green">2000</h1>
+    </div>
+  <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+    <p style="color:white">Total Agents</p>
+    <h1 style="color:orange">2000</h1>
+</div>
+  </div>
+  <div style="padding:2%;display: flex;justify-content:center;align-items:center">
+    <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+        <p style="color:white">Total Users Count</p>
+        <h1 style="color:green">2000</h1>
+    </div>
+    <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+      <p style="color:white">Total Lenders</p>
+      <h1 style="color:orange">2000</h1>
+  </div>
+  <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
+      <p style="color:white">Total Borrowers</p>
+      <h1 style="color:orange">2000</h1>
+  </div>
+  </div>
     
-        </div>
-        <div class="table-container" id="allUsers">
-            
-            
-            <table class="table table-dark text-center users-table">
-                <thead>
-                    <tr>
-                      
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Action</th>
-                        {{-- <th scope="col">Action</th> --}}
-                    </tr>
-                </thead>
-                <tbody id="records_table">
-                    @foreach ($agents as $user)
-                        <tr>
-                        
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone }}</td>
-                                <td><span
-                                        style="padding:5px 15px;border-radius:1000px;background-color:#3498DB;">Agent</span>
-                                </td>
-                                <td><a href="{{url('/admin/removeAgent')}}/{{$user->id}}"><button class="btn btn-danger">Remove</button></a></td>
-                            {{-- <td><a href="{{url('userview/'.$user->id)}}"><button class="actionbtn" id="pendingUsersBtn"> view</button></a></td> --}}
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            
-        </div>
-        <div id="page-links" style="background-color: #17202A;padding:10px">
-            <div class="row">
-                <div class="offset-9 col-sm-3">
-                    {{ $agents->links('vendor.pagination.customLinks') }}
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <script>
