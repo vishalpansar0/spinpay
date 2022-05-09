@@ -26,6 +26,20 @@ class Admin extends Controller
             'wallet' => DB::table('wallets')->where('user_id',1)->first(),
         ]);
     }
+    public function removeAgent($id){
+        $del = Users::where('id',$id)->delete();
+        if($del){
+            return back()->with('msg','agent successfully removed');
+        }else{
+            return back()->with('msg','agent not removed');
+        }
+    }
+    public function getAllAgents(){
+        return view('admin.allAgents', [
+            'agents' => DB::table('users')->where('role_id',2)->paginate(15),
+            'wallet' => DB::table('wallets')->where('user_id',1)->first(),
+        ]);
+    }
     public function getAllTransactions(){
         return view('admin.allTransactions', [
             'trans' => DB::table('transactions')->paginate(15),

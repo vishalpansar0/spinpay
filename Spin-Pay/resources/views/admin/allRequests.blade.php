@@ -26,7 +26,9 @@
             <div class="menu-item-div active">
                 <button class="m-btn"><i class="fas fa-user"></i><br>Users</button>
             </div>
-
+            <div class="menu-item-div">
+                <a href="{{'/admin/agents'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button></a>
+            </div>
             {{-- Transactions --}}
             <div class="menu-item-div">
                 <a href=><button class="m-btn"><i

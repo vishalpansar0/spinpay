@@ -23,12 +23,12 @@
     <div class="left-menu-div">
         <div class="menu-wrapper">
 
-            <div class="menu-item-div active">
-                <button class="m-btn"><i class="fas fa-user"></i><br>Users</button>
+            <div class="menu-item-div">
+                <a href="{{'/admin/dashboard'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Users</button></a>
             </div>
 
-            <div class="menu-item-div">
-                <a href="{{'/admin/agents'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button></a>
+            <div class="menu-item-div active">
+             <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button>
             </div>
 
             {{-- Transactions --}}
@@ -93,13 +93,17 @@
 </div>
         <div class="row text-center" style="color:white;background-color:#17202A;justify-content:center">
             <div class="col-4 mt-4">
-                <h3>Users Details </h3>
+                <h3>Agents Details </h3>
             </div>
-    
+            @if (Session::has('msg'))
+            <div class="container"><div class="alert alert-danger">{{Session::get('msg')}}</div></div>  
+            @endif
             {{-- <div class="col-4 mt-4">{{ $users->links('vendor.pagination.customLinks') }}</div> --}}
     
         </div>
         <div class="table-container" id="allUsers">
+            
+            
             <table class="table table-dark text-center users-table">
                 <thead>
                     <tr>
@@ -108,24 +112,21 @@
                         <th scope="col">Email</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Role</th>
+                        <th scope="col">Action</th>
                         {{-- <th scope="col">Action</th> --}}
                     </tr>
                 </thead>
                 <tbody id="records_table">
-                    @foreach ($users as $user)
+                    @foreach ($agents as $user)
                         <tr>
                         
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
-                            @if ($user->role_id == 3)
                                 <td><span
-                                        style="padding:5px 15px;border-radius:1000px;background-color:#3498DB;">Lender</span>
+                                        style="padding:5px 15px;border-radius:1000px;background-color:#3498DB;">Agent</span>
                                 </td>
-                            @else
-                                <td><span style="padding:5px 15px;border-radius:1000px;background-color:#E74C3C;">Borrower</span>
-                                </td>
-                            @endif
+                                <td><a href="{{url('/admin/removeAgent')}}/{{$user->id}}"><button class="btn btn-danger">Remove</button></a></td>
                             {{-- <td><a href="{{url('userview/'.$user->id)}}"><button class="actionbtn" id="pendingUsersBtn"> view</button></a></td> --}}
                         </tr>
                     @endforeach
@@ -136,7 +137,7 @@
         <div id="page-links" style="background-color: #17202A;padding:10px">
             <div class="row">
                 <div class="offset-9 col-sm-3">
-                    {{ $users->links('vendor.pagination.customLinks') }}
+                    {{ $agents->links('vendor.pagination.customLinks') }}
                 </div>
             </div>
         </div>

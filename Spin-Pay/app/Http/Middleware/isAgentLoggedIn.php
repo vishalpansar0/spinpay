@@ -19,7 +19,7 @@ class isAgentLoggedIn
         if(!$request->session()->has('agent_id')){
             return redirect('/agent/signin')->with('failed','login required!');
         }else{ 
-            if($request->session()->get('role')!=2){
+            if($request->session()->get('agent_role')!=2){
                 return redirect('/agent/signin')->with('failed','you are not an authorized user for this action!');
             }
         }

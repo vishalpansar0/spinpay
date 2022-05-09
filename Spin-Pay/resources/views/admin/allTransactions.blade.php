@@ -26,7 +26,9 @@
             <div class="menu-item-div ">
                <a href="{{'/admin/dashboard'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Users</button></a>
             </div>
-
+            <div class="menu-item-div">
+                <a href="{{'/admin/agents'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button></a>
+            </div>
             {{-- Transactions --}}
             <div class="menu-item-div active">
                 <a href="#"><button class="m-btn"><i
@@ -48,7 +50,7 @@
 
             {{-- wallet --}}
             <div class="menu-item-div"><button class="m-btn"><h5><i
-                class="fas fa-wallet"></i></h5> <h5>{{ $wallet->amount }}</h5> </button>
+                class="fas fa-wallet"></i></h5> <h5>&#8377; {{ $wallet->amount }}</h5> </button>
             </div>
         </div>
 

@@ -15,6 +15,7 @@ use App\Models\SpinpayTransaction;
 use App\Models\Query;
 use App\Mail\RejectMail;
 use App\Mail\ApproveMail;
+use App\Mail\WarningMail;
 use App\Mail\QueryReply;
 use Illuminate\Support\Facades\Mail;
 use DB;
@@ -429,6 +430,44 @@ class AgentDashboardController extends Controller
     }
 
     public function latestLoan(Request $request){
-        return Loan::where('borrower_id', $request->borrower_id)->latest()->first();
+    try{
+        if(Users::where('id',$request['borrower_id'])->where('role_id',3)->exists()){
+            return response()->json([
+                'lender'=>1,
+                'status'=>400,
+            ]);
+        }else{
+            $last_loan_detailes =  Loan::where('borrower_id', $request->borrower_id)->latest()->first();
+            return response()->json([
+                'result'=>$last_loan_detailes,
+                'status'=>200,
+            ]);
+        }
+    }
+    catch(QueryException $e){
+        return response()->json([
+            // 'message'=>'Internal Server Error',
+            'message'=>$e,
+            'status'=>500
+        ]);
+    }
+    }
+    public function sendWarningEmail(Request $request){
+        try{
+            $getmail = Users::where('id',$request['user_id'])->select('email')->get()->first();
+            Mail::to('vishalpansar0@gmail.com')->send(new WarningMail($request['message'],'layouts.warningMail'));
+                return response()->json([
+                    'message'=>'sent successfully',
+                    'status'=>200
+                ]);
+            
+        }catch(QueryException $e){
+            return response()->json([
+                // 'message'=>'Internal Server Error',
+                'message'=>'some error occured',
+                'status'=>500
+            ]);
+        }
+        
     }
 }

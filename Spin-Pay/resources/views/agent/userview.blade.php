@@ -167,7 +167,7 @@
                         loan status
                     </div>
                     <div style="color:white;font-size:24px">
-                        <span style="color:red;">due: 20 may 2022</span>
+                        <span id="loan_overdue_date1" style="color:orange;">not available</span>
                     </div>
                 </div>
                 <div class="mt-1">
@@ -196,7 +196,96 @@
 
             </div>
         </div>
+<div id="last_loan_div">
+        <div class="main-heading">
+            Last Loan Details
+        </div>
+        <div>
+            <div class="row" style="margin-left:20px">
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        loan amount
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_amt" style="color:orange;">not available</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        date taken
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_l_taken_d" style="color:green;">not available</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        end date
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_l_end_d" style="color:red;">not available</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        loan status
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_status" style="color:orange;">not available</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3" style="margin-left:20px">
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        processing fees
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_p_fee" style="color:green;">not available</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        interest
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_interest" style="color:green;">not available</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        late fees
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_late_fee" style="color:orange;">not available<</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        payeble amount
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <span id="last_loan_total_pay" style="color:green;">not available</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3 mb-4" style="margin-left:20px">
+                <div class="col-3">
+                    <div class="sub-headings" style="color:grey;font-size:18px">
+                        send email
+                    </div>
+                    <div style="color:white;font-size:24px">
+                        <button class="btn btn-warning" id="sendWarMailModalBtn" data-bs-toggle="modal" data-bs-target="#warningEmailModal">send email</button>
+                    </div>
+                </div>
+                
+               
+            </div>
+        </div>
+    </div>
 
+        
+        {{-- *************************************8 --}}
         <div class="main-heading">
             Documents Details
         </div>
@@ -545,6 +634,28 @@
     </div>
 </div>
 
+<div class="modal fade" id="warningEmailModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#17202A">
+            <div class="modal-header">
+                <h6 class="modal-title" id="staticBackdropLabel" style="color:white">enter message to send</h6>
+                <button type="button" id="send_warning_email_Mdl_cls" data-bs-dismiss="modal" aria-label="Close" style="border:none;background:none;"><i
+                        class="fas fa-times" style="color:blue;"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger text-center" id="warningEmailErrorDiv" style="padding:0%;display:none"></div>
+                <div class="inputDiv">
+                    <textarea name="reason" value="" id="email_msg" cols="30" rows="10" style="background-color:transparent;color:white;padding:10px;width:100%"></textarea>   
+                </div>
+                <div class="inputDiv mt-2">
+                    <button class="capbtn" id="send_wr_email_btn" style="background-color:orange;float:right">Send email</button>
+                </div>     
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @include('agent.agentLayouts.jsAgent')
 <script>
@@ -557,9 +668,53 @@
             $('#rejecterrorDiv').html(str);
             $('#rejecterrorDiv').css('display', 'block');
         }
+        function errormsg2(str) {
+            $('#warningEmailErrorDiv').html(str);
+            $('#warningEmailErrorDiv').css('display', 'block');
+        }
         function loadDocs(){
 
         }
+        const getLatestLoan = {
+            borrower_id: $("#userIdHidden").val(),
+        };
+        $.ajax({
+            url: "/api/latestLoan/",
+            type: "post",
+            dataType: "json",
+            data: getLatestLoan,
+            success: function(response) {
+                console.log(response);
+                if(response['status']==200){
+                    if(response!=null){
+                    var total_pay = response['result']['amount']+response['result']['interest']+response['result']['processing_fee']+response['result']['late_fee'];
+                    var msgToSend = 'Dear User, For Your loan amount of rupees '+ total_pay + ' , status is \''+ response['result']['status'] +'\', Please pay your loan to avoid any penalty.';
+                    $('#email_msg').val(msgToSend);
+                    $('#loan_overdue_date1').html(response['result']['status']);
+                    $('#last_loan_amt').html(response['result']['amount']+response['result']['processing_fee']);
+                    $('#last_l_taken_d').html(response['result']['start_date']);
+                    $('#last_loan_status').html(response['result']['status']);
+                    $('#last_loan_p_fee').html(response['result']['processing_fee']);
+                    $('#last_l_end_d').html(response['result']['end_date']);
+                    $('#last_loan_interest').html(response['result']['interest']);
+                    $('#last_loan_late_fee').html(response['result']['late_fee']);
+                    $('#last_loan_total_pay').html(total_pay);
+                    if(response['result']['status']=='repaid'){
+                        $('#sendWarMailModalBtn').prop('disabled',true);
+                    }
+                    }else{
+                       $('#loan_overdue_date1').html('not available');
+                    }
+                }else if(response['status']==400){
+                    $('#last_loan_div').css('display','none');
+                }
+                else{
+                    $('#').html('error');
+                }
+                
+                
+            }
+        });
         $.ajax({
             url: "/api/fetchUserDocs/"+{{$user->id}}+"/1",
             type: "get",
@@ -867,7 +1022,43 @@
             }
             
         });
-        
+        $('#send_wr_email_btn').on('click',function(){ 
+            var war_message = $("#email_msg").val();
+            userIdHidden = $("#userIdHidden").val();
+            console.log(war_message);
+            if(war_message == ""){
+                errormsg3('message can not be empty!');
+            }else{
+                const sendMsg = {
+                'user_id':userIdHidden,
+                'message': war_message,
+                }
+            $.ajax({
+                url: "/api/sendWarningEmail/",
+                type: "post",
+                dataType: "json",
+                data: sendMsg,
+                beforeSend: function() {
+                    $('#send_wr_email_btn').prop('disabled',true);
+                    $('#send_wr_email_btn').html('Sending...');
+                },
+                success: function(response) {                 
+                    if(response['status']==200){
+                        alert('email sent sucessfully')
+                        $('#send_wr_email_btn').html('Send email');
+                        $('#send_warning_email_Mdl_cls').click();
+                    }else if( response['status']==500){
+                        alert(response['message']);
+                        $('#send_wr_email_btn').prop('disabled',false);
+                        $('#send_wr_email_btn').html('Send email');
+                        $('#send_warning_email_Mdl_cls').click();
+                    }
+                   
+                }
+            });
+            }
+            
+        });
  
 
     });
