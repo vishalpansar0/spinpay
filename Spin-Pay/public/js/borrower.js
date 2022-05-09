@@ -236,9 +236,6 @@ $(document).ready(function () {
             data: {
                 id: user_id_from_session
             },
-
-
-
             success: function (response) {
                 if (response['status'] == 500) {
                     alert('We are facing some issue please try later');
