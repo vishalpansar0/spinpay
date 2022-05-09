@@ -21,7 +21,7 @@ class AgentAuthController extends Controller
                 if($user->role_id == 2){
                     $req->session()->put('agent_id',$user->id);
                     $req->session()->put('agent_name',$user->name);
-                    $req->session()->put('role',$user->role_id);
+                    $req->session()->put('agent_role',$user->role_id);
                     return redirect('/agent/dashboard');
                 }else{
                     return back()->with('failed','you are not an authorized user for this action');
@@ -37,7 +37,7 @@ class AgentAuthController extends Controller
     public function logout(){
         Session::forget('agent_id');
         Session::forget('agent_name');
-        Session::forget('role');
+        Session::forget('agent_role');
         return redirect('agent/signin');
     }
 }

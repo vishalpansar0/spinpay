@@ -56,7 +56,7 @@ Route::get('/user/lender',[Lender::class,'lenderdashboard'])->middleware('isLogg
 
 
 //Agent Routes
-Route::view('/agent/signin', 'agent.agentSignin');
+Route::view('/agent/signin', 'agent.agentSignin')->middleware('agentAuthCheck');
 
 Route::get('agent/dashboard',[AgentDashboardController::class,'getAllUsers'])->middleware('isAgentLoggedIn');
 
@@ -69,13 +69,13 @@ Route::get('userRequests/{id}',function($id){
 
 Route::get('request',[AgentDashboardController::class,'request'])->middleware('isAgentLoggedIn');
 
-Route::get('agent/querys',[AgentDashboardController::class,'query']);
+Route::get('agent/querys',[AgentDashboardController::class,'query'])->middleware('isAgentLoggedIn');
 
 //requests for a particular user agent can see
 Route::post('agent/allRequestsForAUser',[Borrower::class,'all_requests'])->middleware('isAgentLoggedIn');
 
 //spinpay transactions
-Route::get('admin/companytransactions',[AgentDashboardController::class,'spinpayTransaction']);
+Route::get('admin/companytransactions',[AgentDashboardController::class,'spinpayTransaction'])->middleware('isAdminLoggedIn');
 
 //about us page 
 Route::view('aboutUs','agent.aboutUs');
@@ -95,6 +95,10 @@ Route::get('/admin/dashboard', [Admin::class,'getAllUsers'])->middleware('isAdmi
 Route::get('/admin/transactions', [Admin::class,'getAllTransactions'])->middleware('isAdminLoggedIn');
 
 Route::get('/admin/loans', [Admin::class,'getAllLoans'])->middleware('isAdminLoggedIn');
+
+Route::get('/admin/agents', [Admin::class,'getAllAgents'])->middleware('isAdminLoggedIn');
+
+Route::get('/admin/removeAgent/{id}', [Admin::class,'removeAgent'])->middleware('isAdminLoggedIn');
 
 
 
@@ -116,8 +120,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/getTestData', [AgentDashboardController::class,'getTestData']);
 
-Route::get('/userview/transaction/{id}', [AgentDashboardController::class,'userTransaction']);
-Route::get('/userview/loans/{id}', [AgentDashboardController::class,'userLoans']);
+Route::get('/userview/transaction/{id}', [AgentDashboardController::class,'userTransaction'])->middleware('isAgentLoggedIn');
+Route::get('/userview/loans/{id}', [AgentDashboardController::class,'userLoans'])->middleware('isAgentLoggedIn');
 
 
 Route::get('userview/{id}',[AgentDashboardController::class,'ShowUsersDetails'])->name('userview')->middleware('isAgentLoggedIn');

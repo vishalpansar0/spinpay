@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //auth routes
-Route::post('login',[UserAuthController::class,'login']);
+Route::post('login',[UserAuthController::class,'login'])->middleware('authCheck');
 Route::get('logout',[UserAuthController::class,'logout']);
 
 //agent auth routes
@@ -53,17 +53,17 @@ Route::post('verifyotpforgotpassword',[Mailes::class,"verifyforgotpasswordotp"])
 
 //for to store basic user details
 Route::post("store_users",[UserController::class,"store_users"]);
-Route::post('/userdata', [UserController::class, 'userdata']);
-Route::post('/aadhar', [UserController::class, 'aadhar']);
+Route::post('/userdata', [UserController::class, 'userdata'])->middleware('isLoggedIn');
+Route::post('/aadhar', [UserController::class, 'aadhar'])->middleware('isLoggedIn');
 
 //for to store pancard push
-Route::post('pancard',[UserController::class, 'pancard']);
+Route::post('pancard',[UserController::class, 'pancard'])->middleware('isLoggedIn');
 
 // to store payslip details
-Route::post('payslip',[UserController::class,'payslip']);
+Route::post('payslip',[UserController::class,'payslip'])->middleware('isLoggedIn');
 
 // to store bankstate details
-Route::post('bankstatement',[UserController::class,'bankstatement']);
+Route::post('bankstatement',[UserController::class,'bankstatement'])->middleware('isLoggedIn');
 
 
 // Change Password
@@ -83,21 +83,21 @@ Route::post('forgotpassword',[UserController::class,'Forgot_Password']);
 
 
 //Loan Request
-Route::post('request/loan',[Borrower::class,'loan_request']);
+Route::post('request/loan',[Borrower::class,'loan_request'])->middleware('isLoggedIn');
 
 //All Loan Request
-Route::post('request/allrequest',[Borrower::class,'all_requests']);
+Route::post('request/allrequest',[Borrower::class,'all_requests'])->middleware('isLoggedIn');
 
 //Get loan details
-Route::post('request/loandetails',[Borrower::class,'loan_details']);
+Route::post('request/loandetails',[Borrower::class,'loan_details'])->middleware('isLoggedIn');
 
 //Get Transactions details
-Route::post('request/transactiondetails',[Borrower::class,'all_transactions']);
+Route::post('request/transactiondetails',[Borrower::class,'all_transactions'])->middleware('isLoggedIn');
 
 //Loan Repayment
-Route::post('loanrepayment',[Borrower::class,'loan_repayment']);
+Route::post('loanrepayment',[Borrower::class,'loan_repayment'])->middleware('isLoggedIn');
 
-Route::get('showuserdetails',[Lender::class,'ShowUsersDetails']);
+Route::get('showuserdetails',[Lender::class,'ShowUsersDetails'])->middleware('isLoggedIn');
 
 //Get All Borrowers and Lenders with date and status filter
 Route::post('AllLenRoBorr',[AgentDashboardController::class,'AllLenRoBorr']);
@@ -127,6 +127,8 @@ Route::post('profileApprove',[AgentDashboardController::class,'profileApprove'])
 Route::post('profileReject',[AgentDashboardController::class,'profileReject']);
 
 Route::post('latestLoan',[AgentDashboardController::class,'latestLoan']);
+
+Route::post('sendWarningEmail', [AgentDashboardController::class, 'sendWarningEmail']);
 
 
 //add credit_limit and credit_score

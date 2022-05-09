@@ -26,10 +26,12 @@
             <div class="menu-item-div ">
                <a href="{{'/admin/dashboard'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Users</button></a>
             </div>
-
+            <div class="menu-item-div">
+                <a href="{{'/admin/agents'}}"> <button class="m-btn"><i class="fas fa-user"></i><br>Agents</button></a>
+            </div>
             {{-- Transactions --}}
-            <div class="menu-item-div ">
-                <a href="#"><button class="m-btn"><i
+            <div class="menu-item-div">
+                <a href="{{'/admin/transactions'}}"><button class="m-btn"><i
                             class="fas fa-glass-cheers"></i><br> Transactions</button></a>
             </div>
 
