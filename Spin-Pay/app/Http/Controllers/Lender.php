@@ -14,6 +14,7 @@ use App\Models\SpinpayTransaction;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\AddMoneyWallet;
+use App\Mail\LoanApproveMail;
 use Illuminate\Support\Facades\Mail;
 
 class Lender extends Controller
@@ -251,7 +252,7 @@ class Lender extends Controller
                 $loan->status = 'ongoing';
                 $loan->start_date = \Carbon\Carbon::now();
                 $loan->end_date = \Carbon\Carbon::now()->addMonths($requestdata->tenure);
-                $loan->save();
+                $loansaves=$loan->save();
 
                 // Taking Company Profit to Admin Wallet
                 $admin = $wallet->where('user_id', 1)->get()->first();
@@ -264,6 +265,13 @@ class Lender extends Controller
                 $Companytransaction->borrower_id = $loan->borrower_id;
                 $Companytransaction->amount = $processingFee;
                 $isCompanyTrans = $Companytransaction->save();
+
+
+                // Sending Loan to Borrower on Approving Loan
+                if ($loansaves) {
+                    $u = Users::where('id',$userrequestID)->select('email')->get()->first();
+                    Mail::to($u->email)->send(new LoanApproveMail('layouts.loanapprovemail',$loan->id,$loan->amount,$loan->end_date));
+                }
 
                 if ($loan->save()) {
                     return response()->json([

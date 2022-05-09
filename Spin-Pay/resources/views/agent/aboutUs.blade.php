@@ -1,5 +1,19 @@
-@include('layouts.header')
 
+@include('layouts.header')
+<div class="navbar fixed-top" id="nav" style="background-color:black">
+  <div class="container">
+    <div class="logo-container">
+      <a href="{{url('/')}}" style="text-decoration:none;color:white">SpinPay</a>
+    </div>
+    <div class="menu-container">
+      <h4><a href="/signin">login</a></h4>
+      {{-- <form action="{{ url('/logout') }}" method="post">
+       @csrf
+       <button>login</button></form> --}}
+   </div>
+  </div>
+</div>
+<div class="container" style="margin-top:120px">
 <h1 style='text-align: center'>About Us</h1><br>
 <div style='text-align: center'>
     <h5>We created this website for any individuals to obtain loans directly from other individuals, cutting out the financial institution as the middleman.</h5>
@@ -16,7 +30,7 @@
       <div class="row">
         <div class="col-md-6 col-lg-3">
           <div class="img-block mb-5">
-            <img style="min-width:310px" src="https://lh3.googleusercontent.com/u-nstcLdV52qX7Bt3bAqU0V9isnD3l_ttSm5svNOxSGATJ_B6aA_-Do0Tm3eFxxyqUETOSZtpvyOAd-LkQStbZQuX8bV9vYvq7LV-LFW9y5SzCcoPDD2iz2rgwsS6OMKidU7NGLSRs-bpZZTrK6K6BmW7z9Nf14lr-OvRp_rFypDgJLwsOd4Qv-m9ed3QyPUuBLULpo_3uNNrNAxfn5JCWhgujyBRZwLq8mUrR1p9VQ4uqseS2-fbqHaOnVl1ndjd8rd3sNxI4CKxzemSIaOzf-KFbhEQgNNQvFQNtMUn-hx1lT_n4aG4NKGFEn1VGEm1ta2y1Ecz1cBF3UoxdYJRLaLwE_6igHahiR97iDD-ux2iQXw4V5wTeD1eqAEXZTR42wlcdQ1TG6Q8h2MIPeWkxCZ65vbkeqVU20xFUAzHNEO8I138YwZaKw31ixrUiUl5O9W1XBQevV5PYlgeSwcv9xv2irZkmpdBaqngTd64H5m0ddwVIw1Ka18s-VXKwtyl_BfgF7eyoM4caFf5YBaOPOa68drmKVVMg0klLeMXHZVMKK-4aTPwv_n2y_uezRoseH1MJT5D4g-0-xf-rPKZhWFY5zptVdZ79_21BpXjzND1QyfO9QeKvGJkOcIQP7Sygx9J1T2107HN7La3v6xo8dOmN4rH22dADTEfa2NrxF9g2QiC9NbVDN-OC7ssY-6OmEPOcu1guwvwsaLU42v9_ENnu0EZqdD1AsQni_fkkN_aMxCl1TqZji8W6s=s217-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
+            <img style="min-width:310px" src="https://lh3.googleusercontent.com/qCWcTQszDEQIGyZDkkAyd8lf04tHDaMHVIJDbwGo6jvaUHuH-OJU3lRO4AYI3ahD-sBV_kx8vkvBmPeic6fBWOpR8aHy0Eg9DHCeWlNETNJSMnW4B1TQL4RtBs7FZwOGlaZqSjuKDOYVMdvxwwhEOVR_HWWCPrPi12yFVQriVjXSfEjULQ5UsD-A-kY_w7mmpQkL-VvujdwcOuZOunD-ewwLa3ietdCAyNFRP-1502UKniOzlIKbAfYKzHd1iKYmV4HF63LzCML69EnHBcceL3m1OnPgh-EN7XHfDVkypj1cIPyE_bHi9vX9ckOaos6YNt9lp4zznO_On16y4eP7zJwUvt-OtvRj6COOQU9aEFpbvcERtRP41nmDkMUkyvAMel0vu_OQqy8iozXmKCFkMlH50Llky60h3DaCIQE9MUsjSNhfGEWBv6Z7bdZogFQYleEV1_YcNczU_e2BnPYiFXPXiD_2LnZLtcq-RYBgkkMhlJb-Amd-fEjKQX9YnXyp0f400hLJb4SvWnb5Ky26L9K28z8X2l1HDPJOhEVV7z1XisHnMPs97dqU-eO6D0JeevbsbfVLyRs1mzxY-EwpzVSfPwy8SCBrSXGEBPLSEuC86xSRkoNvHx8IJowrEj66lwLv2dsP1KcakCoJN7UMXiraIaJdFoJenb3gGmQfjizeMeoFJxHV3cPvELO9QsyyVPkgXoOyCa-qxjMLBAu2Su1M6wEsyMRXBgY6VKfaH_F9hCmxiCt5w0bmeSo=w425-h426-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
             <div class="content mt-2">
               <h4>Vishal Sharma</h4>
               <p class="text-muted">Full Stack Web Developer</p>

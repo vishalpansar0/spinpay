@@ -308,7 +308,7 @@ class Borrower extends Controller
 
                     $lenderwallet = $wallet->where('user_id', $userLoan->lender_id)->get()->first();
                     $newamount = ($lenderwallet->amount) + ($lendershare);
-                    $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount]);
+                    $wallet->where('user_id', $userLoan->lender_id)->update(['amount' => $newamount,'updated_at'=>\Carbon\Carbon::now()]);
 
                     // Transaction Made from Admin to user
                     $Lendertransaction = new Transaction();
@@ -322,14 +322,24 @@ class Borrower extends Controller
                     // Taking Company Profit to Admin Wallet
                     $admin = $wallet->where('user_id', 1)->get()->first();
                     $companyprofit = $admin->amount + ($amountToPay - $lendershare + $gst);
-                    $wallet->where('user_id', 1)->update(['amount' => $companyprofit]);
+                    $wallet->where('user_id', 1)->update(['amount' => $companyprofit,'updated_at'=>\Carbon\Carbon::now()]);
 
                     // Transaction Made See Admin Profit
                     $Companytransaction = new SpinpayTransaction();
                     $Companytransaction->loan_id = $userLoan->id;
                     $Companytransaction->borrower_id = $userLoan->borrower_id;
                     $Companytransaction->amount = ($amountToPay - $lendershare);
+                    $Companytransaction->type="profit";
                     $isCompanyTrans = $Companytransaction->save();
+
+
+                    // Transaction Made See Company GST
+                    $Companytransactiongst = new SpinpayTransaction();
+                    $Companytransactiongst->loan_id = $userLoan->id;
+                    $Companytransactiongst->borrower_id = $userLoan->borrower_id;
+                    $Companytransactiongst->amount = $gst;
+                    $Companytransactiongst->type="gst";
+                    $Companytransactiongst->save();
 
 
                     // Sending Loan Mail TO Borrower

@@ -73,9 +73,9 @@ class UserController extends Controller
             ]);
         } else {
             $size = $request->file('image')->getSize();
-            if ($size > 100000) {
+            if ($size > 500000) {
                 return response()->json([
-                    'message' => 'Photos must be less then 100kB',
+                    'message' => 'Photos must be less then 500kB',
                     'status' => 400,
                 ]);
             }
@@ -133,7 +133,7 @@ class UserController extends Controller
             $size = $request->file('document_image')->getsize();
             if ($size > 5000000) {
                 return response()->json([
-                    "message" => "image size should be less than 100kb",
+                    "message" => "image size should be less than 5Mb",
                     "status" => 400,
                 ]);
             }
@@ -280,9 +280,9 @@ class UserController extends Controller
             ]);
         } else {
             $size = $request->file('document_image')->getSize();
-            if ($size > 500000) {
+            if ($size > 5000000) {
                 return response()->json([
-                    'Upload Failed' => 'Photos must be less then 100kB',
+                    'Upload Failed' => 'Photos must be less then 5MB',
                     'status' => 400,
                 ]);
             }
