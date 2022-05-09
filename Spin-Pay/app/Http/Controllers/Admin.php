@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\CreditMapping;
 use App\Models\Loan;
 use App\Models\Wallet;
+use App\Models\SpinpayTransaction;
 use Illuminate\Support\Facades\Hash;
 use App\Models\CreditDetail;
 use Illuminate\Support\Facades\Session;
@@ -99,4 +100,32 @@ class Admin extends Controller
             ]);
         }
     }
+
+    public function statusReport(){
+        $agents=Users::where('role_id',2)->count();
+        $lenders=Users::where('role_id',3)->count();
+        $borrowers=Users::where('role_id',4)->count();
+        $disburse = Transaction::where('type', 'disburse')->where('status', 'successfull')->sum('amount');
+        $earn = SpinpayTransaction::where('type','profit')->sum('amount');
+        $gst = SpinpayTransaction::where('type','gst')->sum('amount');
+        $loans= Loan::count();
+        $requests = Requests::where('status','pending')->orwhere('status','approved')->count();
+        $wallet = Wallet::where('user_id',1)->sum('amount');
+        $repayed = Transaction::where('type','repayed')->sum('amount');
+        
+        return response()->json([
+            'agents' => $agents,
+            'lenders' => $lenders,
+            'borrowers' => $borrowers,
+            'disburse' => $disburse,
+            'earn' => $earn,
+            'gst' => $gst,
+            'loans' => $loans,
+            'requests' => $requests,
+            'wallet' => $wallet,
+            'repayed' => $repayed,
+        ]);
+
+    }
+
 }
