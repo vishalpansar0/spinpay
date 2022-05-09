@@ -46,11 +46,13 @@
     margin-left: 164px;
 }
 
-@media only screen and (max-width: 600px) {
-    /* body {
-      background-color: lightblue;
-      
-    } */
+.text_align{
+    text-align: left;
+    padding-left: 5px;
+}
+
+/* @media only screen and (max-width: 600px) {
+   
     .left-container {
          display: none;
       
@@ -58,6 +60,6 @@
     .right-container{
         margin-left: 0px;
     }
-}
+} */
 
 
