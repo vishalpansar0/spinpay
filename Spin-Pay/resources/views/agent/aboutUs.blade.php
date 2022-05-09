@@ -30,37 +30,37 @@
       <div class="row">
         <div class="col-md-6 col-lg-3">
           <div class="img-block mb-5">
-            <img style="min-width:310px" src="https://lh3.googleusercontent.com/qCWcTQszDEQIGyZDkkAyd8lf04tHDaMHVIJDbwGo6jvaUHuH-OJU3lRO4AYI3ahD-sBV_kx8vkvBmPeic6fBWOpR8aHy0Eg9DHCeWlNETNJSMnW4B1TQL4RtBs7FZwOGlaZqSjuKDOYVMdvxwwhEOVR_HWWCPrPi12yFVQriVjXSfEjULQ5UsD-A-kY_w7mmpQkL-VvujdwcOuZOunD-ewwLa3ietdCAyNFRP-1502UKniOzlIKbAfYKzHd1iKYmV4HF63LzCML69EnHBcceL3m1OnPgh-EN7XHfDVkypj1cIPyE_bHi9vX9ckOaos6YNt9lp4zznO_On16y4eP7zJwUvt-OtvRj6COOQU9aEFpbvcERtRP41nmDkMUkyvAMel0vu_OQqy8iozXmKCFkMlH50Llky60h3DaCIQE9MUsjSNhfGEWBv6Z7bdZogFQYleEV1_YcNczU_e2BnPYiFXPXiD_2LnZLtcq-RYBgkkMhlJb-Amd-fEjKQX9YnXyp0f400hLJb4SvWnb5Ky26L9K28z8X2l1HDPJOhEVV7z1XisHnMPs97dqU-eO6D0JeevbsbfVLyRs1mzxY-EwpzVSfPwy8SCBrSXGEBPLSEuC86xSRkoNvHx8IJowrEj66lwLv2dsP1KcakCoJN7UMXiraIaJdFoJenb3gGmQfjizeMeoFJxHV3cPvELO9QsyyVPkgXoOyCa-qxjMLBAu2Su1M6wEsyMRXBgY6VKfaH_F9hCmxiCt5w0bmeSo=w425-h426-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
+            <img style="min-width:310px" src="https://lh3.googleusercontent.com/KGU4TqU3aBTpQI7S4qMxTCdJqJmgXjledEtT691ai6faAbtXhUu2w9zR3zAGoeBr9X5BLNTm_W34Z88-fx20CtymxiaXKGj73dziOTbXHmwLwWVEmW4nziFIfLYSRsjUFmAxCL9t_olBeI4LlgNMhgFf4T1UEE0KUkpny-LZf5Pqvqd_ZJydniWfLwYigL6Hz5I5e0lp7226tE_W6SQIdaNCA2-MXTowYM28gjmese80sN6fZXVtbHZIrVTv7psEofdyfqdGbJ4zmguaiNqHlMBKu9MOQXqaeqaGOREhWvAaJTRmovZuNPilytDI64CF3myNY0oixR4N8JsuZYaoA1LEB3CScMqL-eZ1ZwnJC6kzmlcGjCRcmIeZQkr8cvOP0lNl0TmbMkvCSzPdtljupNxU3ILPO7oyl8BhIWLAnQufxX7Ricd8WrBhstmOIQf49mbqxV-LpI0NY2Lfrw8QJlkE9fwaSFUOxqU__QqhYleljW1sDbIN9xmjPNNbWWvHfg_6WMn_32salaYL4DTWb5GLSN50lJG6LvH_s8xldmXQVIwoN1RTpIdCINqxyAPpg3TAfpQvMHTXk8GGNWNObYoPJANiJlrI_QepdiAkZPFrvP4ih_4uuPuXvmyxLn8jJ391IBMaxnMlyw26oqrlhXNcZOg_eHMmlpI3jWHCVSzejCxfSH2XnNuvIV4xkhb49A3AwSadm1d7G6uhRAQc7ZB48jshRdhnS8RrEM_ssV3eMSJPvZvud1O05k8=w425-h426-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
             <div class="content mt-2">
               <h4>Vishal Sharma</h4>
-              <p class="text-muted">Full Stack Web Developer</p>
+              <p class="text-muted">ASE at mPokket</p>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3 ">
           <div class="img-block mb-5">
-            <img src="https://lh3.googleusercontent.com/BFHuaK8DPVhklNV0BZ2Yi4_PcXtkf0QCuArXXZRBp6uYKg5GqwWztd4tWn6X_6luQe7euelgyxeIwTSi2sc2spluQWKdXiUPjfnnEa9sW6g0HF5_tBGSFWNHue0PKVq3CrpTh9gn3hXJWOI3XPEUXDmnpyx_mJv0QESnnFpVb7-WX8uEdBcLXFYxMe7SE053ma1xEq0m95D938f3YOhkfyOaP9fPG9wNPG-rw5ppD2xJ7kgZLWJijn1LjOvS3FDIX1W7tbgbQIC8YCf1WccN-mJYHt13KMbixq3fFU06HnMiQpZlTyr9dZDF40QYlRWV8Rdi6SkDuZiEitbwQZ5TWhzjM2LGVLO0UTobyITfElspx0L7mzuOrVXu__OQS6srIKLuKqZ1z71M4EIg4tOaQG5Pnw_YjeKVSoyiHSniqk9KWdzZgTbGtPq9Wo0vczJv70zQtm5ETW-TIAfGqnTQ9QsDE4ifEoIb6qozEH1YBp7GxkAClbrI4Sy-wKyBiYn1MqdBiRReeSGkbDzWrC4yaxqSwOjpAHrv1vsdCiK52SheSoP2rQyWCvvIcBJUWAJcC3SbYPs1S_p9PXOvCIyMdfm_nXJUv1Z6vwzOtb19USmAcLkdlGXp2hrLT-t-oIS066EeYPKJyp5fC5RlOg72M653r-K5swjtlUOq5E48h8vH827btA_ZsXZY8GaZOSZgabh7tcfd69lQJYLByiI3x_laywcOsDY48rdfNw8qJ2XFWpXOgnF_cY4SEtM=s811-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
+            <img src="https://lh3.googleusercontent.com/Dez5eabyhvY5wDwPa1m74cE-taFH_jwq8lOKa4thgKhsVREFvhznnBvrOzQQiCXz3WHEsiTgl0MIzSZW4121b0b65VZfHherY5Bh_WkQd_A6Vvc70ovmk_Ymty88YvhvwgISO0bnDIL3X5ptJ1Gg7eU-F81WVyFq8Rw0uoGLF9RvUvoRiLIzuWouEsXNU4ZUVg86ss420drTQCKYqfvpURcDpzFyc2xbOIVc17HtrlVDrX-d9HRe2qguK9y5XsuWMTbTf7PZsjdnZ3-d5PB6Dt60tly0Ft_kDWHNvm7NLvWYhGabl_kKa685VrQsaIRoaWCSWr1R6EkjlHVZGdXaGzenKgGCcJBa5TlFBDEHD_IGmwzPjwGz5g41EWKQQIqDURtxrPUfhZkidWZ7WvlZauKyN9uGFvTOFzbHeBsyMybuQ8XwuA_E8MjOCWBJakRo6UtvVry596j-9m9Cxu9A-PEDP1_OJmVVXeJIxGfzTFb-fX0KdQOIQyn1wAkasDsPARzCPB40hLuLexYwVaLAJfgPPk0wDEiTcqS19cHFjnJ6jQ2HlJ2UcCP7Lv9DiMycGMVKRrR8WowOOLywPIXDD5S15ehJpP5BqWUTegn74GNJr4M_OZkqfk4BngRjPmb1UEWejTpOQ03HZLRds8XMQuhiXdGkIlnnrT3UKJkxeMrvHjsZTTDQkSMKi-UMGyNW3zceDt3k86miiM1teT0RH9ZxGQCHcDowUsojrkSoZAA9t-kwbzrWW46Oabo=s811-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
             <div class="content mt-2">
               <h4>Sathwik</h4>
-              <p class="text-muted">Full Stack Web Developer</p>
+              <p class="text-muted">ASE at mPokket</p>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="img-block mb-5">
-            <img src="https://lh3.googleusercontent.com/lBIMMlVK6ntqi0ybBi1LDB3XhwBLPzmVDn_w-b8JQNH1_AboYNEVvCUJTC3qNsiGCmZIHju-Q97djzdRhX_GbEvm3AGmQvQGUGd1WR_2rIFMaPVzMhTWyvwaWyitcy4O7KN1P0nmm_brQOIPtx4I4jvBQcDPYzGBmx9uwiN8MuuKXhI9wVUK_KLsmb7SGEEyO9k5I26uHMSheZVEyS9Mi8ZFjotA7z6O6tBls1zRbkVr9ydeI5PbThPmV7vLQr-lWg62ZWIM8W5q0G2_J97uKvjTt_fyA7XWUlviaoBGWsH3iU7e7XHzemQT5Fe3pPmkIyDWkz_KyEzbeuIphVa7POV6EylA7nl22W3NANXCbOhcetwgszicMjazdTn9B-WdwRQiyzVohe4pr8_mQMH5QRJ_TVSMframyigTI87fu8bX6ntimXiNpOefXfznASBEw5J0k0TBoIRiBW3J_2Y5So76i8D3xuWuccGVe2pZKaVh_bW8-eUIfH2UFq0-FgW0_S5OD84R8Sj2GecsNcgFaAAVDaVGf_HfbAhud-OheXLWppBoH7c2mrvhbksvuD0Ku-6yXZfNvcoAQFiqsSTROjSKJfwR-DVUDPB5d4pqDeOGihs3EWJ-A0MM2BT_c-AxV3wVkaLIJqFq9wIlq9iy7eOgz2MF6Q7meeRYPoJSx9oQtKg1aFH7lRVwWda22XmhoRHp4THKY6i9GAaRGk2G0fy3IZg8QIzp-xXwBX4e4Dd9W9gg_gQMLtnYk1Q=s640-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
+            <img src="https://lh3.googleusercontent.com/Ag2nVUHI7iYOahxp6lwByDn3r0KpyAqDv3a6WxkSv4qFRe-3gvdJapwzVswv1XD0acj0285BgBYUceew5rZ05nxhQNpURRrewZzS6Z2zri5TdvFu2Lz0sQXWKILEv2vs3BTVFnpbACKbo4l_wacAfGsYuwaQ_4lgmI4XApxZPa2xNmxETWt_R-i8BvFYSY0BaPtpaJXUvJRFVJmbyi6NcNSZEeOqu62iQavGBPm26dHVmeOIfZfr4Jm1pHrtGqKho-7qsTBKkNoBH9KrXLhTHDmnYHXmDPa4XAx96z_5j8SaPol4gGfuEFd7gEVgM5TmuHwngIb2RzzzzVCnYGRQhNgk8S-dpbrnSEITWq9bGKqe2lwsEwUnITJPE0cs6_EXshr86OrO26uEsMHkGUVoXDtR8PDFoOZcq91EyZ0A6xXvjRBmVWfMNmR9cSjVdZtpy_VACZPFaggbbl_k7J4aq34BLky1mJiCAQx7es9F3Baerp1ZcK3xcMUzZfhLIX3ZoBZ2RKZVWv12aVWjr6yAFMnrm1txBRWvFodCk3dHn69EmLdKHJDeJCeL02EXS9Ctssu5HqLonBGukVVQs76ilxtFAc-0GARJ6a1XBXyoXaaB1H63VfLFlvZ28hW9TUX0ZKJA2rEppuzRPlpvcRuDVCOzXHlfCXcVkZSCbgSOFGD73kJPxr9BvuYAagildBFI1isi5WPsVCpCtzAzmJ-cQttkbrAuO-3QsNdoyLwIsM-bDXjO73cermNNayA=s640-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
             <div class="content mt-2">
               <h4>Abhishek Borana</h4>
-              <p class="text-muted">Full Stack Web Developer</p>
+              <p class="text-muted">ASE at mPokket</p>
             </div>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="img-block mb-5">
-            <img src="https://lh3.googleusercontent.com/n8XLq33u4Vnwmz4MY4yLm2xI6qIJBz-Wgouj3vXgODWrUVm6GZIj79Uki0pxl9UydunDYpgXEajVqIZ-MQmmeGPIrM1V_60HmL9VC2sNbSeBRMEhSGYX2bggvw5plVWLr7rcTT6MZ0T2TSJdZ_L5t1f6BZDjjTdb7tXZ5rk3jttBkVT7OGJlKnqKMiFcbWsLrC3EBK8ZvCwwwUVZAFBq2lG0qEmSubH0pqvXF6HjfDRfq4hOb-gXdBCJQeGT1V8hcEaZYEohwpbZeeEf3FMqrlYRrqqF7vK89n16UCWxTWljTIxdKJmrxjfNjAZpb3y9i_XwvOk_hfa34HqQlfLOkVEuzudw2LPxrrQ0EO4HAXa_b8cn7xxGvj4Zcw1-BkDY0t8lbdhQthlCYVzEYRZb252HcQSgbiPne20QpUlbxC4bGXwP7PNxF_EhPWprI8lh5Bat17OG0Zi04JS5KkHsNRTmoyk4cXUEY9cCfpheslalE7LDYz51UuRND5LxLUa571tH3NkP_yD0dA0gq1LsUgWvtuRcsepY7BMnRtqIToqNhhEZyj222_8jHmGkVUmW_W1aZyEnJtwZQLgMLRlCj3AKgEqKpE71RDHuzaH0dzaU84QyI3oFrRuh2lIPYFGsOYMqEXzt9-Z7ngFGOHV-trszUNprnk_Rae7ghrEuWTELgr9NW1iB3JeOIkHZxWuvYtBDqqmn6dV4ctPHcyZYFxKIWQ-CfyH2yaIFKKKy_i4JPvxUW8CpFLOklQI=w639-h640-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
+            <img src="https://lh3.googleusercontent.com/aQzoStmSHIhbfsE_yVSjPWsI2ptYqOe_psvul-TEUvRWrO-ovlU88qHOFeZpBMQy9KfJjQaD9miead_koAjn-XPQbfGpVqHOTfPo9SEQcJXsViX4dCHdtQ_Ejz1CsDjjySls5C-pYjGB5b0_SHkzsT-mWr6x30O-41Az37r3Y5LXOAo-7xnISfuqxhyTUh9HIpdyoqpI0BRuGEpNIY8J7le87Ib4aGmvKiWyvwNUJ2VBDMlEa97-uKVYTU8-tAuTQ8wTjYh38zbXvgCNIDO1q8SZJlhRFre1rXyzq_lDPzPtShIbV0kXDOgBqjQHoECdlIpDtg58lA5G2gzx3c5onJotFbypHSpdjLkj4jlW50Y9QkwZEDLdTv6Lwr7P5MPKaBorZobmWRspHxBkoLiFJ1JVIvBXfZzuvLv0A_1rVrUkPcvus8PuG1YGzh0IcAAG1rUbIqFitDB8RiB2yYCeknxEkT6L74Fd3gfbr24Ia1e0gMRUGQlfkuTixYH3Bu_N2Qt2Cq-KKgDoFBmqzredude7d1k_KdtCxxGyidnVSomiDdDPQN4MYuDpqXM-nPMipTCVRZyKVytAVW7KYjMcD0s85L_952bDYp5o1Y5LYEdn9h-QpHH7FBn_FGfRjxtN4zalziCmW76XY73PbuPkUvzyiZM8UFsIwsZSIu2N2eAQys9EjkdF5TRAiVtbuzlrAE0uNAwxsWK0sGspzURux0VNmTmvmh_hI02z4aXcRXzQdvhiiaTUlE1hf98=w639-h640-no?authuser=0" class="img-fluid  img-thumbnail rounded-circle" alt="image1">
             <div class="content mt-2">
               <h4>Arvind Maurya</h4>
-              <p class="text-muted">Full Stack Web Developer</p>
+              <p class="text-muted">ASE at mPokket</p>
             </div>
           </div>
         </div>

@@ -126,7 +126,9 @@
                             else{
                                 statusRow = '<span style="padding:5px 15px;border-radius:1000px;background-color:red;">Rejected</span>';
                             }
-                            trHTML += '<tr><td>' + item.id + '</td><td>' + item.amount + '</td><td>' + item.tenure + '</td><td>' + item.created_at + '</td><td>' + statusRow + '</td></tr>';
+                            date=new Date(item.updated_at);
+                            const dateString = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                            trHTML += '<tr><td>' + item.id + '</td><td>' + item.amount + '</td><td>' + item.tenure + '</td><td>' + dateString + '</td><td>' + statusRow + '</td></tr>';
                         });
                         $('#records_table').append(trHTML);
                         // $('#filterDataTable').css('display', 'block');
