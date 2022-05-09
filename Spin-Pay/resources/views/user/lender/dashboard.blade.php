@@ -5,19 +5,19 @@
 
 <div class="main-container" style="" id="main-container">
     <div class="left-container" id="leftContainer" style="transition:all .4s ease">
-        <div class="ul"><button class="navbarBtn" id="dashboard"><i
+        <div class="ul"><button class=" text_align" id="dashboard"><i
                     class="fa-solid fa-money-check-dollar"></i> DASHBOARD</button></div>
-        <div class="ul"><button class="" id="loan"><i class="fa-solid fa-money-check-dollar"></i>
+        <div class="ul"><button class="text_align" id="loan"><i class="fa-solid fa-money-check-dollar"></i>
                 LOAN</button></div>
-        <div class="ul"><button class="" id="request"><i
+        <div class="ul"><button class="text_align" id="request"><i
                     class="fa-solid fa-money-check-dollar"></i> REQUEST</button></div>
-        <div class="ul"><button class="" id="transaction"><i
+        <div class="ul"><button class="text_align" id="transaction"><i
                     class="fa-solid fa-money-check-dollar"></i> TRANSACTION</button></div>
-        <div class="ul"><button class="" id="profile"><i
+        <div class="ul"><button class="text_align" id="profile"><i
                     class="fa-solid fa-money-check-dollar"></i> PROFILE</button></div>
-        <div class="ul"><button class="" id="documents"><i
+        <div class="ul"><button class="text_align" id="documents"><i
                     class="fa-solid fa-money-check-dollar"></i> DOCUMENTS</button></div>
-        <div class="ul"><button class="" id="anyquery"><i
+        <div class="ul"><button class="text_align" id="anyquery"><i
                     class="fa-solid fa-money-check-dollar"></i> ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
@@ -39,18 +39,12 @@
         {{-- Dashboard --}}
         <div class="dashboard-div" id="dashboard-div" id="dashboard-div">
             <div class="credits" id="credits">
-                {{-- <div class="summary-div" id="summary-div" style="width:800px">
-                    <img src="" alt="">
-                </div> --}}
                 <div class="creditScore text-center" id="creditScore">
                     <h1 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;"><i style=""
                             class="fa-solid fa-wallet"></i></h1>
                     <P style="color:white">&#8377;{{ $datas['wallet_amount'] }}</P>
                 </div>
-                {{-- <div class="CreditPoint text-center" id="CreditPoint">
-                    <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT POINT</h5>
-                    <P>10000</P>
-                </div> --}}
+
             </div>
             <div class="applyBtn-div" id="applyBtn-div">
                 <div class="applyBtn-message" style="margin-left: 50px">
@@ -123,12 +117,7 @@
                     <input type="number" id="amount" name="amount" placeholder="enter amount" required>
                     {{-- <small class="form-text text-muted">Amount should be in multiple of 100.</small> --}}
                 </div>
-                {{-- <div class="inputDiv">
-                    <label for="month" style="color:white">Please Enter Duration</label>
-                    <input type="number" id="month" name="month" placeholder="enter duration" required>
-                    <small class="form-text text-muted">Duration should be in multiple of month.</small>
-                </div> --}}
-                <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn" style="margin-top:15px">Submit</button>
             </div>
         </div>
 
@@ -195,7 +184,6 @@
         {{-- any query from the user --}}
         <div class="anyquery" id="query-div" style="display: none;font-family: myFirstFont;margin-top:20px">
             <div id="querybtn" style="display: flex">
-                {{-- <h3 style="color:#0af7e8;margin-left:20px">If you have any concern raise a query</h3> --}}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalquery"
                     data-whatever="@mdo" id="borrowerquery" style="margin-left: auto">ASK QUERY</button>
             </div>
@@ -234,7 +222,6 @@
                             <form>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Category</label>
-                                    {{-- <input type="text" class="form-control" id="category-name" required> --}}
                                     <select name="category-name" id="category-name" required>
                                         <option value="profile">Profile</option>
                                         <option value="loan">Loan</option>
@@ -404,10 +391,6 @@
                     </div>
 
                 </div>
-                {{-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div> --}}
             </div>
         </div>
     </div>
@@ -431,7 +414,7 @@
                 </div>
                 <div class="modal-body" style="height: 250px">
                     <div style="height:100px">
-                        <h2>Are you sure you</h2>
+                        <h2>Are you sure</h2>
                     </div>
                     <p style="display: none;" id="PassingRequestID"></p>
                     <div class="alert alert-danger" role="alert" id="low_amount_error_message" style="display: none">
