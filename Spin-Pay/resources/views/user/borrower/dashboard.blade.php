@@ -3,19 +3,19 @@
 @include('user.layout.header')
 <div class="main-container" style="" id="main-container">
     <div class="left-container" id="leftContainer" style="transition:all .4s ease">
-        <div class="ul"><button class="navbarBtn" id="dashboard"><i
+        <div class="ul"><button class=" text_align" id="dashboard"><i
                     class="fa-solid fa-money-check-dollar"></i> DASHBOARD</button></div>
-        <div class="ul"><button class="" id="loan"><i class="fa-solid fa-money-check-dollar"></i>
+        <div class="ul"><button class="text_align" id="loan"><i class="fa-solid fa-money-check-dollar"></i>
                 LOAN</button></div>
-        <div class="ul"><button class="" id="request"><i
+        <div class="ul"><button class="text_align" id="request"><i
                     class="fa-solid fa-money-check-dollar"></i> REQUEST</button></div>
-        <div class="ul"><button class="" id="transaction"><i
+        <div class="ul"><button class="text_align" id="transaction"><i
                     class="fa-solid fa-money-check-dollar"></i> TRANSACTION</button></div>
-        <div class="ul"><button class="" id="profile"><i
+        <div class="ul"><button class="text_align" id="profile"><i
                     class="fa-solid fa-money-check-dollar"></i> PROFILE</button></div>
-        <div class="ul"><button class="" id="documents"><i
+        <div class="ul"><button class="text_align" id="documents"><i
                     class="fa-solid fa-money-check-dollar"></i> DOCUMENTS</button></div>
-        <div class="ul"><button class="" id="anyquery"><i
+        <div class="ul"><button class="text_align" id="anyquery"><i
                     class="fa-solid fa-money-check-dollar"></i> ANY QUERY</button></div>
     </div>
     <div class="right-container toggleContainerCSS" id="rightContainer">
@@ -42,9 +42,6 @@
         {{-- Dashboard --}}
         <div class="dashboard-div" id="dashboard-div" id="dashboard-div">
             <div class="credits" id="credits">
-                {{-- <div class="summary-div" id="summary-div" style="width:800px">
-                    <img src="" alt="">
-                </div> --}}
                 <div class="creditScore text-center" id="creditScore">
                     <h5 style="color:#f27a72;margin-top:10px;font-family: myFirstFont;">CREDIT SCORE</h5>
                     <P style="color: white">{{ $datas['score'] }}</P>
@@ -124,7 +121,6 @@
                 </div>
                 <div class="inputDiv">
                     <label for="month" style="color:white">Please Enter Duration</label>
-                    {{-- <input type="number" id="month" name="month" placeholder="enter duration" required> --}}
                     <select name="month" id="month" required>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -249,8 +245,6 @@
         {{-- any query from the user --}}
         <div class="anyquery" id="query-div" style="display: none;font-family: myFirstFont;margin-top:20px;">
             <div id="querybtn" style="display: flex;">
-                {{-- <sapn style="color:white">If you have any concern raise a query</p> --}}
-                {{-- <h3 style="color:#0af7e8;margin-left:20px">If you have any concern raise a query</h3> --}}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalquery"
                     data-whatever="@mdo" id="borrowerquery" style="margin-left: auto">ASK QUERY</button>
             </div>
@@ -289,7 +283,6 @@
                             <form>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Category</label>
-                                    {{-- <input type="text" class="form-control" id="category-name" required> --}}
                                     <select name="category-name" id="category-name" required>
                                         <option value="profile">Profile</option>
                                         <option value="loan">Loan</option>
@@ -396,7 +389,33 @@
         </div>
     </div>
 
-    tep
+    {{-- laon pay payment gateway modal --}}
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentgateway" id="borrower_payment" style="display: none">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="paymentgateway" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Payment gateway</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: 250px">
+            <h3> Are you sure</h3>
+          <p id = "b_id" style="display: none"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "bt_close" style="display: none">Close</button>
+          <button type="button" class="btn btn-primary" id = "complete_payment">Complete Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 <input type="text" value="{{ Session::get('user_id') }}" id="getuserid" style="display: none">

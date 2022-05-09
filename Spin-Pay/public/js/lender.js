@@ -27,7 +27,6 @@ $(document).ready(function() {
                 lender_id: user_id_from_session
             },
             success: function (response) {
-                console.log(response['message']);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -100,7 +99,6 @@ $(document).ready(function() {
                 lender_id: user_id_from_session
             },
             success: function (response) {
-                console.log(response['status']);
                 if (response['status'] != 200) {
                     alert('We are facing some issue please try later');
                 } else {
@@ -192,6 +190,7 @@ $(document).ready(function() {
                     $("#transaction-div").hide();
                     $("#profile-div").hide();
                     $("#document-div").hide();
+                    $("#query-div").hide();
                     $("#request-div").show();
                     $("#request_row").empty();
                     $("#detailHeading").empty();
@@ -224,7 +223,6 @@ $(document).ready(function() {
                             '</td></tr>';
                     });
                     $('#request_row').append(trHTML);
-                    console.log(response);
                 }
             }
         });
@@ -259,10 +257,8 @@ $(document).ready(function() {
                     $("#age-div").empty();
                     $("#gender-div").empty();
                     $("#location-div").empty();
-                    // $("#photo-container").empty();
                     $("#detailHeading").empty();
                     var hd = 'Profile Details'
-                        // $('#detailHeading').append(hd);
                     var details =
                         '<h1 style = "color:goldenrod; margin-left:100px">Personal Details</h1><h3 style = "padding-left:200px;color:#d267f0">' +
                         response[0].name +
@@ -295,22 +291,10 @@ $(document).ready(function() {
                     var location = '<h3 style = "color:white">' + response[0].city +
                         '</h3>';
                     $('#location-div').append(location);
-                    console.log(response);
-                    console.log(response[0].image);
                     const flagForImg = "";
-                    // var images1 = $('#profileImageTag').attr('src');
-                    // if(flagForImg == "1"){
-
-                    //     flagForImg = "1";
-                    // }
-
-
                     var images1 = $('#imageInitialPath').val();
                     images1 = images1 + response[0].image;
-                    console.log(images1);
                     $('#profileImageTag').prop('src', images1);
-
-                    // var down = "";
 
                 }
             }
@@ -325,8 +309,6 @@ $(document).ready(function() {
             },
 
             success: function (response) {
-
-                console.log('documnet');
                 if (response['status'] == 500) {
                     alert('We are facing issue please try')
                 } else {
@@ -349,7 +331,6 @@ $(document).ready(function() {
                     $("#document_row").empty();
                     var hd = 'All the Documents';
                     $('#detailHeading').append(hd);
-                    console.log(response[1]);
                     var details = {};
                     var documentcheck = {
                         one: false,
@@ -449,8 +430,6 @@ $(document).ready(function() {
         var amount = $("#amount").val()
         $('#errorMsg').hide();
         $('#successMsg').hide();
-        console.log(amount);
-        console.log(user_id_from_session);
         $.ajax({
             url: '/api/addmoney',
             type: 'POST',
@@ -459,21 +438,31 @@ $(document).ready(function() {
                 'user_id': user_id_from_session
 
             },
+            beforeSend: function() {
+                $("#submitBtn").attr("disabled", true);
+                $("#submitBtn").html('Adding Money ...')
+            },
             success: function(response) {
-                console.log(response);
-                console.log(response['status']);
                 if (response['status'] == 500) {
+                    $("#submitBtn").attr("disabled", false);
+                    $("#submitBtn").html('Submit');
                     alert('We are facing some issue please try later');
                 }
                 if (response['status'] == 401) {
+                    $("#submitBtn").attr("disabled", false);
+                    $("#submitBtn").html('Submit');
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['Validation Failed']['amount']);
                 }
                 if (response['status'] == 400) {
+                    $("#submitBtn").attr("disabled", false);
+                    $("#submitBtn").html('Submit');
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
                 }
                 if (response['status'] == 300) {
+                    $("#submitBtn").attr("disabled", false);
+                    $("#submitBtn").html('Submit');
                     $('#errorMsg').show();
                     $('#errorMsg').html(response['message']);
                 }
@@ -481,7 +470,8 @@ $(document).ready(function() {
                     $('#successMsg').show();
                     $('#successMsg').html('Money added Successfully');
                     $('#amount').val('');
-
+                    $("#submitBtn").attr("disabled", false);
+                    $("#submitBtn").html('Submit');
                 }
             }
         });
@@ -505,9 +495,6 @@ $(document).ready(function() {
         let apiurl = $('#apiurl').text();
         let documentNumber = $('#documentNumber').text();
         let MasterdocumentNumber = $('#MasterdocumentNumber').text();
-
-        console.log(apiurl, '  ', MasterdocumentNumber);
-
         let upload = new FormData(document.getElementById('lenderdocuments'));
         upload.append('user_id', user_id_from_session);
         upload.append('master_document_id', MasterdocumentNumber);
@@ -520,7 +507,6 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(result) {
-                console.log(result);
                 if (result['status'] == 200) {
                     $('#modalerror').empty();
                     $('lenderdocsuploadkre').empty();
@@ -571,9 +557,7 @@ $(document).ready(function() {
 
 
     $('#completePayment').click(function() {
-        // console.log('modal button clicked');
         let userrequestids = $('#PassingRequestID').text();
-        console.log(userrequestids)
         $.ajax({
             url: "/api/approveloan",
             type: 'POST',
@@ -587,7 +571,6 @@ $(document).ready(function() {
                 if(result['status'] ==400){
                     $('#low_amount_error_message').show();
                     $('#low_amount_error_message').html(result['message'])
-                    console.log(result['status'] == 400);
                 }
                 if(result['status'] == 200)
                 $('#modalhiddenloanapprove').click();
@@ -599,8 +582,6 @@ $(document).ready(function() {
 
     // query div
     $('#anyquery').click(function(event) {
-        console.log('hello');
-
         $.ajax({
             url: '/api/raise/show',
             type: 'post',
@@ -608,7 +589,6 @@ $(document).ready(function() {
                 'user_id': user_id_from_session
             },
             success: function(response) {
-                console.log(response);
                 if (response['status'] == 500) {
                     alert('We are facing issue please try later');
                 }
@@ -641,7 +621,6 @@ $(document).ready(function() {
                                     .getMonth() + 1) + "/" + date2
                                 .getFullYear();
                         }
-                        console.log('hello');
                         var replymsg = '';
                         if (item.reply_message == null) {
                             replymsg = '-';
@@ -652,7 +631,6 @@ $(document).ready(function() {
                         let created = date.getDate() + "/" + (date
                             .getMonth() +
                             1) + "/" + date.getFullYear();
-                        console.log('hi');
                         trHTML += '<tr style="color:white"><td>' + issueid +
                             '</td><td>' + item
                             .category + '</td><td>' +
@@ -660,7 +638,6 @@ $(document).ready(function() {
                             '</td><td>' + updated + '</td></tr>';
                     });
                     $('#query_row').append(trHTML);
-                    console.log('asjghad');
                 }
 
             }
@@ -688,7 +665,6 @@ $(document).ready(function() {
                 data: raisequery,
                 success: function(response) {
                     if (response['status'] == 401) {
-                        console.log(response);
                         let ptag = "<p style='color:red'>*" + response[
                             'Validation Failed'] + "</p>"
                         $('#error').append(ptag);
@@ -717,24 +693,7 @@ function ViewDetails(details) {
     $('#borrowerdetails').click();
 }
 
-
-function repayment(id, btid) {
-    $.ajax({
-        url: '/api/loanrepayment',
-        type: 'POST',
-        data: {
-            loan_id: id
-        },
-        success: function(response) {
-            console.log(btid, response)
-            $("#" + btid).attr("disabled", true);
-            console.log(response);
-        }
-    });
-}
-
 function DocumentReupload(master_document_id, document_number) {
-    // console.log("id", master_document_id);
     $('#document_input').css('display', 'block')
     let heading = "";
     let url = "";
@@ -752,7 +711,6 @@ function DocumentReupload(master_document_id, document_number) {
     $("#documentNumber").html(document_number);
     $("#MasterdocumentNumber").html(master_document_id);
     $('#exampleModalLabel1').html(heading);
-    // $('#lenderdocsuploadkre').append(ptag)
     $('#modalid').click();
 }
 
