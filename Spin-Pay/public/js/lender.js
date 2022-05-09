@@ -557,6 +557,7 @@ $(document).ready(function() {
 
 
     $('#completePayment').click(function() {
+        $('#low_amount_error_message').hide();
         let userrequestids = $('#PassingRequestID').text();
         $.ajax({
             url: "/api/approveloan",
@@ -566,15 +567,23 @@ $(document).ready(function() {
                 'lender_id': user_id_from_session,
                 'request_id': userrequestids
             },
-
+            beforeSend: function () {
+                $("#completePayment").attr("disabled", true);
+                $("#completePayment").html('please wait...');
+            },
             success: function(result) {
                 if(result['status'] ==400){
+                    $("#completePayment").attr("disabled", false);
+                    $("#completePayment").html('Complete Payment');
                     $('#low_amount_error_message').show();
                     $('#low_amount_error_message').html(result['message'])
                 }
-                if(result['status'] == 200)
+                if(result['status'] == 200){
+                $("#completePayment").attr("disabled", false);
+                $("#completePayment").html('Complete Payment');
                 $('#modalhiddenloanapprove').click();
                 $('#request').click();
+                }
 
             }
         });
