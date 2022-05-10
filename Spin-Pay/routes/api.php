@@ -146,8 +146,7 @@ Route::get('adminLogout',[Admin::class,'logout']);
 
 Route::post('addAgent',[Admin::class,'addAgent']);
 
-// total lenders, borrowers , agent, disburse, earendings, gst, loans, requests, waller amount
-Route::get('statusReport',[Admin::class,'statusReport']);
+
 
 
 

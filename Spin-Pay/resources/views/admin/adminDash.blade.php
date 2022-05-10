@@ -96,25 +96,25 @@
 <div style="padding:2%;display: flex;justify-content:center;align-items:center">
   <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
       <p style="color:white">Wallet Amount</p>
-      <h1 style="color:green">2000</h1>
+      <h1 style="color:green">{{$wallet}}</h1>
   </div>
   <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
     <p style="color:white">Total Loan Amount Disbursed</p>
-    <h1 style="color:orange">2000</h1>
+    <h1 style="color:orange">{{$disburse}}</h1>
 </div>
 <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
     <p style="color:white">Total Amount Repayed</p>
-    <h1 style="color:skyblue">2000</h1>
+    <h1 style="color:skyblue">{{$repayed}}</h1>
 </div>
 </div>
 <div style="padding:2%;display: flex;justify-content:center;align-items:center">
     <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
         <p style="color:white">Total GST Amount</p>
-        <h1 style="color:red">2000</h1>
+        <h1 style="color:red">{{$gst}}</h1>
     </div>
     <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
       <p style="color:white">Total Earnings</p>
-      <h1 style="color:green">2000</h1>
+      <h1 style="color:green">{{$earn}}</h1>
   </div>
   <div class="text-center" style="margin-left:1%;width:30%;padding:10px">
 
@@ -123,29 +123,29 @@
   <div style="padding:2%;display: flex;justify-content:center;align-items:center">
     <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
         <p style="color:white">Total Requests Raised</p>
-        <h1 style="color:green">2000</h1>
+        <h1 style="color:green">{{$requests}}</h1>
     </div>
     <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
         <p style="color:white">Total Loans Taken Count</p>
-        <h1 style="color:green">2000</h1>
+        <h1 style="color:green">{{$loans}}</h1>
     </div>
   <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
     <p style="color:white">Total Agents</p>
-    <h1 style="color:orange">2000</h1>
+    <h1 style="color:orange">{{$agents}}</h1>
 </div>
   </div>
   <div style="padding:2%;display: flex;justify-content:center;align-items:center">
     <div class="text-center" style="width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
         <p style="color:white">Total Users Count</p>
-        <h1 style="color:green">2000</h1>
+        <h1 style="color:green">{{$lenders+$borrowers}}</h1>
     </div>
     <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
       <p style="color:white">Total Lenders</p>
-      <h1 style="color:orange">2000</h1>
+      <h1 style="color:orange">{{$lenders}}</h1>
   </div>
   <div class="text-center" style="margin-left:1%;width:30%;box-shadow: 1px 1px 1px 2px #888888;padding:10px">
       <p style="color:white">Total Borrowers</p>
-      <h1 style="color:orange">2000</h1>
+      <h1 style="color:orange">{{$borrowers}}</h1>
   </div>
   </div>
     

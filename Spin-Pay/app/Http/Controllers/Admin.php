@@ -126,8 +126,7 @@ class Admin extends Controller
         $requests = Requests::where('status','pending')->orwhere('status','approved')->count();
         $wallet = Wallet::where('user_id',1)->sum('amount');
         $repayed = Transaction::where('type','repayed')->sum('amount');
-        
-        return response()->json([
+        return view('admin.adminDash', [
             'agents' => $agents,
             'lenders' => $lenders,
             'borrowers' => $borrowers,

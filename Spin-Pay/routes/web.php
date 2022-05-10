@@ -92,7 +92,8 @@ Route::view('/admin/signin', 'admin.adminsignin')->middleware('checkAdminAuth');
 
 Route::get('/admin/allusers', [Admin::class,'getAllUsers'])->middleware('isAdminLoggedIn');
 
-Route::view('/admin/dashboard','admin.adminDash');
+// total lenders, borrowers , agent, disburse, earendings, gst, loans, requests, waller amount
+Route::get('admin/dashboard',[Admin::class,'statusReport']);
 
 Route::get('/admin/transactions', [Admin::class,'getAllTransactions'])->middleware('isAdminLoggedIn');
 
